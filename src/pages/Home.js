@@ -29,16 +29,19 @@ const Home = () => {
       <Link to={"/mypage"}>My PAGE</Link>
       <ul>
         {challenges.map((challenge) => (
-          <li className="challenge">
-            <p>id: {challenge.user_id}</p>
-            <p>days: {challenge.days}</p>
-            <h1>title: {challenge.title}</h1>
-            <h3>desc: {challenge.desc}</h3>
-            <h3>start_date: {challenge.start_date}</h3>
-            <h3>end_date: {challenge.end_date}</h3>
-            <p>created_at: {challenge.created_at}</p>
-            <p>updated_at: {challenge.updated_at}</p>
-          </li>
+          <Link to={"/challenge/" + challenge.challenge_id}>
+            <li className="challenge">
+              <p>id: {challenge.user_id}</p>
+              <p>days: {challenge.days}</p>
+              <h1>title: {challenge.title}</h1>
+              <h3>desc: {challenge.desc}</h3>
+              <h3>start_date: {challenge.start_date}</h3>
+              <h3>end_date: {challenge.end_date}</h3>
+              <p>created_at: {challenge.created_at}</p>
+              <p>updated_at: {challenge.updated_at}</p>
+              <div className="button"></div>
+            </li>
+          </Link>
         ))}
       </ul>
     </div>

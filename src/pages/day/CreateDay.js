@@ -90,6 +90,7 @@ const CreateDay = () => {
         throw error;
       }
       alert("Update your challenge Success");
+      setFormValue({ ...formValue, date: "", content: "" });
       getDays();
       navigate(`/day/create/${id}`);
     } catch (error) {

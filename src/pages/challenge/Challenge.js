@@ -68,29 +68,53 @@ const Challenge = () => {
   const handleDelete = async () => {
     console.log(challenge.challenge_id);
 
-    try {
-      if (window.confirm("削除しますか? Dayデータも同時にすべて削除されます。")) {
-        const { data, error } = await supabase.from("challenge").delete().eq("challenge_id", challenge.challenge_id);
+    if (user.id === challenge.user_id) {
+      try {
+        if (window.confirm("削除しますか? Dayデータも同時にすべて削除されます。")) {
+          const { data, error } = await supabase.from("challenge").delete().eq("challenge_id", challenge.challenge_id);
 
-        if (error) {
-          throw error;
+          if (error) {
+            throw error;
+          }
+
+          const { data2, error2 } = await supabase.from("day").delete().eq("challenge_id", challenge.challenge_id);
+
+          if (error || error2) {
+            throw error;
+          }
+
+          console.log(data);
+          console.log(data2);
+          console.log("Delete your challenge Success");
+          navigate("/mypage");
+        } else {
+          return;
         }
-
-        const { data2, error2 } = await supabase.from("day").delete().eq("challenge_id", challenge.challenge_id);
-
-        if (error || error2) {
-          throw error;
-        }
-
-        console.log(data);
-        console.log(data2);
-        console.log("Delete your challenge Success");
-        navigate("/mypage");
-      } else {
-        return;
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
+    } else {
+      alert("not your data!!");
+    }
+  };
+
+  const checkUser = () => {
+    if (user.id === challenge.user_id) {
+      return (
+        <>
+          <Link to={"/challenge/update/" + challenge.challenge_id} className="button">
+            <BsFillPencilFill />
+          </Link>
+
+          <Link onClick={handleDelete} className="button">
+            <BsFillTrashFill />
+          </Link>
+
+          <Link to={"/day/create/" + challenge.challenge_id} className="button">
+            New Day Create
+          </Link>
+        </>
+      );
     }
   };
 
@@ -105,17 +129,7 @@ const Challenge = () => {
       <h3>end_date: {challenge.end_date}</h3>
       <p>created_at: {challenge.created_at}</p>
       <p>updated_at: {challenge.updated_at}</p>
-      <Link to={"/challenge/update/" + challenge.challenge_id} className="button">
-        <BsFillPencilFill />
-      </Link>
-
-      <Link onClick={handleDelete} className="button">
-        <BsFillTrashFill />
-      </Link>
-
-      <Link to={"/day/create/" + challenge.challenge_id} className="button">
-        New Day Create
-      </Link>
+      {checkUser()}
       <hr />
       <ul>
         {days.map((day) => (
