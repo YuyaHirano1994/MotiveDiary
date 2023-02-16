@@ -4,46 +4,48 @@ import supabase from "../common/supabase";
 import useAuth from "../common/useAuth";
 
 const MyPage = () => {
-  const [diaries, setDiaries] = useState([]);
+  const [challenges, setChallenges] = useState([]);
   // const [user, setUser] = useState({});
 
   const user = useAuth();
 
   useEffect(() => {
-    const getYourAllDiary = async () => {
+    const getYourChallenges = async () => {
       try {
         console.log(user.id);
-        const { data, error } = await supabase.from("diary").select("*").eq("user_id", user.id);
+        const { data, error } = await supabase.from("challenge").select("*").eq("user_id", user.id);
         if (error) {
           throw error;
         }
         console.log("Data fetch Success");
-        setDiaries(data);
+        setChallenges(data);
       } catch (error) {
         console.log(error.error_description || error.message);
       }
     };
-    getYourAllDiary();
+    getYourChallenges();
   }, [user]);
 
   return (
     <div>
       <h1>MyPage</h1>
 
-      <Link to={"/diary/create"}>Create</Link>
+      <Link to={"/challenge/create"}>Create</Link>
       <br />
       <Link to={"/"}>BACK</Link>
       <ul>
-        {diaries.map((diary) => (
-          <li className="diary" key={diary.diary_id}>
-            <p>{diary.user_id}</p>
-            <p>{diary.date}</p>
-            <h1>{diary.title}</h1>
-            <h3>{diary.content}</h3>
-            <p>{diary.created_at}</p>
-            <p>{diary.updated_at}</p>
+        {challenges.map((challenge) => (
+          <li className="challenge" key={challenge.challenge_id}>
+            <p>id: {challenge.user_id}</p>
+            <p>days: {challenge.days}</p>
+            <h1>title: {challenge.title}</h1>
+            <h3>desc: {challenge.desc}</h3>
+            <h3>start_date: {challenge.start_date}</h3>
+            <h3>end_date: {challenge.end_date}</h3>
+            <p>created_at: {challenge.created_at}</p>
+            <p>updated_at: {challenge.updated_at}</p>
             <div className="button">
-              <Link to={"/diary/" + diary.diary_id}>More detail...</Link>
+              <Link to={"/challenge/" + challenge.challenge_id}>More detail...</Link>
             </div>
           </li>
         ))}

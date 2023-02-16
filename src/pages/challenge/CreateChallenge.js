@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
 import useAuth from "../../common/useAuth";
 
-const CreateDiary = () => {
+const CreateChallenge = () => {
   const [formValue, setFormValue] = useState({
+    challenge_id: "",
     title: "",
-    date: "",
-    content: "",
+    days: 0,
+    desc: "",
+    start_date: "",
+    end_date: "",
+    created_at: "",
+    updated_at: "",
   });
 
   const navigate = useNavigate();
@@ -25,18 +30,19 @@ const CreateDiary = () => {
     e.preventDefault();
     try {
       console.log("user: " + user.id);
-      const { error } = await supabase.from("diary").insert([
+      const { error } = await supabase.from("challenge").insert([
         {
           user_id: user.id,
           title: formValue.title,
-          date: formValue.date,
-          content: formValue.content,
+          days: formValue.days,
+          desc: formValue.desc,
+          start_date: formValue.start_date,
         },
       ]);
       if (error) {
         throw error;
       }
-      alert("new diary Success");
+      alert("new challenge Success");
       navigate("/mypage");
     } catch (error) {
       alert("Failed");
@@ -58,27 +64,29 @@ const CreateDiary = () => {
   return (
     <div>
       <button onClick={logout}>logout</button>
-      <h1>Write new diary</h1>
+      <h1>Create your new Challenge!</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>TITLE:</label>
+          <label>What is your Challenge?</label>
           <input value={formValue.title} onChange={handleChange} type="text" name="title" required />
         </div>
         <div>
-          <label>DATE: </label>
-          <input value={formValue.date} onChange={handleChange} type="date" name="date" required />
+          <label>How long would you need? </label>
+          <input value={formValue.date} onChange={handleChange} type="number" name="days" required />
         </div>
         <div>
-          <label>How was this day? </label>
-          <textarea value={formValue.content} onChange={handleChange} ype="text" name="content" required />
+          <label>Description here: </label>
+          <textarea value={formValue.desc} onChange={handleChange} ype="text" name="desc" required />
+        </div>{" "}
+        <div>
+          <label>Start Date: </label>
+          <input value={formValue.start_date} onChange={handleChange} type="date" name="start_date" required />
         </div>
-
         <button type="submit">create</button>
-
         <button onClick={backHome}>Home</button>
       </form>
     </div>
   );
 };
 
-export default CreateDiary;
+export default CreateChallenge;

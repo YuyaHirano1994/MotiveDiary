@@ -3,26 +3,26 @@ import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
 import useAuth from "../../common/useAuth";
 
-const UpdateDiary = () => {
+const UpdateChallenge = () => {
   const { id } = useParams();
 
   const [formValue, setFormValue] = useState({
-    diary_id: "",
+    challenge_id: "",
     title: "",
-    date: "",
-    content: "",
+    days: 0,
+    desc: "",
+    start_date: "",
+    end_date: "",
     created_at: "",
     updated_at: "",
   });
 
-  console.log(formValue);
-
   const navigate = useNavigate();
   const user = useAuth();
 
-  const getDiary = async () => {
+  const getChallenge = async () => {
     try {
-      const { data, error } = await supabase.from("diary").select("*").eq("diary_id", id, "user_id", user.id);
+      const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id, "user_id", user.id);
       if (error) {
         throw error;
       }
@@ -35,7 +35,7 @@ const UpdateDiary = () => {
   };
 
   useEffect(() => {
-    getDiary();
+    getChallenge();
   }, []);
 
   const handleChange = (e) => {
@@ -52,20 +52,20 @@ const UpdateDiary = () => {
     try {
       console.log("user: " + user.id);
       const { error } = await supabase
-        .from("diary")
+        .from("challenge")
         .update([
           {
             title: formValue.title,
-            date: formValue.date,
-            content: formValue.content,
+            days: formValue.days,
+            desc: formValue.desc,
             updated_at: now,
           },
         ])
-        .eq("diary_id", formValue.diary_id);
+        .eq("challenge_id", formValue.challenge_id);
       if (error) {
         throw error;
       }
-      alert("Update your diary Success");
+      alert("Update your challenge Success");
       navigate("/mypage");
     } catch (error) {
       alert("Failed");
@@ -85,7 +85,7 @@ const UpdateDiary = () => {
   return (
     <div>
       <button onClick={logout}>logout</button>
-      <h1>Edit your diary</h1>
+      <h1>Edit your challenge</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label>TITLE:</label>
@@ -93,11 +93,11 @@ const UpdateDiary = () => {
         </div>
         <div>
           <label>DATE: </label>
-          <input value={formValue.date} onChange={handleChange} type="date" name="date" required />
+          <input value={formValue.days} onChange={handleChange} type="number" name="days" required />
         </div>
         <div>
           <label>How was this day? </label>
-          <textarea value={formValue.content} onChange={handleChange} ype="text" name="content" required />
+          <textarea value={formValue.desc} onChange={handleChange} ype="text" name="desc" required />
         </div>
         <button type="submit">Edit</button>
         <button onClick={backHome}>BACK</button>
@@ -106,4 +106,4 @@ const UpdateDiary = () => {
   );
 };
 
-export default UpdateDiary;
+export default UpdateChallenge;
