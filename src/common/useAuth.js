@@ -20,7 +20,7 @@ const useAuth = () => {
     } catch (error) {
       alert("Database error");
       console.log(error.error_description || error.message);
-      navigate("/user/signin");
+      navigate("/");
     }
   };
 

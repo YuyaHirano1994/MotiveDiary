@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import SignIn from "./pages/user/SignIn";
 import SignUp from "./pages/user/SignUp";
@@ -9,6 +9,7 @@ import "./App.css";
 import CreateChallenge from "./pages/challenge/CreateChallenge";
 import Challenge from "./pages/challenge/Challenge";
 import CreateDay from "./pages/day/CreateDay";
+import Header from "./components/Header";
 
 const App = () => {
   const [session, setSession] = useState(null);
@@ -18,7 +19,15 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <Header />
+              <Home />
+            </>
+          }
+        />
         <Route path="/user/signup" element={<SignUp />} />
         <Route path="/user/signin" element={<SignIn />} />
         <Route path="/mypage" element={<MyPage />} />
@@ -26,6 +35,14 @@ const App = () => {
         <Route path="/challenge/create" element={<CreateChallenge />} />
         <Route path="/challenge/update/:id" element={<UpdateChallenge />} />
         <Route path="/day/create/:id" element={<CreateDay />} />
+        <Route
+          path="/*"
+          element={
+            <div>
+              404 not found<Link to="/">back to home</Link>
+            </div>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
