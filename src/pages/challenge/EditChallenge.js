@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
 import useAuth from "../../common/useAuth";
 
-const UpdateChallenge = () => {
+const EditChallenge = () => {
   const { id } = useParams();
 
   const [formValue, setFormValue] = useState({
@@ -106,4 +106,4 @@ const UpdateChallenge = () => {
   );
 };
 
-export default UpdateChallenge;
+export default EditChallenge;

@@ -56,11 +56,6 @@ const Challenge = () => {
     getDays();
   }, [user]);
 
-  const logout = async () => {
-    const { error } = await supabase.auth.signOut();
-    console.log(error);
-  };
-
   const backHome = () => {
     navigate("/mypage");
   };
@@ -120,7 +115,6 @@ const Challenge = () => {
 
   return (
     <div>
-      <button onClick={logout}>logout</button>
       <p>id: {challenge.user_id}</p>
       <p>days: {challenge.days}</p>
       <h1>title: {challenge.title}</h1>

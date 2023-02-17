@@ -13,6 +13,8 @@ const Header = () => {
   const showNotLoggedIn = () => {
     return (
       <>
+        <Link to={"/"}>Home</Link>
+        <br />
         <Link to={"user/signin"}>Sign In</Link>
         <br />
         <Link to={"user/signup"}>Sign Up</Link>
@@ -22,10 +24,11 @@ const Header = () => {
   };
 
   // ログイン済みの場合はマイページ、ログアウトを表示する
-
   const showLoggedIn = () => {
     return (
       <>
+        <Link to={"/"}>Home</Link>
+        <br />
         <Link to={"/mypage"}>MyPage</Link>
         <br />
         <button onClick={logout}>logout</button>

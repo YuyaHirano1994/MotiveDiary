@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import SignIn from "./pages/user/SignIn";
 import SignUp from "./pages/user/SignUp";
 import MyPage from "./pages/MyPage";
-import UpdateChallenge from "./pages/challenge/UpdateChallenge";
+import EditChallenge from "./pages/challenge/EditChallenge";
 import "./App.css";
 import CreateChallenge from "./pages/challenge/CreateChallenge";
 import Challenge from "./pages/challenge/Challenge";
@@ -33,7 +33,7 @@ const App = () => {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/challenge/:id" element={<Challenge />} />
         <Route path="/challenge/create" element={<CreateChallenge />} />
-        <Route path="/challenge/update/:id" element={<UpdateChallenge />} />
+        <Route path="/challenge/update/:id" element={<EditChallenge />} />
         <Route path="/day/create/:id" element={<CreateDay />} />
         <Route
           path="/*"
