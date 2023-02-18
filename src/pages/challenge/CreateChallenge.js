@@ -50,20 +50,12 @@ const CreateChallenge = () => {
     }
   };
 
-  console.log(formValue);
-
-  const logout = async () => {
-    const { error } = await supabase.auth.signOut();
-    console.log(error);
-  };
-
   const backHome = () => {
     navigate("/");
   };
 
   return (
     <div>
-      <button onClick={logout}>logout</button>
       <h1>Create your new Challenge!</h1>
       <form onSubmit={handleSubmit}>
         <div>

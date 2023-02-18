@@ -18,7 +18,7 @@ const useAuth = () => {
         setUser(data.session.user);
       }
     } catch (error) {
-      alert("Database error");
+      alert("Database connect error");
       console.log(error.error_description || error.message);
       navigate("/");
     }

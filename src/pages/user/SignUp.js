@@ -1,12 +1,17 @@
+import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import supabase from "../../common/supabase";
 
 const SignUp = () => {
   const [formValue, setFormValue] = useState({
+    // nickname: "",
     email: "",
     password1: "",
     password2: "",
   });
+
+  const regex = new RegExp(/^[0-9a-zA-Z]*$/);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -16,16 +21,27 @@ const SignUp = () => {
     });
   };
 
+  const handleChangePassword = (e) => {
+    e.preventDefault();
+    if (regex.test(e.target.value)) {
+      setFormValue({
+        ...formValue,
+        [e.target.name]: e.target.value,
+      });
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (formValue.password1 !== formValue.password2) {
-        alert("Please check your password");
+        alert("Your passwords do no match");
       } else {
         const { data, error } = await supabase.auth.signUp({
           email: formValue.email,
           password: formValue.password1,
         });
+
         if (error) {
           throw error;
         }
@@ -41,24 +57,85 @@ const SignUp = () => {
   console.log(formValue);
 
   return (
-    <div>
-      <h1>SignUp</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>email: </label>
-          <input value={formValue.email} onChange={handleChange} type="text" name="email" required />
-        </div>
-        <div>
-          <label>password: </label>
-          <input value={formValue.password1} onChange={handleChange} ype="text" name="password1" required />
-        </div>
-        <div>
-          <label>confirm password: </label>
-          <input value={formValue.password2} onChange={handleChange} type="text" name="password2" required />
-        </div>
-        <button type="submit">Sing up</button>
-      </form>
-    </div>
+    <Container component="main" maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h3" align="center">
+          Sign Up
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {/* <TextField
+            value={formValue.nickname}
+            onChange={handleChange}
+            margin="normal"
+            required
+            fullWidth
+            id="nickname"
+            label="Nickname"
+            name="nickname"
+            autoComplete="nickname"
+            autoFocus
+          /> */}
+          <TextField
+            value={formValue.email}
+            onChange={handleChange}
+            margin="normal"
+            required
+            fullWidth
+            id="email"
+            label="Email Address"
+            name="email"
+            autoComplete="email"
+            autoFocus
+          />
+          <TextField
+            value={formValue.password1}
+            onChange={handleChangePassword}
+            margin="normal"
+            required
+            fullWidth
+            name="password1"
+            label="Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <TextField
+            value={formValue.password2}
+            onChange={handleChangePassword}
+            margin="normal"
+            required
+            fullWidth
+            name="password2"
+            label="Confirm Password"
+            type="password"
+            id="password"
+            autoComplete="current-password"
+          />
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            Sign Up
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                Forgot password?
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link to={"/user/signin"} variant="body2">
+                {"Already have an account? Log in"}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 

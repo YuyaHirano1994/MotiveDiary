@@ -132,6 +132,9 @@ const Challenge = () => {
             <p>Date: {day.date}</p>
             {/* <p>days: {day}</p> */}
             <h1>content: {day.content}</h1>
+            <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
+              Edit Day
+            </Link>
           </li>
         ))}
       </ul>

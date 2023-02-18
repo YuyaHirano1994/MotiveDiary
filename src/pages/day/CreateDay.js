@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import supabase from "../../common/supabase";
 import useAuth from "../../common/useAuth";
 
@@ -99,24 +99,12 @@ const CreateDay = () => {
     }
   };
 
-  const logout = async () => {
-    const { error } = await supabase.auth.signOut();
-    console.log(error);
-  };
-
   const backHome = () => {
     navigate("/mypage");
   };
 
-  const fn = () => {
-    console.log(id);
-  };
-
   return (
     <div>
-      <button onClick={logout}>logout</button>
-
-      <button onClick={fn}>check</button>
       <h1>Add day challenge</h1>
       <h2>You've already done {day} days!!</h2>
       <h3>You can add Day {day + 1} </h3>
