@@ -15,6 +15,7 @@ const CreateDay = () => {
     challenge_id: "",
     user_id: "",
     date: "",
+    day: 0,
     content: "",
     created_at: "",
     updated_at: "",
@@ -22,7 +23,7 @@ const CreateDay = () => {
 
   const [days, setDays] = useState([]);
 
-  const [day, setDay] = useState("");
+  // const [day, setDay] = useState("");
 
   // dayデータ取得
   const getDays = async () => {
@@ -33,8 +34,8 @@ const CreateDay = () => {
         .eq("challenge_id", id, "user_id", user.id)
         .order("date", { ascending: false });
 
-      console.log(data.length); //２件あれば２日目までのデータが実質登録されていることになる
-      setDay(data.length);
+      // console.log(data.length); //２件あれば２日目までのデータが実質登録されていることになる
+      // setDay(data.length);
       setDays(data);
     } catch (error) {}
   };
@@ -82,6 +83,7 @@ const CreateDay = () => {
             challenge_id: id,
             user_id: user.id,
             date: formValue.date,
+            day: formValue.day + 1,
             content: formValue.content,
           },
         ])
@@ -106,8 +108,8 @@ const CreateDay = () => {
   return (
     <div>
       <h1>Add day challenge</h1>
-      <h2>You've already done {day} days!!</h2>
-      <h3>You can add Day {day + 1} </h3>
+      <h2>You've already done {formValue.day} days!!</h2>
+      <h3>You can add Day {formValue.day + 1} </h3>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Date:</label>

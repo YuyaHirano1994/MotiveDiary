@@ -33,22 +33,6 @@ const EditDay = () => {
     } catch (error) {}
   };
 
-  //入力された値で登録処理を行う
-
-  // const getChallenge = async () => {
-  //   try {
-  //     const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id, "user_id", user.id);
-  //     if (error) {
-  //       throw error;
-  //     }
-  //     console.log("Data fetch Success");
-  //     setFormValue({ ...formValue, ...data[0] });
-  //   } catch (error) {
-  //     alert("Database error");
-  //     console.log(error.error_description || error.message);
-  //   }
-  // };
-
   useEffect(() => {
     // getChallenge();
     getDay();

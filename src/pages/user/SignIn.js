@@ -43,7 +43,7 @@ const SignIn = () => {
         throw error;
       }
       console.log(data);
-      navigate("/");
+      navigate("/mypage");
     } catch (error) {
       alert("Something error. Please re-try");
       console.log(error.error_description || error.message);

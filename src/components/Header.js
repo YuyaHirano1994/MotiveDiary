@@ -114,7 +114,7 @@ const Header = () => {
                   <ListItemIcon>
                     <Settings fontSize="small" />
                   </ListItemIcon>
-                  Settings
+                  <Link to={"/mypage/setting"}>Settings</Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                   <ListItemIcon>

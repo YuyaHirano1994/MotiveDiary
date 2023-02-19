@@ -33,6 +33,8 @@ const MyPage = () => {
       <Link to={"/challenge/create"}>Create</Link>
       <br />
       <Link to={"/"}>BACK</Link>
+      <br />
+      <Link to={"/mypage/setting"}>setting</Link>
       <ul>
         {challenges.map((challenge) => (
           <li className="challenge" key={challenge.challenge_id}>

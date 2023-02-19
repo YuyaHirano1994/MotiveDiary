@@ -26,8 +26,7 @@ const App = () => {
         <Route path="/user/signup" element={<SignUp />} />
         <Route path="/user/signin" element={<SignIn />} />
         <Route path="/mypage" element={<MyPage />} />
-        {/* setting pageはユーザーテーブルと同時にProfileテーブルが作成できるようになったら対応する */}
-        <Route path="/setting" element={<Setting />} />
+        <Route path="/mypage/setting" element={<Setting />} />
         <Route path="/challenge/:id" element={<Challenge />} />
         <Route path="/challenge/create" element={<CreateChallenge />} />
         <Route path="/challenge/update/:id" element={<EditChallenge />} />

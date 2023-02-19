@@ -21,7 +21,7 @@ const Home = () => {
   useEffect(() => {
     const getAllChallenges = async () => {
       try {
-        const { data, error } = await supabase.from("challenge").select("*");
+        const { data, error } = await supabase.from("home_challenge").select("*");
         if (error) {
           throw error;
         }
@@ -35,6 +35,15 @@ const Home = () => {
     };
     getAllChallenges();
   }, []);
+
+  const editDesc = (desc) => {
+    if (desc.length >= 40) {
+      const newDesc = desc.substr(0, 40) + "...";
+      return newDesc;
+    } else {
+      return desc;
+    }
+  };
 
   return (
     <Box container>
@@ -58,10 +67,13 @@ const Home = () => {
                     />
                     <CardContent>
                       <Typography gutterBottom variant="h5" component="div">
+                        days: {challenge.day ? challenge.day : 0} / {challenge.days}
+                      </Typography>
+                      <Typography gutterBottom variant="h5" component="div">
                         {challenge.title}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
-                        {challenge.desc}
+                        {editDesc(challenge.desc)}
                       </Typography>
                       <Typography variant="body2" color="text.secondary">
                         {challenge.start_date} ~ {challenge.end_date}
@@ -73,8 +85,6 @@ const Home = () => {
                         <Link to={"/challenge/" + challenge.challenge_id}>More Detail</Link>
                       </Button>
                     </CardActions>
-                    <p>id: {challenge.user_id}</p>
-                    <p>days: {challenge.days}</p>
                   </Card>
                 </Grid>
               ))}
