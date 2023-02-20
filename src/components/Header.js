@@ -52,7 +52,7 @@ const Header = () => {
           {user.id ? (
             <>
               <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
-                <Link to={"/"} style={{ textDecoration: "none" }}>
+                <Link to={"/home"} style={{ textDecoration: "none" }}>
                   <ImportContactsSharpIcon />
                 </Link>
                 <div style={{ flexGrow: 1 }}></div>

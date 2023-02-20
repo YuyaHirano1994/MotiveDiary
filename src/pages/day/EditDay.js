@@ -27,8 +27,7 @@ const EditDay = () => {
       const { data, error } = await supabase
         .from("day")
         .select("*")
-        .eq("day_id", day_id, "challenge_id", id, "user_id", user.id)
-        .order("date", { ascending: false });
+        .eq("day_id", day_id, "challenge_id", id, "user_id", user.id);
       setFormValue({ ...formValue, ...data[0] });
     } catch (error) {}
   };

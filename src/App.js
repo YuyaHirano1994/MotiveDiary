@@ -22,7 +22,7 @@ const App = () => {
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/user/signup" element={<SignUp />} />
         <Route path="/user/signin" element={<SignIn />} />
         <Route path="/mypage" element={<MyPage />} />
@@ -36,7 +36,7 @@ const App = () => {
           path="/*"
           element={
             <div>
-              404 not found!<Link to="/">back to home</Link>
+              404 not found!<Link to="/home">back to home</Link>
             </div>
           }
         />

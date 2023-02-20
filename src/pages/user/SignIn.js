@@ -62,7 +62,7 @@ const SignIn = () => {
           alignItems: "center",
         }}
       >
-        <Link to={"/"}>
+        <Link to={"/home"}>
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <AccountCircleIcon />
           </Avatar>

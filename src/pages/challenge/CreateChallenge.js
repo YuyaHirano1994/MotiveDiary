@@ -51,7 +51,7 @@ const CreateChallenge = () => {
   };
 
   const backHome = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   return (
