@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
-import useAuth from "../../common/useAuth";
+import SessionLoader from "../../common/SessionLoader";
+import { sessionState } from "../../atom/sessionAtom";
+import { useRecoilState } from "recoil";
 
 const EditChallenge = () => {
   const { id } = useParams();
+  const [session, setSession] = useRecoilState(sessionState);
+  const user = session.session?.user || null;
 
   const [formValue, setFormValue] = useState({
     challenge_id: "",
@@ -18,7 +22,6 @@ const EditChallenge = () => {
   });
 
   const navigate = useNavigate();
-  const user = useAuth();
 
   const getChallenge = async () => {
     try {

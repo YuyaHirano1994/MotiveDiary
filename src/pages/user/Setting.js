@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import supabase from "../../common/supabase";
-import useAuth from "../../common/useAuth";
+import { useRecoilState } from "recoil";
+import { sessionState } from "../../atom/sessionAtom";
 
 const Setting = () => {
   const navigate = useNavigate();
-  const user = useAuth();
+  const [session, setSession] = useRecoilState(sessionState);
+  const user = session.session?.user || null;
 
   const [formValue, setFormValue] = useState({
     nickname: "",

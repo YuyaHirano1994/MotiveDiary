@@ -1,8 +1,9 @@
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import supabase from "../common/supabase";
-import useAuth from "../common/useAuth";
+import { sessionState } from "../atom/sessionAtom";
 
 const styles = {
   paperContainer: {
@@ -17,15 +18,13 @@ const styles = {
 
 const MyPage = () => {
   const [challenges, setChallenges] = useState([]);
-  // const [user, setUser] = useState({});
-
-  const user = useAuth();
+  const [session, setSession] = useRecoilState(sessionState);
+  const user = session.session?.user || null;
 
   useEffect(() => {
     const getYourChallenges = async () => {
       try {
-        console.log(user.id);
-        const { data, error } = await supabase.from("challenge").select("*").eq("user_id", user.id);
+        const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", user.id);
         if (error) {
           throw error;
         }
@@ -36,7 +35,7 @@ const MyPage = () => {
       }
     };
     getYourChallenges();
-  }, [user]);
+  }, []);
 
   const editDesc = (desc) => {
     if (desc.length >= 40) {
@@ -59,7 +58,7 @@ const MyPage = () => {
           <Grid item xs={12}>
             <Grid container justifyContent="center" spacing={12}>
               {challenges.map((challenge) => (
-                <Grid item xs={12} display="flex" justifyContent="center">
+                <Grid item xs={12} display="flex" justifyContent="center" key={challenge.challenge_id}>
                   <Card sx={{ maxWidth: 400, height: 408 }} style={{ width: "400px" }}>
                     <CardMedia
                       component="img"
@@ -94,6 +93,11 @@ const MyPage = () => {
           </Grid>
         </Grid>
       </Box>
+      <Link to={"/challenge/create"}>Create</Link>
+      <br />
+      <Link to={"/home"}>BACK</Link>
+      <br />
+      <Link to={"/mypage/setting"}>setting</Link>
     </Box>
 
     // <div>

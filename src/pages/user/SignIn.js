@@ -3,12 +3,18 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
+import { useRecoilState } from "recoil";
+import { sessionState } from "../../atom/sessionAtom";
 
 const SignIn = () => {
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
   });
+  const [isPassError, setIsPassError] = useState(false);
+  const [session, setSession] = useRecoilState(sessionState);
+
+  // const auth = SessionLoader();
 
   const navigate = useNavigate();
 
@@ -43,14 +49,15 @@ const SignIn = () => {
         throw error;
       }
       console.log(data);
+      setSession(data);
+      alert("ログインしました");
       navigate("/mypage");
     } catch (error) {
       alert("Something error. Please re-try");
+      setIsPassError(true);
       console.log(error.error_description || error.message);
     }
   };
-
-  console.log(formValue);
 
   return (
     <Container component="main" maxWidth="xs">
@@ -78,9 +85,11 @@ const SignIn = () => {
             margin="normal"
             required
             fullWidth
-            id="email"
-            label="Email Address"
             name="email"
+            label="Email Address"
+            type="text"
+            id="email"
+            error={isPassError}
             autoComplete="email"
             autoFocus
           />
@@ -94,6 +103,7 @@ const SignIn = () => {
             label="Password"
             type="password"
             id="password"
+            error={isPassError}
             autoComplete="current-password"
           />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>

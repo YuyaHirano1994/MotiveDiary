@@ -1,4 +1,4 @@
-import { Logout, PersonAdd, Settings } from "@mui/icons-material";
+import { Logout, Settings } from "@mui/icons-material";
 import {
   AppBar,
   Avatar,
@@ -16,11 +16,14 @@ import React from "react";
 import ImportContactsSharpIcon from "@mui/icons-material/ImportContactsSharp";
 import { useNavigate, Link } from "react-router-dom";
 import supabase from "../common/supabase";
-import useAuth from "../common/useAuth";
+import { useRecoilState } from "recoil";
+import { sessionState } from "../atom/sessionAtom";
 
 const Header = () => {
   const navigate = useNavigate();
-  const user = useAuth();
+  const [session, setSession] = useRecoilState(sessionState);
+  const user = session?.session?.user || null;
+  console.log(user);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -34,11 +37,10 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  console.log(user.id);
-
-  const logout = async () => {
+  const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     console.log(error);
+    setSession({});
     navigate("/user/signin");
   };
 
@@ -46,10 +48,7 @@ const Header = () => {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
-          {/* <header>
-            <div>{user.id ? showLoggedIn() : showNotLoggedIn()}</div>
-          </header> */}
-          {user.id ? (
+          {user?.id ? (
             <>
               <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
                 <Link to={"/home"} style={{ textDecoration: "none" }}>
@@ -120,16 +119,22 @@ const Header = () => {
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>
-                  <Box onClick={logout}>Sign out</Box>
+                  <Box onClick={signOut}>Sign out</Box>
                 </MenuItem>
               </Menu>
             </>
           ) : (
-            <Typography variant="h5" align="right">
+            <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
+              <Typography variant="h5" align="right">
+                <Link to={"/home"} style={{ textDecoration: "none" }}>
+                  <ImportContactsSharpIcon />
+                </Link>
+              </Typography>
+              <div style={{ flexGrow: 1 }}></div>
               <Button variant="outlined">
                 <Link to={"user/signin"}>Sign In</Link>
               </Button>
-            </Typography>
+            </Box>
           )}
         </AppBar>
       </Box>

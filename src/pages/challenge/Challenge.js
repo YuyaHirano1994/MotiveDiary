@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import supabase from "../../common/supabase";
-import useAuth from "../../common/useAuth";
+import SessionLoader from "../../common/SessionLoader";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
+import { sessionState } from "../../atom/sessionAtom";
+import { useRecoilState } from "recoil";
 
 const Challenge = () => {
   const { id } = useParams();
@@ -21,7 +23,8 @@ const Challenge = () => {
   const [days, setDays] = useState([]);
 
   const navigate = useNavigate();
-  const user = useAuth();
+  const [session, setSession] = useRecoilState(sessionState);
+  const user = session.session?.user || null;
 
   const getChallenge = async () => {
     try {
@@ -132,9 +135,13 @@ const Challenge = () => {
             <p>Date: {day.date}</p>
             {/* <p>days: {day}</p> */}
             <h1>content: {day.content}</h1>
-            <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
-              Edit Day
-            </Link>
+            {user.id === challenge.user_id ? (
+              <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
+                Edit Day
+              </Link>
+            ) : (
+              <></>
+            )}
           </li>
         ))}
       </ul>

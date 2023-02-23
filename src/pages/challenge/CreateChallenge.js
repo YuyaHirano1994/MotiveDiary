@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
-import useAuth from "../../common/useAuth";
+import SessionLoader from "../../common/SessionLoader";
+import { sessionState } from "../../atom/sessionAtom";
+import { useRecoilState } from "recoil";
 
 const CreateChallenge = () => {
   const [formValue, setFormValue] = useState({
@@ -16,7 +18,8 @@ const CreateChallenge = () => {
   });
 
   const navigate = useNavigate();
-  const user = useAuth();
+  const [session, setSession] = useRecoilState(sessionState);
+  const user = session.session?.user || null;
 
   const handleChange = (e) => {
     e.preventDefault();

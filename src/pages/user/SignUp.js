@@ -1,15 +1,20 @@
 import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
+import { useRecoilState } from "recoil";
+import { sessionState } from "../../atom/sessionAtom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [formValue, setFormValue] = useState({
     // nickname: "",
     email: "",
     password1: "",
     password2: "",
   });
+
+  const [session, setSession] = useRecoilState(sessionState);
 
   const regex = new RegExp(/^[0-9a-zA-Z]*$/);
 
@@ -45,8 +50,10 @@ const SignUp = () => {
         if (error) {
           throw error;
         }
-        console.log(data);
+        setSession(data);
         alert("Create Success");
+
+        navigate("/mypage");
       }
     } catch (error) {
       alert("Create Failed");

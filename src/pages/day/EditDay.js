@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
-import useAuth from "../../common/useAuth";
+import SessionLoader from "../../common/SessionLoader";
+import { sessionState } from "../../atom/sessionAtom";
+import { useRecoilState } from "recoil";
 
 const EditDay = () => {
   const { id, day_id } = useParams();
   const navigate = useNavigate();
-  const user = useAuth();
-
-  console.log(id);
-  console.log(day_id);
+  const [session, setSession] = useRecoilState(sessionState);
+  const user = session.session?.user || null;
 
   const [formValue, setFormValue] = useState({
     day_id: "",

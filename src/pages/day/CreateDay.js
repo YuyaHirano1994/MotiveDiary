@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import supabase from "../../common/supabase";
-import useAuth from "../../common/useAuth";
+import { useRecoilState } from "recoil";
+import { sessionState } from "../../atom/sessionAtom";
 
 const CreateDay = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const user = useAuth();
-
-  console.log(id);
+  const [session, setSession] = useRecoilState(sessionState);
+  const user = session.session?.user || null;
 
   const [formValue, setFormValue] = useState({
     day_id: "",
@@ -23,7 +23,7 @@ const CreateDay = () => {
 
   const [days, setDays] = useState([]);
 
-  // const [day, setDay] = useState("");
+  const [maxDay, setMaxDay] = useState("");
 
   // dayデータ取得
   const getDays = async () => {
@@ -35,7 +35,7 @@ const CreateDay = () => {
         .order("date", { ascending: false });
 
       // console.log(data.length); //２件あれば２日目までのデータが実質登録されていることになる
-      // setDay(data.length);
+      setMaxDay(data.length);
       setDays(data);
     } catch (error) {}
   };
@@ -83,7 +83,7 @@ const CreateDay = () => {
             challenge_id: id,
             user_id: user.id,
             date: formValue.date,
-            day: formValue.day + 1,
+            day: maxDay + 1,
             content: formValue.content,
           },
         ])
@@ -91,7 +91,7 @@ const CreateDay = () => {
       if (error) {
         throw error;
       }
-      alert("Update your challenge Success");
+      alert("Create your challenge Success");
       setFormValue({ ...formValue, date: "", content: "" });
       getDays();
       navigate(`/day/create/${id}`);
@@ -108,8 +108,8 @@ const CreateDay = () => {
   return (
     <div>
       <h1>Add day challenge</h1>
-      <h2>You've already done {formValue.day} days!!</h2>
-      <h3>You can add Day {formValue.day + 1} </h3>
+      <h2>You've already done {maxDay} days!!</h2>
+      <h3>You can add Day {maxDay + 1} </h3>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Date:</label>

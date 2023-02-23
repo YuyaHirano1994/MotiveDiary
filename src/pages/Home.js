@@ -57,7 +57,7 @@ const Home = () => {
           <Grid item xs={12}>
             <Grid container justifyContent="center" spacing={12}>
               {challenges.map((challenge) => (
-                <Grid item xs={12} sm={4} md={4}>
+                <Grid item xs={12} sm={4} md={4} key={challenge.challenge_id}>
                   <Card sx={{ maxWidth: 400, height: 408 }}>
                     <CardMedia
                       component="img"
