@@ -28,7 +28,7 @@ const Challenge = () => {
 
   const getChallenge = async () => {
     try {
-      const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id, "user_id", user.id);
+      const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id);
       if (error) {
         throw error;
       }
@@ -46,7 +46,7 @@ const Challenge = () => {
       const { data, error } = await supabase
         .from("day")
         .select("*")
-        .eq("challenge_id", id, "user_id", user.id)
+        .eq("challenge_id", id)
         .order("date", { ascending: false });
 
       console.log(data.length); //２件あれば２日目までのデータが実質登録されていることになる
@@ -60,7 +60,7 @@ const Challenge = () => {
   }, [user]);
 
   const backHome = () => {
-    navigate("/mypage");
+    navigate(-1);
   };
 
   const handleDelete = async () => {
@@ -97,7 +97,7 @@ const Challenge = () => {
   };
 
   const checkUser = () => {
-    if (user.id === challenge.user_id) {
+    if (user?.id === challenge.user_id) {
       return (
         <>
           <Link to={"/challenge/update/" + challenge.challenge_id} className="button">
@@ -135,7 +135,7 @@ const Challenge = () => {
             <p>Date: {day.date}</p>
             {/* <p>days: {day}</p> */}
             <h1>content: {day.content}</h1>
-            {user.id === challenge.user_id ? (
+            {user?.id === challenge.user_id ? (
               <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
                 Edit Day
               </Link>

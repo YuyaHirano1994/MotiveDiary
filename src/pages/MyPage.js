@@ -37,6 +37,18 @@ const MyPage = () => {
     getYourChallenges();
   }, []);
 
+  const [avatar, setAvatar] = useState();
+
+  const getAvatar = async () => {
+    let filePath =
+      "https://hgalljuhvutaihbgjdaz.supabase.co/storage/v1/object/sign/avatars/pexels-trinity-kubassek-288621.jpg?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJhdmF0YXJzL3BleGVscy10cmluaXR5LWt1YmFzc2VrLTI4ODYyMS5qcGciLCJpYXQiOjE2NzcxMjY5MTksImV4cCI6MTY3NzEzMDUxOX0.OaU8rY9HwBvHQfbptKtt80zxpB5BwcheApH2yjNE4ww&t=2023-02-23T04%3A35%3A19.799Z";
+    const { data } = await supabase.storage.from("avatars").getPublicUrl("pexels-trinity-kubassek-288621.jpg");
+    console.log(data);
+    const imageUrl = data.publicUrl;
+    console.log(imageUrl);
+    setAvatar(imageUrl);
+  };
+
   const editDesc = (desc) => {
     if (desc.length >= 40) {
       const newDesc = desc.substr(0, 40) + "...";
@@ -48,6 +60,8 @@ const MyPage = () => {
 
   return (
     <Box container>
+      <button onClick={getAvatar}>getAvatar</button>
+      <img src={avatar} alt="sample"></img>
       <Paper style={styles.paperContainer}>
         <Typography variant="h3" align="center" style={{ paddingTop: `10px`, color: `white` }}>
           MyPage
