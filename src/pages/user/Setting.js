@@ -9,11 +9,7 @@ const Setting = () => {
   const [session, setSession] = useRecoilState(sessionState);
   const user = session.session?.user || null;
 
-  const [formValue, setFormValue] = useState({
-    nickname: "",
-    avatar_url: "",
-    comment: "",
-  });
+  const [formValue, setFormValue] = useState({});
 
   const [avatar, setAvatar] = useState({
     file: "",
@@ -21,24 +17,41 @@ const Setting = () => {
     filename: "",
   });
 
+  console.log(formValue);
+
   const getProfile = async () => {
     try {
       console.log(user.id);
 
-      const { data, error } = await supabase
-        .from("profile")
-        .select("nickname", "avatar_url", "comment")
-        .eq("user_id", user.id);
+      const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
 
       console.log(data);
+
+      let filePath = data[0].avatar_url;
+      console.log(filePath);
+      const { data1 } = await supabase.storage.from("avatars").getPublicUrl(filePath);
+
+      console.log(data1);
+
       setFormValue({ ...formValue, ...data[0] });
     } catch (error) {
       console.log(error);
     }
   };
 
+  const getAvatar = async () => {
+    let filePath = formValue.avatar_url;
+    console.log(filePath);
+    const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
+    console.log(data);
+    const imageUrl = data.publicUrl;
+    console.log(imageUrl);
+    // setAvatar(imageUrl);
+  };
+
   useEffect(() => {
     getProfile();
+    getAvatar();
   }, [user]);
 
   const handleChange = (e) => {
@@ -51,13 +64,20 @@ const Setting = () => {
 
   const handleImageChange = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
+    console.log("target");
+    console.log(e.target.files);
     try {
+      if (e.target.files.length === 0) {
+        console.log("cancel event");
+        return;
+      }
       const file = e.target.files[0];
       const file_name = file.name;
       const file_url = URL.createObjectURL(file);
       console.log(file_url);
+      console.log(file_name);
       setAvatar({ ...avatar, file: file, filepath: file_url, filename: file_name });
+      setFormValue({ ...formValue, avatar_url: file_name });
     } catch (error) {
       console.log(error);
 
@@ -106,7 +126,8 @@ const Setting = () => {
   };
 
   const backHome = () => {
-    navigate("/mypage");
+    // navigate("/mypage");
+    console.log(formValue);
   };
 
   return (
