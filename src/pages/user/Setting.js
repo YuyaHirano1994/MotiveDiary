@@ -10,28 +10,22 @@ const Setting = () => {
   const user = session.session?.user || null;
 
   const [formValue, setFormValue] = useState({});
-
+  const [imageSrc, setImageSrc] = useState();
   const [avatar, setAvatar] = useState({
     file: "",
     filepath: "",
     filename: "",
   });
 
-  console.log(formValue);
+  console.log(avatar);
 
   const getProfile = async () => {
     try {
-      console.log(user.id);
-
       const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
 
-      console.log(data);
-
-      let filePath = data[0].avatar_url;
-      console.log(filePath);
-      const { data1 } = await supabase.storage.from("avatars").getPublicUrl(filePath);
-
-      console.log(data1);
+      if (error) {
+        throw error;
+      }
 
       setFormValue({ ...formValue, ...data[0] });
     } catch (error) {
@@ -43,16 +37,17 @@ const Setting = () => {
     let filePath = formValue.avatar_url;
     console.log(filePath);
     const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
-    console.log(data);
     const imageUrl = data.publicUrl;
-    console.log(imageUrl);
-    // setAvatar(imageUrl);
+    setImageSrc(imageUrl);
   };
 
   useEffect(() => {
     getProfile();
+  }, []);
+
+  useEffect(() => {
     getAvatar();
-  }, [user]);
+  }, [formValue]);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -71,6 +66,10 @@ const Setting = () => {
         console.log("cancel event");
         return;
       }
+
+      // ファイルネームはUserName＋なにかにしていればいいんじゃないか？
+      // そしてファイルは常に上書きすればいいのでは？
+      // avatar_yrlには保存した画像のURLを保存するのが一番はやい！！！
       const file = e.target.files[0];
       const file_name = file.name;
       const file_url = URL.createObjectURL(file);
@@ -78,6 +77,7 @@ const Setting = () => {
       console.log(file_name);
       setAvatar({ ...avatar, file: file, filepath: file_url, filename: file_name });
       setFormValue({ ...formValue, avatar_url: file_name });
+      setImageSrc(file_url);
     } catch (error) {
       console.log(error);
 
@@ -126,15 +126,14 @@ const Setting = () => {
   };
 
   const backHome = () => {
-    // navigate("/mypage");
-    console.log(formValue);
+    navigate("/mypage");
   };
 
   return (
     <div>
       <h1>Settings</h1>
       <div>
-        <img src={avatar.filepath} alt="sample" width="250" height="250"></img>
+        <img src={avatar.filepath ? avatar.filepath : imageSrc} alt="sample" width="250" height="250"></img>
       </div>
       <form onSubmit={handleSubmit}>
         <label>Nickname:</label>

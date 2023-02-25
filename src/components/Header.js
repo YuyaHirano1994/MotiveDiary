@@ -12,7 +12,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ImportContactsSharpIcon from "@mui/icons-material/ImportContactsSharp";
 import { useNavigate, Link } from "react-router-dom";
 import supabase from "../common/supabase";
@@ -23,9 +23,43 @@ const Header = () => {
   const navigate = useNavigate();
   const [session, setSession] = useRecoilState(sessionState);
   const user = session?.session?.user || null;
-  console.log(user);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [profile, setProfile] = useState({});
+  const [imageSrc, setImageSrc] = useState();
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  console.log("reading header");
+
+  const getProfile = async () => {
+    console.log("reading getProfile");
+    try {
+      const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
+      setProfile({ ...profile, ...data[0] });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAvatar = async () => {
+    console.log("reading getAvatar");
+    try {
+      let filePath = profile.avatar_url;
+      const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
+      const imageUrl = data.publicUrl;
+      console.log(imageUrl);
+      setImageSrc(imageUrl);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("reading effect on header");
+    getProfile();
+    getAvatar();
+  }, []);
+
+  // useEffect(() => {
+  // }, [profile]);
 
   const open = Boolean(anchorEl);
 
@@ -56,7 +90,6 @@ const Header = () => {
                 </Link>
                 <div style={{ flexGrow: 1 }}></div>
                 <Typography sx={{ minWidth: 100 }}>About</Typography>
-                {/* <Typography sx={{ minWidth: 100 }}>Profile</Typography> */}
                 <Tooltip title="Profile">
                   <IconButton
                     onClick={handleClick}
@@ -66,7 +99,7 @@ const Header = () => {
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                   >
-                    <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                    <Avatar sx={{ width: 32, height: 32 }} src={imageSrc} />
                   </IconButton>
                 </Tooltip>
               </Box>
