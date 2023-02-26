@@ -18,48 +18,13 @@ import { useNavigate, Link } from "react-router-dom";
 import supabase from "../common/supabase";
 import { useRecoilState } from "recoil";
 import { sessionState } from "../atom/sessionAtom";
+import { BsFillJournalBookmarkFill } from "react-icons/bs";
 
 const Header = () => {
   const navigate = useNavigate();
   const [session, setSession] = useRecoilState(sessionState);
   const user = session?.session?.user || null;
   const [anchorEl, setAnchorEl] = useState(null);
-  const [profile, setProfile] = useState({});
-  const [imageSrc, setImageSrc] = useState();
-
-  console.log("reading header");
-
-  const getProfile = async () => {
-    console.log("reading getProfile");
-    try {
-      const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
-      setProfile({ ...profile, ...data[0] });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getAvatar = async () => {
-    console.log("reading getAvatar");
-    try {
-      let filePath = profile.avatar_url;
-      const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
-      const imageUrl = data.publicUrl;
-      console.log(imageUrl);
-      setImageSrc(imageUrl);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    console.log("reading effect on header");
-    getProfile();
-    getAvatar();
-  }, []);
-
-  // useEffect(() => {
-  // }, [profile]);
 
   const open = Boolean(anchorEl);
 
@@ -86,7 +51,7 @@ const Header = () => {
             <>
               <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
                 <Link to={"/home"} style={{ textDecoration: "none" }}>
-                  <ImportContactsSharpIcon />
+                  <BsFillJournalBookmarkFill size={32} style={{ margin: "10px" }} />
                 </Link>
                 <div style={{ flexGrow: 1 }}></div>
                 <Typography sx={{ minWidth: 100 }}>About</Typography>
@@ -99,7 +64,7 @@ const Header = () => {
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                   >
-                    <Avatar sx={{ width: 32, height: 32 }} src={imageSrc} />
+                    <Avatar sx={{ width: 32, height: 32 }} />
                   </IconButton>
                 </Tooltip>
               </Box>

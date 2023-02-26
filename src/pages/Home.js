@@ -3,10 +3,11 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../common/supabase";
+import topImage from "../image/library.jpg";
 
 const styles = {
   paperContainer: {
-    backgroundImage: `url("https://source.unsplash.com/random/")`,
+    backgroundImage: `url(${topImage})`,
     backgroundSize: `cover`,
     width: `100%`,
     height: `300px`,

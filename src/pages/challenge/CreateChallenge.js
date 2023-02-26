@@ -4,11 +4,14 @@ import supabase from "../../common/supabase";
 import SessionLoader from "../../common/SessionLoader";
 import { sessionState } from "../../atom/sessionAtom";
 import { useRecoilState } from "recoil";
+import { InputLabel, MenuItem, Select } from "@mui/material";
+import Challenge from "./Challenge";
 
 const CreateChallenge = () => {
   const [formValue, setFormValue] = useState({
     challenge_id: "",
     title: "",
+    category: "",
     days: 0,
     desc: "",
     start_date: "",
@@ -37,6 +40,7 @@ const CreateChallenge = () => {
         {
           user_id: user.id,
           title: formValue.title,
+          category: formValue.category,
           days: formValue.days,
           desc: formValue.desc,
           start_date: formValue.start_date,
@@ -65,6 +69,20 @@ const CreateChallenge = () => {
           <label>What is your Challenge?</label>
           <input value={formValue.title} onChange={handleChange} type="text" name="title" required />
         </div>
+        <InputLabel id="category-label">category</InputLabel>
+        <Select
+          labelId="category-label"
+          id="demo-simple-select"
+          name="category"
+          value={formValue.category}
+          label="Age"
+          onChange={handleChange}
+        >
+          <MenuItem value={"React"}>React</MenuItem>
+          <MenuItem value={"Node"}>NodeJS</MenuItem>
+          <MenuItem value={"English"}>English</MenuItem>
+          <MenuItem value={"Other"}>Other</MenuItem>
+        </Select>
         <div>
           <label>How long would you need? </label>
           <input value={formValue.date} onChange={handleChange} type="number" name="days" required />

@@ -1,10 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import supabase from "../../common/supabase";
-import SessionLoader from "../../common/SessionLoader";
 import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { sessionState } from "../../atom/sessionAtom";
 import { useRecoilState } from "recoil";
+import { Box } from "@mui/system";
+import { Button, Card, CardActions, CardContent, Container, Paper, Typography } from "@mui/material";
+
+const styles = {
+  paperContainer: {
+    backgroundImage: `url("https://source.unsplash.com/random/")`,
+    backgroundSize: `cover`,
+    width: `100%`,
+    height: `150px`,
+    backgroundRepeat: `no-repeat`,
+    textAlign: `center`,
+  },
+};
 
 const Challenge = () => {
   const { id } = useParams();
@@ -12,6 +24,7 @@ const Challenge = () => {
   const [challenge, setChallenge] = useState({
     challenge_id: "",
     title: "",
+    category: "",
     days: 0,
     desc: "",
     start_date: "",
@@ -99,56 +112,110 @@ const Challenge = () => {
   const checkUser = () => {
     if (user?.id === challenge.user_id) {
       return (
-        <>
-          <Link to={"/challenge/update/" + challenge.challenge_id} className="button">
-            <BsFillPencilFill />
+        <Box style={{ textAlign: "right" }}>
+          <Link style={{ paddingLeft: "80px" }} to={"/challenge/update/" + challenge.challenge_id} className="button">
+            <BsFillPencilFill size={32} />
           </Link>
-
-          <Link onClick={handleDelete} className="button">
-            <BsFillTrashFill />
+          <Link style={{ paddingLeft: "20px" }} onClick={handleDelete} className="button">
+            <BsFillTrashFill size={32} />
           </Link>
-
-          <Link to={"/day/create/" + challenge.challenge_id} className="button">
-            New Day Create
-          </Link>
-        </>
+        </Box>
       );
     }
   };
 
   return (
-    <div>
-      <p>id: {challenge.user_id}</p>
-      <p>days: {challenge.days}</p>
-      <h1>title: {challenge.title}</h1>
-      <h3>desc: {challenge.desc}</h3>
-      <h3>start_date: {challenge.start_date}</h3>
-      <h3>end_date: {challenge.end_date}</h3>
-      <p>created_at: {challenge.created_at}</p>
-      <p>updated_at: {challenge.updated_at}</p>
-      {checkUser()}
-      <hr />
-      <ul>
-        {days.map((day) => (
-          <li className="challenge" key={day.day_id}>
-            <p>id: {day.user_id}</p>
-            <p>Date: {day.date}</p>
-            {/* <p>days: {day}</p> */}
-            <h1>content: {day.content}</h1>
-            {user?.id === challenge.user_id ? (
-              <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
-                Edit Day
+    <>
+      {/* <Paper style={styles.paperContainer}></Paper> */}
+      <Container sx={{ width: "100vw", height: "100vh" }}>
+        <Box sx={{ width: "80vw", height: "100vh", margin: "0 auto" }}>
+          <Typography
+            variant="h2"
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingTop: `50px`,
+              paddingLeft: `100px`,
+            }}
+          >
+            {challenge.title}
+          </Typography>
+          <Box>
+            <Box
+              sx={{
+                paddingLeft: `100px`,
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+            >
+              <Typography variant="h5">
+                {challenge.start_date}~{challenge.end_date}
+              </Typography>
+              {checkUser()}
+            </Box>
+          </Box>
+          <hr />
+          <Box sx={{ margin: "30px 30px  0 30px" }}>
+            <Box sx={{ margin: "0 70px" }}>
+              <h3>{challenge.desc}</h3>
+            </Box>
+            <Container sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Box sx={{ marginLeft: "30px", textAlign: "right" }}>
+                <Typography
+                  sx={{
+                    padding: "10px",
+                    display: "inline",
+                    borderRadius: "10px",
+                    backgroundColor: "blue",
+                    color: "white",
+                  }}
+                >
+                  #{challenge.category}
+                </Typography>
+              </Box>
+              <Box sx={{}}>
+                <Typography variant="h4">{challenge.days} Days</Typography>
+              </Box>
+            </Container>
+          </Box>
+          <hr />
+          <Container sx={{}}>
+            <Button variant="outlined">
+              <Link style={{}} to={"/day/create/" + challenge.challenge_id} className="button">
+                Register Day
               </Link>
-            ) : (
-              <></>
-            )}
-          </li>
-        ))}
-      </ul>
-      <hr />
-
-      <button onClick={backHome}>BACK</button>
-    </div>
+            </Button>
+          </Container>
+          <Container>
+            {days.map((day) => (
+              <Card className="challenge" key={day.day_id} sx={{ minHeight: 100 }}>
+                <CardContent>
+                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Typography variant="h5">{day.date}</Typography>
+                    <Typography variant="h5">DAY {day.day}</Typography>
+                  </Box>
+                  <hr />
+                  <Box sx={{ margin: "0 30px" }}>
+                    <Typography sx={{ wordBreak: "break-all" }} variant="body1" gutterBottom>
+                      {day.content}
+                    </Typography>
+                  </Box>
+                  <CardActions sx={{ justifyContent: "right", border: "1px solid red" }}>
+                    {user?.id === challenge.user_id ? (
+                      <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
+                        Edit Day
+                      </Link>
+                    ) : (
+                      <></>
+                    )}
+                  </CardActions>
+                </CardContent>
+              </Card>
+            ))}
+          </Container>
+        </Box>
+      </Container>
+    </>
   );
 };
 

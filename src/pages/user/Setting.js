@@ -47,7 +47,7 @@ const Setting = () => {
 
   useEffect(() => {
     getAvatar();
-  }, [formValue]);
+  }, [formValue, getAvatar]);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -69,7 +69,7 @@ const Setting = () => {
 
       // ファイルネームはUserName＋なにかにしていればいいんじゃないか？
       // そしてファイルは常に上書きすればいいのでは？
-      // avatar_yrlには保存した画像のURLを保存するのが一番はやい！！！
+      // avatar_urlには保存した画像のURLを保存するのが一番はやい！！！
       const file = e.target.files[0];
       const file_name = file.name;
       const file_url = URL.createObjectURL(file);
@@ -80,10 +80,8 @@ const Setting = () => {
       setImageSrc(file_url);
     } catch (error) {
       console.log(error);
-
       alert("error");
     }
-    console.log(e.target.value);
   };
 
   console.log(avatar);
