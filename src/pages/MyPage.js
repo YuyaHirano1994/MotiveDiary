@@ -1,9 +1,10 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, Typography } from "@mui/material";
+import { Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import supabase from "../common/supabase";
 import { sessionState } from "../atom/sessionAtom";
+import { Container } from "@mui/system";
 
 const styles = {
   paperContainer: {
@@ -21,21 +22,52 @@ const MyPage = () => {
   const [session, setSession] = useRecoilState(sessionState);
   const user = session.session?.user || null;
 
-  useEffect(() => {
-    const getYourChallenges = async () => {
-      try {
-        const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", user.id);
-        if (error) {
-          throw error;
-        }
-        console.log("Data fetch Success");
-        setChallenges(data);
-      } catch (error) {
-        console.log(error.error_description || error.message);
+  const getYourChallenges = async () => {
+    try {
+      const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", user.id);
+      if (error) {
+        throw error;
       }
-    };
+      console.log("Data fetch Success");
+      setChallenges(data);
+    } catch (error) {
+      console.log(error.error_description || error.message);
+    }
+  };
+
+  const [profile, setProfile] = useState({});
+  const getProfile = async () => {
+    try {
+      const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
+
+      if (error) {
+        throw error;
+      }
+
+      setProfile({ ...profile, ...data[0] });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [imageSrc, setImageSrc] = useState();
+
+  const getAvatar = async () => {
+    let filePath = profile.avatar_url;
+    console.log(filePath);
+    const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
+    const imageUrl = data.publicUrl;
+    setImageSrc(imageUrl);
+  };
+
+  useEffect(() => {
     getYourChallenges();
+    getProfile();
   }, []);
+
+  useEffect(() => {
+    getAvatar();
+  }, [profile]);
 
   const editDesc = (desc) => {
     if (desc.length >= 40) {
@@ -53,32 +85,69 @@ const MyPage = () => {
           MyPage
         </Typography>
       </Paper>
+      <Container sx={{ display: "flex" }}>
+        <Box sx={{ width: "100%", display: "flex", justifyContent: "space-evenly" }}>
+          <Avatar src={imageSrc} sx={{ width: 120, height: 120, marginTop: "20px" }}></Avatar>
+          <Box sx={{ marginTop: "50px" }}>
+            <Typography variant="h4">{profile.nickname}</Typography>
+          </Box>
+          <Box>
+            <Box sx={{ marginTop: "50px" }}>
+              <Link to={"/challenge/create"} className="link">
+                <Button variant="contained" sx={{ minWidth: 200 }}>
+                  New Challenge
+                </Button>
+              </Link>
+              <Link to={"/home"} className="link">
+                <Button variant="contained" sx={{ marginLeft: "30px", minWidth: 200 }}>
+                  BACK
+                </Button>
+              </Link>
+            </Box>
+            <Box sx={{ marginTop: "10px" }}>
+              <Link to={"/mypage/setting"} className="link">
+                <Button variant="contained" sx={{ minWidth: 200 }}>
+                  Setting
+                </Button>
+              </Link>
+              {/* <Link to={"/home"} className="link">
+                <Button variant="contained" sx={{ marginLeft: "30px", minWidth: 100 }}>
+                  BACK
+                </Button>
+              </Link> */}
+            </Box>
+          </Box>
+        </Box>
+      </Container>
+      <hr />
       <Box style={{ marginTop: "30px", marginRight: "20px", marginLeft: "20px" }}>
         <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-          <Grid item xs={12}>
-            <Grid container justifyContent="center" spacing={12}>
+          <Grid item xs={12} display="flex" align="center">
+            <Grid container display="flex" justifyContent="space-around" spacing={3}>
               {challenges.map((challenge) => (
-                <Grid item xs={12} display="flex" justifyContent="center" key={challenge.challenge_id}>
-                  <Card sx={{ maxWidth: 1200, minWidth: 1000, height: 408 }}>
+                <Grid item xs={12} md={4} key={challenge.challenge_id}>
+                  <Card sx={{ width: 300, height: 308 }}>
                     <CardMedia
                       component="img"
                       alt="green iguana"
-                      height="140"
+                      height="50px"
                       src="https://source.unsplash.com/random/"
                     />
                     <CardContent>
-                      <Typography gutterBottom variant="h5" component="div">
-                        days: {challenge.day ? challenge.day : 0} / {challenge.days}
-                      </Typography>
-                      <Typography gutterBottom variant="h5" component="div">
-                        {challenge.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {editDesc(challenge.desc)}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {challenge.start_date} ~ {challenge.end_date}
-                      </Typography>
+                      <Box align="left">
+                        <Typography gutterBottom variant="h5" component="div">
+                          days: {challenge.day ? challenge.day : 0} / {challenge.days}
+                        </Typography>
+                        <Typography gutterBottom variant="h5" component="div">
+                          {challenge.title}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {editDesc(challenge.desc)}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {challenge.start_date} ~ {challenge.end_date}
+                        </Typography>
+                      </Box>
                     </CardContent>
                     <CardActions>
                       <Button size="small">Share</Button>
@@ -93,11 +162,6 @@ const MyPage = () => {
           </Grid>
         </Grid>
       </Box>
-      <Link to={"/challenge/create"}>Create</Link>
-      <br />
-      <Link to={"/home"}>BACK</Link>
-      <br />
-      <Link to={"/mypage/setting"}>setting</Link>
     </Box>
 
     // <div>

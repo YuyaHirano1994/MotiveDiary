@@ -60,7 +60,7 @@ const Challenge = () => {
         .from("day")
         .select("*")
         .eq("challenge_id", id)
-        .order("date", { ascending: false });
+        .order("day", { ascending: false });
 
       console.log(data.length); //２件あれば２日目までのデータが実質登録されていることになる
       setDays(data);
@@ -126,7 +126,19 @@ const Challenge = () => {
 
   return (
     <>
-      {/* <Paper style={styles.paperContainer}></Paper> */}
+      {/* <Paper style={styles.paperContainer}></Paper> */}{" "}
+      <Box sx={{ display: "flex", margin: "20px", color: "white", justifyContent: "right" }}>
+        {/* <Button variant="contained">
+          <Link to={"/challenge/create"} className="link">
+            Create A New Challenge !
+          </Link>
+        </Button> */}
+        <Link to={"/mypage"} className="link">
+          <Button variant="contained" sx={{ marginLeft: "30px", minWidth: 100 }}>
+            BACK
+          </Button>
+        </Link>
+      </Box>
       <Container sx={{ width: "100vw", height: "100vh" }}>
         <Box sx={{ width: "80vw", height: "100vh", margin: "0 auto" }}>
           <Typography
@@ -200,7 +212,7 @@ const Challenge = () => {
                       {day.content}
                     </Typography>
                   </Box>
-                  <CardActions sx={{ justifyContent: "right", border: "1px solid red" }}>
+                  <CardActions sx={{ justifyContent: "right" }}>
                     {user?.id === challenge.user_id ? (
                       <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
                         Edit Day

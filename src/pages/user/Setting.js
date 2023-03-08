@@ -47,7 +47,7 @@ const Setting = () => {
 
   useEffect(() => {
     getAvatar();
-  }, [formValue, getAvatar]);
+  }, [formValue]);
 
   const handleChange = (e) => {
     e.preventDefault();

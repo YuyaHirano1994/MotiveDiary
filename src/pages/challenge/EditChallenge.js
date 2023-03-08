@@ -4,12 +4,15 @@ import supabase from "../../common/supabase";
 import SessionLoader from "../../common/SessionLoader";
 import { sessionState } from "../../atom/sessionAtom";
 import { useRecoilState } from "recoil";
-import { InputLabel, MenuItem, Select } from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { Box, Container } from "@mui/system";
 
 const EditChallenge = () => {
   const { id } = useParams();
   const [session, setSession] = useRecoilState(sessionState);
   const user = session.session?.user || null;
+  const [showCategory, setShowCategory] = useState("");
+  const [hiddenEl, setHiddenEl] = useState(true);
 
   const [formValue, setFormValue] = useState({
     challenge_id: "",
@@ -39,8 +42,11 @@ const EditChallenge = () => {
     }
   };
 
+  console.log(formValue.category);
+
   useEffect(() => {
     getChallenge();
+    setShowCategory(formValue.category);
   }, []);
 
   const handleChange = (e) => {
@@ -49,6 +55,18 @@ const EditChallenge = () => {
       ...formValue,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleCategoryChange = (e) => {
+    setShowCategory(e.target.value);
+    console.log(e.target.value);
+    if (e.target.value !== "other") {
+      setFormValue({ ...formValue, category: e.target.value });
+      setHiddenEl(true);
+    } else {
+      setFormValue({ ...formValue, category: "" });
+      setHiddenEl(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -88,41 +106,119 @@ const EditChallenge = () => {
     navigate("/mypage");
   };
 
+  const categories = ["HTML", "CSS", "JavaScript", "TypeScript", "PHP"];
+
   return (
-    <div>
-      <button onClick={logout}>logout</button>
-      <h1>Edit your challenge</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>TITLE:</label>
-          <input value={formValue.title} onChange={handleChange} type="text" name="title" required />
-        </div>
-        <InputLabel id="category-label">category</InputLabel>
-        <Select
-          labelId="category-label"
-          id="demo-simple-select"
-          name="category"
-          value={formValue.category}
-          label="Age"
-          onChange={handleChange}
-        >
-          <MenuItem value={"React"}>React</MenuItem>
-          <MenuItem value={"Node"}>NodeJS</MenuItem>
-          <MenuItem value={"English"}>English</MenuItem>
-          <MenuItem value={"Other"}>Other</MenuItem>
-        </Select>
-        <div>
-          <label>DATE: </label>
-          <input value={formValue.days} onChange={handleChange} type="number" name="days" required />
-        </div>
-        <div>
-          <label>How was this day? </label>
-          <textarea value={formValue.desc} onChange={handleChange} ype="text" name="desc" required />
-        </div>
-        <button type="submit">Edit</button>
-        <button onClick={backHome}>BACK</button>
-      </form>
-    </div>
+    <>
+      <Container>
+        <Typography variant="h3" align="center">
+          Edit your Challenge
+        </Typography>
+        <Box sx={{ maxWidth: "500px", margin: "0 auto" }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              value={formValue.title}
+              onChange={handleChange}
+              margin="normal"
+              required
+              fullWidth
+              name="title"
+              label="Title"
+              type="text"
+              id="title"
+              autoComplete="title"
+              autoFocus
+              variant="standard"
+            />
+            <Box display="flex">
+              <FormControl sx={{ m: 1, width: "50%" }}>
+                <InputLabel id="category">category</InputLabel>
+                <Select
+                  labelId="category"
+                  id="category"
+                  name="category"
+                  value={showCategory || formValue.category}
+                  onChange={handleCategoryChange}
+                >
+                  {categories.map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                  <MenuItem value={"other"}>Other</MenuItem>
+                </Select>
+              </FormControl>
+              {hiddenEl ? (
+                <></>
+              ) : (
+                <TextField
+                  value={formValue.category}
+                  onChange={handleChange}
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="category"
+                  label="category"
+                  type="text"
+                  id="category"
+                  autoComplete="category"
+                  autoFocus
+                  variant="standard"
+                  disabled={hiddenEl}
+                  sx={{ width: "50%" }}
+                />
+              )}
+            </Box>
+            <TextField
+              value={formValue.days}
+              onChange={handleChange}
+              margin="normal"
+              required
+              fullWidth
+              name="days"
+              label="How long would you need? "
+              type="number"
+              id="days"
+              autoComplete="days"
+              autoFocus
+              variant="standard"
+            />
+            <TextField
+              value={formValue.desc}
+              onChange={handleChange}
+              multiline
+              rows={6}
+              required
+              fullWidth
+              id="desc"
+              name="desc"
+              label="Description"
+              color="secondary"
+              margin="normal"
+              inputProps={{ maxLength: 1000, style: { fontSize: 14 } }}
+              InputLabelProps={{ style: { fontSize: 14 } }}
+            />
+            <TextField
+              value={formValue.start_date}
+              onChange={handleChange}
+              margin="normal"
+              required
+              fullWidth
+              name="start_date"
+              label="Start Date"
+              type="date"
+              id="start_date"
+              autoComplete="start_date"
+              autoFocus
+              variant="standard"
+            />
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              Add new Challenge
+            </Button>
+          </Box>
+        </Box>
+      </Container>
+    </>
   );
 };
 
