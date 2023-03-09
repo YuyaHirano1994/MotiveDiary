@@ -5,6 +5,11 @@ import { useRecoilState } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 
 const CreateDay = () => {
+  const dt = new Date();
+  var y = dt.getFullYear();
+  var m = ("00" + (dt.getMonth() + 1)).slice(-2);
+  var d = ("00" + dt.getDate()).slice(-2);
+  var today = `${y}-${m}-${d}`;
   const { id } = useParams();
   const navigate = useNavigate();
   const [session, setSession] = useRecoilState(sessionState);
@@ -14,7 +19,7 @@ const CreateDay = () => {
     day_id: "",
     challenge_id: "",
     user_id: "",
-    date: "",
+    date: today,
     day: 0,
     content: "",
     created_at: "",
@@ -71,9 +76,25 @@ const CreateDay = () => {
     });
   };
 
+  console.log();
+
+  const checkInputData = () => {
+    console.log(days[0]?.date);
+    if (days.filter((day) => day.date === formValue.date)) {
+      alert("同じ日付のデータは登録できません");
+      return false;
+    }
+    if (days[0]?.date >= formValue.date) {
+      alert("日付は最新データより未来にしてください");
+      return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!checkInputData()) return; // 登録データのチェックを実施
     const now = new Date();
+
     try {
       console.log("user: " + user.id);
       const { error } = await supabase
@@ -124,10 +145,9 @@ const CreateDay = () => {
         <ul>
           {days.map((day) => (
             <li className="challenge" key={day.day_id}>
-              <p>id: {day.user_id}</p>
               <p>Date: {day.date}</p>
               {/* <p>days: {day}</p> */}
-              <h1>content: {day.content}</h1>
+              <h5>content: {day.content}</h5>
             </li>
           ))}
         </ul>

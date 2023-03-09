@@ -5,18 +5,18 @@ import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { sessionState } from "../../atom/sessionAtom";
 import { useRecoilState } from "recoil";
 import { Box } from "@mui/system";
-import { Button, Card, CardActions, CardContent, Container, Paper, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
 
-const styles = {
-  paperContainer: {
-    backgroundImage: `url("https://source.unsplash.com/random/")`,
-    backgroundSize: `cover`,
-    width: `100%`,
-    height: `150px`,
-    backgroundRepeat: `no-repeat`,
-    textAlign: `center`,
-  },
-};
+// const styles = {
+//   paperContainer: {
+//     backgroundImage: `url("https://source.unsplash.com/random/")`,
+//     backgroundSize: `cover`,
+//     width: `100%`,
+//     height: `150px`,
+//     backgroundRepeat: `no-repeat`,
+//     textAlign: `center`,
+//   },
+// };
 
 const Challenge = () => {
   const { id } = useParams();

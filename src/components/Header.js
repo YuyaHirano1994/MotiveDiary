@@ -12,7 +12,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ImportContactsSharpIcon from "@mui/icons-material/ImportContactsSharp";
 import { useNavigate, Link } from "react-router-dom";
 import supabase from "../common/supabase";
