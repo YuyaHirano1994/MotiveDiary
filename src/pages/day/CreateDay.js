@@ -26,6 +26,8 @@ const CreateDay = () => {
     updated_at: "",
   });
 
+  const [challenge, setChallenge] = useState([]);
+
   const [days, setDays] = useState([]);
 
   const [maxDay, setMaxDay] = useState("");
@@ -47,26 +49,24 @@ const CreateDay = () => {
 
   //入力された値で登録処理を行う
 
-  // const getChallenge = async () => {
-  //   try {
-  //     const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id, "user_id", user.id);
-  //     if (error) {
-  //       throw error;
-  //     }
-  //     console.log("Data fetch Success");
-  //     setFormValue({ ...formValue, ...data[0] });
-  //   } catch (error) {
-  //     alert("Database error");
-  //     console.log(error.error_description || error.message);
-  //   }
-  // };
+  const getChallenge = async () => {
+    try {
+      const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id, "user_id", user.id);
+      if (error) {
+        throw error;
+      }
+      console.log("Data fetch Success");
+      setChallenge(data[0]);
+    } catch (error) {
+      alert("Database error");
+      console.log(error.error_description || error.message);
+    }
+  };
 
   useEffect(() => {
-    // getChallenge();
+    getChallenge();
     getDays();
   }, []);
-
-  console.log(days);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -76,10 +76,7 @@ const CreateDay = () => {
     });
   };
 
-  console.log();
-
   const checkInputData = () => {
-    console.log(days[0]?.date);
     if (days.filter((day) => day.date === formValue.date)) {
       alert("同じ日付のデータは登録できません");
       return false;
@@ -96,7 +93,6 @@ const CreateDay = () => {
     const now = new Date();
 
     try {
-      console.log("user: " + user.id);
       const { error } = await supabase
         .from("day")
         .insert([
@@ -131,6 +127,10 @@ const CreateDay = () => {
       <h1>Add day challenge</h1>
       <h2>You've already done {maxDay} days!!</h2>
       <h3>You can add Day {maxDay + 1} </h3>
+      <div>
+        <p>{challenge.title}</p>
+        <p>{challenge.desc}</p>
+      </div>
       <form onSubmit={handleSubmit}>
         <div>
           <label>Date:</label>

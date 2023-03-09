@@ -12,7 +12,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ImportContactsSharpIcon from "@mui/icons-material/ImportContactsSharp";
 import { useNavigate, Link } from "react-router-dom";
 import supabase from "../common/supabase";
@@ -25,6 +25,43 @@ const Header = () => {
   const [session, setSession] = useRecoilState(sessionState);
   const user = session?.session?.user || null;
   const [anchorEl, setAnchorEl] = useState(null);
+
+  const [profile, setProfile] = useState({});
+  const getProfile = async () => {
+    try {
+      const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
+
+      if (error) {
+        throw error;
+      }
+
+      setProfile({ ...profile, ...data[0] });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [imageSrc, setImageSrc] = useState();
+
+  const getAvatar = async () => {
+    let filePath = profile.avatar_url;
+    console.log(filePath);
+    const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
+    if (data) {
+      const imageUrl = data.publicUrl;
+      setImageSrc(imageUrl);
+    } else {
+      setImageSrc("");
+    }
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, [session]);
+
+  useEffect(() => {
+    getAvatar();
+  }, [profile]);
 
   const open = Boolean(anchorEl);
 
@@ -39,22 +76,27 @@ const Header = () => {
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     console.log(error);
+    setProfile({});
     setSession({});
     navigate("/user/signin");
   };
 
+  console.log(profile);
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="static" sx={{ padding: `0 100px` }}>
           {user?.id ? (
             <>
               <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
                 <Link to={"/home"} style={{ textDecoration: "none" }}>
                   <BsFillJournalBookmarkFill size={32} style={{ margin: "10px" }} />
                 </Link>
-                <div style={{ flexGrow: 1 }}></div>
                 <Typography sx={{ minWidth: 100 }}>About</Typography>
+                <Typography sx={{ minWidth: 100 }}>How it Works?</Typography>
+                <div style={{ flexGrow: 1 }}></div>
+                <Button variant="contained">Create Challenge</Button>
                 <Tooltip title="Profile">
                   <IconButton
                     onClick={handleClick}
@@ -64,7 +106,7 @@ const Header = () => {
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                   >
-                    <Avatar sx={{ width: 32, height: 32 }} />
+                    <Avatar src={imageSrc} sx={{ width: 48, height: 48 }} />
                   </IconButton>
                 </Tooltip>
               </Box>
