@@ -58,8 +58,23 @@ const CreateDay = () => {
     } catch (error) {}
   };
 
-  //入力された値で登録処理を行う
+  // challengeデータ取得
+  const [challenges, setChallenges] = useState([]);
 
+  const getChallenges = async () => {
+    try {
+      const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", user.id);
+      if (error) {
+        throw error;
+      }
+      console.log("getChallenges fetch Success");
+      setChallenges(data);
+    } catch (error) {
+      console.log(error.error_description || error.message);
+    }
+  };
+
+  //入力された値で登録処理を行う
   const getChallenge = async () => {
     try {
       const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id, "user_id", user.id);
@@ -75,6 +90,7 @@ const CreateDay = () => {
   };
 
   useEffect(() => {
+    getChallenges();
     getChallenge();
     getDays();
   }, []);
@@ -111,7 +127,7 @@ const CreateDay = () => {
         .from("day")
         .insert([
           {
-            challenge_id: id,
+            challenge_id: formValue.challenge_id,
             user_id: user.id,
             date: formValue.date,
             day: maxDay + 1,
@@ -138,6 +154,17 @@ const CreateDay = () => {
 
   const categories = ["HTML", "CSS", "JavaScript", "TypeScript", "PHP"];
 
+  // const [showTitle, setShowTitle] = useState([]);
+
+  // const handleChallengeChange = (e) => {
+  //   const target = challenges.filter((challenge) => challenge.challenge_id === e.target.value);
+  //   console.log(target);
+  //   setShowTitle(target[0]?.title);
+  //   // handleChange(e);
+  // };
+
+  console.log(formValue);
+
   return (
     <>
       <Container>
@@ -156,18 +183,15 @@ const CreateDay = () => {
           <FormControl sx={{ m: 1, width: "50%" }}>
             <InputLabel id="category">Challenge</InputLabel>
             <Select
-              labelId="category"
-              id="category"
-              name="category"
-              // value={showCategory}
-              // onChange={handleCategoryChange}
+              labelId="Challenge"
+              id="challenge_id"
+              name="challenge_id"
+              value={formValue.challenge_id}
+              onChange={handleChange}
             >
-              {categories.map((category) => (
-                <MenuItem key={category} value={category}>
-                  {category}
-                </MenuItem>
+              {challenges.map((challenge) => (
+                <MenuItem value={challenge.challenge_id}>{challenge.title}</MenuItem>
               ))}
-              <MenuItem value={"other"}>Other</MenuItem>
             </Select>
           </FormControl>
           <TextField
