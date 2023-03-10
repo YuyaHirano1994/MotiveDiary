@@ -3,6 +3,17 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import supabase from "../../common/supabase";
 import { useRecoilState } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
+import { Box, Container } from "@mui/system";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextareaAutosize,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const CreateDay = () => {
   const dt = new Date();
@@ -92,7 +103,7 @@ const CreateDay = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!checkInputData()) return; // 登録データのチェックを実施
+    // if (!checkInputData()) return; // 登録データのチェックを実施
     const now = new Date();
 
     try {
@@ -125,25 +136,85 @@ const CreateDay = () => {
     navigate("/mypage");
   };
 
+  const categories = ["HTML", "CSS", "JavaScript", "TypeScript", "PHP"];
+
   return (
-    <div>
-      <h1>Add day challenge</h1>
-      <h2>You've already done {maxDay} days!!</h2>
-      <h3>You can add Day {maxDay + 1} </h3>
+    <>
+      <Container>
+        <Typography variant="h3" align="center">
+          Register Today Your Work!
+        </Typography>
+        <Typography variant="h3" align="center">
+          You've already done {maxDay} days!!
+        </Typography>
+        <Typography variant="h3" align="center">
+          You can add Day {maxDay + 1}
+        </Typography>
+      </Container>
+      <Box sx={{ maxWidth: "500px", margin: "0 auto" }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <FormControl sx={{ m: 1, width: "50%" }}>
+            <InputLabel id="category">Challenge</InputLabel>
+            <Select
+              labelId="category"
+              id="category"
+              name="category"
+              // value={showCategory}
+              // onChange={handleCategoryChange}
+            >
+              {categories.map((category) => (
+                <MenuItem key={category} value={category}>
+                  {category}
+                </MenuItem>
+              ))}
+              <MenuItem value={"other"}>Other</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            value={today}
+            onChange={handleChange}
+            margin="normal"
+            required
+            fullWidth
+            name="date"
+            label="Date"
+            type="date"
+            id="date"
+            variant="standard"
+          />
+          <TextareaAutosize
+            style={{ width: "100%" }}
+            minRows={20}
+            value={formValue.content}
+            onChange={handleChange}
+            placeholder="What did you do today?"
+            id="content"
+            name="content"
+            required
+          ></TextareaAutosize>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            Register!
+          </Button>
+        </Box>
+      </Box>
       <div>
-        <p>{challenge.title}</p>
-        <p>{challenge.desc}</p>
-      </div>
-      <form onSubmit={handleSubmit}>
+        {/* <h1>Add day challenge</h1>
+        <h2>You've already done {maxDay} days!!</h2>
+        <h3>You can add Day {maxDay + 1} </h3>
         <div>
-          <label>Date:</label>
-          <input value={formValue.date} onChange={handleChange} type="date" name="date" required />
+          <p>{challenge.title}</p>
+          <p>{challenge.desc}</p>
         </div>
-        <div>
-          <label>Content: </label>
-          <textarea value={formValue.content} onChange={handleChange} type="text" name="content" required />
-        </div>
-        <button type="submit">Create</button>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Date:</label>
+            <input value={formValue.date} onChange={handleChange} type="date" name="date" required />
+          </div>
+          <div>
+            <label>Content: </label>
+            <textarea value={formValue.content} onChange={handleChange} type="text" name="content" required />
+          </div>
+          <button type="submit">Create</button> */}
         <hr />
         <ul>
           {days.map((day) => (
@@ -156,8 +227,9 @@ const CreateDay = () => {
         </ul>
         <hr />
         <button onClick={backHome}>BACK</button>
-      </form>
-    </div>
+        {/* </form> */}
+      </div>
+    </>
   );
 };
 
