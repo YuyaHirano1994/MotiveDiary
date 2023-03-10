@@ -1,4 +1,17 @@
-import { Avatar, Box, Button, Card, CardActions, CardContent, CardMedia, Grid, Paper, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Paper,
+  Table,
+  TableBody,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -16,6 +29,26 @@ const styles = {
     textAlign: `center`,
   },
 };
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 const MyPage = () => {
   const [challenges, setChallenges] = useState([]);
@@ -78,6 +111,18 @@ const MyPage = () => {
     }
   };
 
+  function createData(name, calories, fat, carbs, protein) {
+    return { name, calories, fat, carbs, protein };
+  }
+
+  const rows = [
+    createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
+    createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
+    createData("Eclair", 262, 16.0, 24, 6.0),
+    createData("Cupcake", 305, 3.7, 67, 4.3),
+    createData("Gingerbread", 356, 16.0, 49, 3.9),
+  ];
+
   return (
     <Box container>
       <Paper style={styles.paperContainer}>
@@ -105,8 +150,13 @@ const MyPage = () => {
               </Link>
             </Box>
             <Box sx={{ marginTop: "10px" }}>
-              <Link to={"/mypage/setting"} className="link">
+              <Link to={"/challenge/create"} className="link">
                 <Button variant="contained" sx={{ minWidth: 200 }}>
+                  Register Day
+                </Button>
+              </Link>
+              <Link to={"/mypage/setting"} className="link">
+                <Button variant="contained" sx={{ marginLeft: "30px", minWidth: 200 }}>
                   Setting
                 </Button>
               </Link>
@@ -120,76 +170,56 @@ const MyPage = () => {
         </Box>
       </Container>
       <hr />
-      <Box style={{ marginTop: "30px", marginRight: "20px", marginLeft: "20px" }}>
-        <Grid sx={{ flexGrow: 1 }} container spacing={2}>
-          <Grid item xs={12} display="flex" align="center">
-            <Grid container display="flex" justifyContent="space-around" spacing={3}>
-              {challenges.map((challenge) => (
-                <Grid item xs={12} md={4} key={challenge.challenge_id}>
-                  <Card sx={{ width: 300, height: 308 }}>
-                    <CardMedia
-                      component="img"
-                      alt="green iguana"
-                      height="50px"
-                      src="https://source.unsplash.com/random/"
-                    />
-                    <CardContent>
-                      <Box align="left">
-                        <Typography gutterBottom variant="h5" component="div">
-                          days: {challenge.day ? challenge.day : 0} / {challenge.days}
-                        </Typography>
-                        <Typography gutterBottom variant="h5" component="div">
-                          {challenge.title}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {editDesc(challenge.desc)}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {challenge.start_date} ~ {challenge.end_date}
-                        </Typography>
-                      </Box>
-                    </CardContent>
-                    <CardActions>
-                      <Button size="small">Share</Button>
-                      <Button size="small">
-                        <Link to={"/challenge/" + challenge.challenge_id}>More Detail</Link>
+      <Box sx={{ border: `1px solid grey`, margin: "30px 100px" }}>
+        <Paper sx={{ width: "100%", overflow: "hidden" }}>
+          <TableContainer sx={{ maxHeight: 540, minHeight: 500 }}>
+            <Table sx={{ minWidth: 650 }} stickyHeader aria-label="simple table">
+              <TableHead sx={{ backgrounfColor: "black", color: "white" }}>
+                <TableRow>
+                  <StyledTableCell>Challenge</StyledTableCell>
+                  <StyledTableCell align="center">Date</StyledTableCell>
+                  {/* <TableCell align="right">End Date</TableCell> */}
+                  <StyledTableCell align="left">Description</StyledTableCell>
+                  <StyledTableCell align="center">Day</StyledTableCell>
+                  <StyledTableCell align="center">Write</StyledTableCell>
+                  <StyledTableCell align="center">Detail</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {challenges.map((challenge) => (
+                  <StyledTableRow
+                    key={challenge.challenge_id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <StyledTableCell component="th" scope="row">
+                      {challenge.title}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {challenge.start_date} ~ {challenge.end_date}
+                    </StyledTableCell>
+                    {/* <TableCell align="right">{challenge.fat}</TableCell> */}
+                    <StyledTableCell align="left">{editDesc(challenge.desc)}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {challenge.day ? challenge.day : 0} / {challenge.days}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Button>
+                        <Link to={"/day/create/" + challenge.challenge_id}>Write</Link>
                       </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
-        </Grid>
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      <Button>
+                        <Link to={"/challenge/" + challenge.challenge_id}>More detail...</Link>
+                      </Button>
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
       </Box>
     </Box>
-
-    // <div>
-    //   <h1>MyPage</h1>
-
-    //   <Link to={"/challenge/create"}>Create</Link>
-    //   <br />
-    //   <Link to={"/home"}>BACK</Link>
-    //   <br />
-    //   <Link to={"/mypage/setting"}>setting</Link>
-    //   <ul>
-    //     {challenges.map((challenge) => (
-    //       <li className="challenge" key={challenge.challenge_id}>
-    //         <p>id: {challenge.user_id}</p>
-    //         <p>days: {challenge.days}</p>
-    //         <h1>title: {challenge.title}</h1>
-    //         <h3>desc: {challenge.desc}</h3>
-    //         <h3>start_date: {challenge.start_date}</h3>
-    //         <h3>end_date: {challenge.end_date}</h3>
-    //         <p>created_at: {challenge.created_at}</p>
-    //         <p>updated_at: {challenge.updated_at}</p>
-    //         <div className="button">
-    //           <Link to={"/challenge/" + challenge.challenge_id}>More detail...</Link>
-    //         </div>
-    //       </li>
-    //     ))}
-    //   </ul>
-    // </div>
   );
 };
 

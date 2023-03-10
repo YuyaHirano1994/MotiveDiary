@@ -1,4 +1,5 @@
 import { Logout, Settings } from "@mui/icons-material";
+import PersonIcon from "@mui/icons-material/Person";
 import {
   AppBar,
   Avatar,
@@ -146,7 +147,10 @@ const Header = () => {
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
                 <MenuItem onClick={handleClose}>
-                  <Avatar /> <Link to={"/mypage"}>MyPage</Link>
+                  <ListItemIcon>
+                    <PersonIcon fontSize="small" />
+                  </ListItemIcon>
+                  <Link to={"/mypage"}>MyPage</Link>
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleClose}>

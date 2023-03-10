@@ -76,6 +76,9 @@ const CreateDay = () => {
     });
   };
 
+  console.log(formValue.date);
+  console.log(days.filter((day) => day.date === formValue.date));
+
   const checkInputData = () => {
     if (days.filter((day) => day.date === formValue.date)) {
       alert("同じ日付のデータは登録できません");

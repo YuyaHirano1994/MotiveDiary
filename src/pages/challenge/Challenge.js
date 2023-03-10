@@ -125,22 +125,16 @@ const Challenge = () => {
   };
 
   return (
-    <>
-      {/* <Paper style={styles.paperContainer}></Paper> */}{" "}
+    <Box container>
       <Box sx={{ display: "flex", margin: "20px", color: "white", justifyContent: "right" }}>
-        {/* <Button variant="contained">
-          <Link to={"/challenge/create"} className="link">
-            Create A New Challenge !
-          </Link>
-        </Button> */}
         <Link to={"/mypage"} className="link">
           <Button variant="contained" sx={{ marginLeft: "30px", minWidth: 100 }}>
             BACK
           </Button>
         </Link>
       </Box>
-      <Container sx={{ width: "100vw", height: "100vh" }}>
-        <Box sx={{ width: "80vw", height: "100vh", margin: "0 auto" }}>
+      <Container sx={{}}>
+        <Box sx={{ margin: "0 auto" }}>
           <Typography
             variant="h2"
             style={{
@@ -227,7 +221,7 @@ const Challenge = () => {
           </Container>
         </Box>
       </Container>
-    </>
+    </Box>
   );
 };
 

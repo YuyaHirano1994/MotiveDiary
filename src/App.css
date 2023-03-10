@@ -3,6 +3,11 @@ body {
   margin: 0;
 }
 
+a {
+  text-decoration: none;
+  color: blue;
+}
+
 .challenge {
   border: 1px solid black;
   margin: 10px;

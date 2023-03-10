@@ -11,6 +11,7 @@ import CreateChallenge from "./pages/challenge/CreateChallenge";
 import Challenge from "./pages/challenge/Challenge";
 import CreateDay from "./pages/day/CreateDay";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import EditDay from "./pages/day/EditDay";
 import Setting from "./pages/user/Setting";
 import SessionLoader from "./common/SessionLoader";
@@ -120,6 +121,7 @@ const App = () => {
             }
           />
         </Routes>
+        <Footer />
       </BrowserRouter>
     </RecoilRoot>
   );
