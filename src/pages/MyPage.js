@@ -111,12 +111,6 @@ const MyPage = () => {
     }
   };
 
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
-  }
-
-  console.log(challenges);
-
   return (
     <Box container>
       <Paper style={styles.paperContainer}>
@@ -144,7 +138,7 @@ const MyPage = () => {
               </Link>
             </Box>
             <Box sx={{ marginTop: "10px" }}>
-              <Link to={"/challenge/create"} className="link">
+              <Link to={"/day/create"} className="link">
                 <Button variant="contained" sx={{ minWidth: 200 }}>
                   Register Day
                 </Button>

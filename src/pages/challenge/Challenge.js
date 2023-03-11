@@ -124,6 +124,18 @@ const Challenge = () => {
     }
   };
 
+  const changeFormat = (content) => {
+    const texts = content.split("\n").map((item, index) => {
+      return (
+        <React.Fragment key={index}>
+          {item}
+          <br />
+        </React.Fragment>
+      );
+    });
+    return <div>{texts}</div>;
+  };
+
   return (
     <Box container>
       <Box sx={{ display: "flex", margin: "20px", color: "white", justifyContent: "right" }}>
@@ -203,7 +215,8 @@ const Challenge = () => {
                   <hr />
                   <Box sx={{ margin: "0 30px" }}>
                     <Typography sx={{ wordBreak: "break-all" }} variant="body1" gutterBottom>
-                      {day.content}
+                      {/* {day.content} */}
+                      {changeFormat(day.content)}
                     </Typography>
                   </Box>
                   <CardActions sx={{ justifyContent: "right" }}>

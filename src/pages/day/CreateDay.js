@@ -6,6 +6,9 @@ import { sessionState } from "../../atom/sessionAtom";
 import { Box, Container } from "@mui/system";
 import {
   Button,
+  Card,
+  CardActions,
+  CardContent,
   FormControl,
   InputLabel,
   MenuItem,
@@ -28,7 +31,7 @@ const CreateDay = () => {
 
   const [formValue, setFormValue] = useState({
     day_id: "",
-    challenge_id: "",
+    challenge_id: id,
     user_id: "",
     date: today,
     day: 0,
@@ -49,7 +52,7 @@ const CreateDay = () => {
       const { data, error } = await supabase
         .from("day")
         .select("*")
-        .eq("challenge_id", id, "user_id", user.id)
+        .eq("challenge_id", formValue.challenge_id, "user_id", user.id)
         .order("date", { ascending: false });
 
       // console.log(data.length); //２件あれば２日目までのデータが実質登録されていることになる
@@ -91,9 +94,13 @@ const CreateDay = () => {
 
   useEffect(() => {
     getChallenges();
-    getChallenge();
+    // getChallenge();
     getDays();
   }, []);
+
+  useEffect(() => {
+    getDays();
+  }, [formValue]);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -162,97 +169,107 @@ const CreateDay = () => {
   //   setShowTitle(target[0]?.title);
   //   // handleChange(e);
   // };
-
+  const changeFormat = (content) => {
+    const texts = content.split("\n").map((item, index) => {
+      return (
+        <React.Fragment key={index}>
+          {item}
+          <br />
+        </React.Fragment>
+      );
+    });
+    return <div>{texts}</div>;
+  };
   console.log(formValue);
 
   return (
     <>
       <Container>
-        <Typography variant="h3" align="center">
+        <Typography variant="h5" align="center">
           Register Today Your Work!
         </Typography>
-        <Typography variant="h3" align="center">
+        <Typography variant="h5" align="center">
           You've already done {maxDay} days!!
         </Typography>
-        <Typography variant="h3" align="center">
+        <Typography variant="h5" align="center">
           You can add Day {maxDay + 1}
         </Typography>
       </Container>
-      <Box sx={{ maxWidth: "500px", margin: "0 auto" }}>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <FormControl sx={{ m: 1, width: "50%" }}>
-            <InputLabel id="category">Challenge</InputLabel>
-            <Select
-              labelId="Challenge"
-              id="challenge_id"
-              name="challenge_id"
-              value={formValue.challenge_id}
-              onChange={handleChange}
-            >
-              {challenges.map((challenge) => (
-                <MenuItem value={challenge.challenge_id}>{challenge.title}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <TextField
-            value={today}
-            onChange={handleChange}
-            margin="normal"
-            required
-            fullWidth
-            name="date"
-            label="Date"
-            type="date"
-            id="date"
-            variant="standard"
-          />
-          <TextareaAutosize
-            style={{ width: "100%" }}
-            minRows={20}
-            value={formValue.content}
-            onChange={handleChange}
-            placeholder="What did you do today?"
-            id="content"
-            name="content"
-            required
-          ></TextareaAutosize>
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Register!
-          </Button>
+      <Container>
+        <Box display={"flex"}>
+          <Container>
+            {days.map((day) => (
+              <Card className="challenge" key={day.day_id} sx={{ minHeight: 100 }}>
+                <CardContent>
+                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Typography variant="h5">{day.date}</Typography>
+                    <Typography variant="h5">DAY {day.day}</Typography>
+                  </Box>
+                  <hr />
+                  <Box sx={{ margin: "0 30px" }}>
+                    <Typography sx={{ wordBreak: "break-all" }} variant="body1" gutterBottom>
+                      {/* {day.content} */}
+                      {changeFormat(day.content)}
+                    </Typography>
+                  </Box>
+                  <CardActions sx={{ justifyContent: "right" }}>
+                    {user?.id === challenge.user_id ? (
+                      <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
+                        Edit Day
+                      </Link>
+                    ) : (
+                      <></>
+                    )}
+                  </CardActions>
+                </CardContent>
+              </Card>
+            ))}
+          </Container>
+          <Container>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <FormControl sx={{ m: 1, width: "50%" }}>
+                <InputLabel id="category">Challenge</InputLabel>
+                <Select
+                  labelId="Challenge"
+                  id="challenge_id"
+                  name="challenge_id"
+                  value={formValue.challenge_id}
+                  onChange={handleChange}
+                >
+                  {challenges.map((challenge) => (
+                    <MenuItem value={challenge.challenge_id}>{challenge.title}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                value={formValue.date || today}
+                onChange={handleChange}
+                margin="normal"
+                required
+                fullWidth
+                name="date"
+                label="Date"
+                type="date"
+                id="date"
+                variant="standard"
+              />
+              <TextareaAutosize
+                style={{ width: "100%" }}
+                minRows={10}
+                value={formValue.content}
+                onChange={handleChange}
+                placeholder="What did you do today?"
+                id="content"
+                name="content"
+                required
+              ></TextareaAutosize>
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                Register!
+              </Button>
+            </Box>
+          </Container>
         </Box>
-      </Box>
-      <div>
-        {/* <h1>Add day challenge</h1>
-        <h2>You've already done {maxDay} days!!</h2>
-        <h3>You can add Day {maxDay + 1} </h3>
-        <div>
-          <p>{challenge.title}</p>
-          <p>{challenge.desc}</p>
-        </div>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Date:</label>
-            <input value={formValue.date} onChange={handleChange} type="date" name="date" required />
-          </div>
-          <div>
-            <label>Content: </label>
-            <textarea value={formValue.content} onChange={handleChange} type="text" name="content" required />
-          </div>
-          <button type="submit">Create</button> */}
-        <hr />
-        <ul>
-          {days.map((day) => (
-            <li className="challenge" key={day.day_id}>
-              <p>Date: {day.date}</p>
-              {/* <p>days: {day}</p> */}
-              <h5>content: {day.content}</h5>
-            </li>
-          ))}
-        </ul>
-        <hr />
-        <button onClick={backHome}>BACK</button>
-        {/* </form> */}
-      </div>
+      </Container>
     </>
   );
 };
