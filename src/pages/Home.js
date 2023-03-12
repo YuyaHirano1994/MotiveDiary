@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../common/supabase";
-import topImage from "../image/library.jpg";
+import topImage from "../assets/images/library.jpg";
 
 const styles = {
   paperContainer: {

@@ -24,6 +24,8 @@ export const Footer = () => {
               {`Copyright © ${new Date().getFullYear()} Yuya Hirano`}
               <br />
               {`ReactJS | Material UI | Recoil | Supabase `}
+              <br />
+              <a href="https://storyset.com/people">People illustrations by Storyset</a>
             </Typography>
           </Grid>
         </Grid>
