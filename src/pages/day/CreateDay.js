@@ -29,6 +29,8 @@ const CreateDay = () => {
   const [session, setSession] = useRecoilState(sessionState);
   const user = session.session?.user || null;
 
+  console.log(id);
+
   const [formValue, setFormValue] = useState({
     day_id: "",
     challenge_id: id,
@@ -71,6 +73,11 @@ const CreateDay = () => {
         throw error;
       }
       console.log("getChallenges fetch Success");
+      console.log(data);
+      if (id === "none") {
+        console.log("id is none");
+        setFormValue({ ...formValue, challenge_id: data[0].challenge_id });
+      }
       setChallenges(data);
     } catch (error) {
       console.log(error.error_description || error.message);
@@ -112,6 +119,7 @@ const CreateDay = () => {
 
   console.log(formValue.date);
   console.log(days.filter((day) => day.date === formValue.date));
+  console.log(days);
 
   const checkInputData = () => {
     if (days.filter((day) => day.date === formValue.date)) {
@@ -188,44 +196,12 @@ const CreateDay = () => {
         <Typography variant="h5" align="center">
           Register Today Your Work!
         </Typography>
-        <Typography variant="h5" align="center">
-          You've already done {maxDay} days!!
-        </Typography>
-        <Typography variant="h5" align="center">
-          You can add Day {maxDay + 1}
-        </Typography>
       </Container>
-      <Container>
+      <Container sx={{ minHeight: "600px" }}>
         <Box display={"flex"}>
           <Container>
-            {days.map((day) => (
-              <Card className="challenge" key={day.day_id} sx={{ minHeight: 100 }}>
-                <CardContent>
-                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                    <Typography variant="h5">{day.date}</Typography>
-                    <Typography variant="h5">DAY {day.day}</Typography>
-                  </Box>
-                  <hr />
-                  <Box sx={{ margin: "0 30px" }}>
-                    <Typography sx={{ wordBreak: "break-all" }} variant="body1" gutterBottom>
-                      {/* {day.content} */}
-                      {changeFormat(day.content)}
-                    </Typography>
-                  </Box>
-                  <CardActions sx={{ justifyContent: "right" }}>
-                    {user?.id === challenge.user_id ? (
-                      <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
-                        Edit Day
-                      </Link>
-                    ) : (
-                      <></>
-                    )}
-                  </CardActions>
-                </CardContent>
-              </Card>
-            ))}
-          </Container>
-          <Container>
+            <Typography variant="h5">You've already done {maxDay} days!!</Typography>
+            <Typography variant="h5">You can add Day {maxDay + 1}</Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               <FormControl sx={{ m: 1, width: "50%" }}>
                 <InputLabel id="category">Challenge</InputLabel>
@@ -267,6 +243,34 @@ const CreateDay = () => {
                 Register!
               </Button>
             </Box>
+          </Container>
+          <Container sx={{ height: "500px", overflowY: "scroll" }}>
+            {days.map((day, index) => (
+              <Card className="challenge" key={day.day_id} sx={{ minHeight: 100 }}>
+                <CardContent>
+                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                    <Typography variant="h5">{day.date}</Typography>
+                    <Typography variant="h5">DAY {days.length - index}</Typography>
+                  </Box>
+                  <hr />
+                  <Box sx={{ margin: "0 30px" }}>
+                    <Typography sx={{ wordBreak: "break-all" }} variant="body1" gutterBottom>
+                      {/* {day.content} */}
+                      {changeFormat(day.content)}
+                    </Typography>
+                  </Box>
+                  <CardActions sx={{ justifyContent: "right" }}>
+                    {user?.id === challenge.user_id ? (
+                      <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
+                        Edit Day
+                      </Link>
+                    ) : (
+                      <></>
+                    )}
+                  </CardActions>
+                </CardContent>
+              </Card>
+            ))}
           </Container>
         </Box>
       </Container>

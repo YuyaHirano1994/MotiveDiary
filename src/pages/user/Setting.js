@@ -3,12 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import supabase from "../../common/supabase";
 import { useRecoilState } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
+import { Box, Container } from "@mui/system";
+import { Avatar, Button, TextField, Typography } from "@mui/material";
 
 const Setting = () => {
   const navigate = useNavigate();
   const [session, setSession] = useRecoilState(sessionState);
   const user = session.session?.user || null;
-
+  const [isLoading, setIsLoading] = useState(false);
   const [formValue, setFormValue] = useState({});
   const [imageSrc, setImageSrc] = useState();
   const [avatar, setAvatar] = useState({
@@ -28,6 +30,7 @@ const Setting = () => {
       }
 
       setFormValue({ ...formValue, ...data[0] });
+      setIsLoading(true);
     } catch (error) {
       console.log(error);
     }
@@ -97,6 +100,7 @@ const Setting = () => {
           {
             nickname: formValue.nickname,
             avatar_url: formValue.avatar_url,
+            comment: formValue.comment,
             updated_at: now,
           },
         ])
@@ -128,35 +132,88 @@ const Setting = () => {
   };
 
   return (
-    <div>
-      <h1>Settings</h1>
-      <div>
-        <img src={avatar.filepath ? avatar.filepath : imageSrc} alt="sample" width="250" height="250"></img>
-      </div>
-      <form onSubmit={handleSubmit}>
-        <label>Nickname:</label>
-        <div>
-          <input value={formValue.nickname} onChange={handleChange} type="text" name="nickname" required />
-        </div>
-        {/* <div>
-          <label>Avatar: </label>
-          <textarea value={formValue.avatar_url} onChange={handleChange} type="text" name="avatar_url" required />
-        </div> */}
-        <label>Avatar:</label>
-        <div>
-          <input
-            // value={formValue.avatar_url}
-            type="file"
-            name="avatar_url"
-            accept=".png, .jpeg"
-            onChange={handleImageChange}
-          />
-        </div>
-        <button type="submit">Update</button>
-        <hr />
-        <button onClick={backHome}>BACK</button>
-      </form>
-    </div>
+    <>
+      <Container component="main" maxWidth="md">
+        <Box
+          sx={{
+            marginTop: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h3" align="center">
+            Setting
+          </Typography>
+          {isLoading ? (
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <Avatar
+                  src={avatar.filepath ? avatar.filepath : imageSrc}
+                  sx={{ width: 250, height: 250, margin: "20px" }}
+                ></Avatar>
+                <label>
+                  <Button variant="contained" component="span" sx={{ marginBottom: "20px" }}>
+                    Choose Avatar
+                  </Button>
+                  <input
+                    name="avatar_url"
+                    onChange={handleImageChange}
+                    type="file"
+                    multiple
+                    accept="image/*,.png,.jpg,.jpeg,.gif"
+                    style={{ display: "none" }}
+                  />
+                </label>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              >
+                <TextField
+                  value={formValue.nickname}
+                  onChange={handleChange}
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="nickname"
+                  label="Nickname"
+                  type="text"
+                  id="nickname"
+                />
+                <TextField
+                  value={formValue.comment}
+                  onChange={handleChange}
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="comment"
+                  label="Comment"
+                  type="text"
+                  id="comment"
+                />
+                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+                  Update Profile
+                </Button>
+              </Box>
+            </Box>
+          ) : (
+            <>
+              <Typography>Now Loading...</Typography>
+            </>
+          )}
+        </Box>
+      </Container>
+    </>
   );
 };
 

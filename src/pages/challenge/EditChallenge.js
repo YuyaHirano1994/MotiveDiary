@@ -111,110 +111,119 @@ const EditChallenge = () => {
   return (
     <>
       <Container>
-        <Typography variant="h3" align="center">
-          Edit your Challenge
-        </Typography>
-        <Box sx={{ maxWidth: "500px", margin: "0 auto" }}>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
-              value={formValue.title}
-              onChange={handleChange}
-              margin="normal"
-              required
-              fullWidth
-              name="title"
-              label="Title"
-              type="text"
-              id="title"
-              autoComplete="title"
-              autoFocus
-              variant="standard"
-            />
-            <Box display="flex">
-              <FormControl sx={{ m: 1, width: "50%" }}>
-                <InputLabel id="category">category</InputLabel>
-                <Select
-                  labelId="category"
-                  id="category"
-                  name="category"
-                  value={showCategory || formValue.category}
-                  onChange={handleCategoryChange}
-                >
-                  {categories.map((category) => (
-                    <MenuItem key={category} value={category}>
-                      {category}
-                    </MenuItem>
-                  ))}
-                  <MenuItem value={"other"}>Other</MenuItem>
-                </Select>
-              </FormControl>
-              {hiddenEl ? (
-                <></>
-              ) : (
-                <TextField
-                  value={formValue.category}
-                  onChange={handleChange}
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="category"
-                  label="category"
-                  type="text"
-                  id="category"
-                  autoComplete="category"
-                  autoFocus
-                  variant="standard"
-                  disabled={hiddenEl}
-                  sx={{ width: "50%" }}
-                />
-              )}
+        <Box
+          sx={{
+            marginTop: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h3" align="center">
+            Edit your Challenge
+          </Typography>
+          <Box sx={{ margin: "0 auto" }}>
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <TextField
+                value={formValue.title}
+                onChange={handleChange}
+                margin="normal"
+                required
+                fullWidth
+                name="title"
+                label="Title"
+                type="text"
+                id="title"
+                autoComplete="title"
+                autoFocus
+                variant="standard"
+              />
+              <Box display="flex">
+                <FormControl sx={{ m: 1, width: "50%" }}>
+                  <InputLabel id="category">category</InputLabel>
+                  <Select
+                    labelId="category"
+                    id="category"
+                    name="category"
+                    value={showCategory || formValue.category}
+                    onChange={handleCategoryChange}
+                  >
+                    {categories.map((category) => (
+                      <MenuItem key={category} value={category}>
+                        {category}
+                      </MenuItem>
+                    ))}
+                    <MenuItem value={"other"}>Other</MenuItem>
+                  </Select>
+                </FormControl>
+                {hiddenEl ? (
+                  <></>
+                ) : (
+                  <TextField
+                    value={formValue.category}
+                    onChange={handleChange}
+                    margin="normal"
+                    required
+                    fullWidth
+                    name="category"
+                    label="category"
+                    type="text"
+                    id="category"
+                    autoComplete="category"
+                    autoFocus
+                    variant="standard"
+                    disabled={hiddenEl}
+                    sx={{ width: "50%" }}
+                  />
+                )}
+              </Box>
+              <TextField
+                value={formValue.days}
+                onChange={handleChange}
+                margin="normal"
+                required
+                fullWidth
+                name="days"
+                label="How long would you need? "
+                type="number"
+                id="days"
+                autoComplete="days"
+                autoFocus
+                variant="standard"
+              />
+              <TextField
+                value={formValue.desc}
+                onChange={handleChange}
+                multiline
+                rows={6}
+                required
+                fullWidth
+                id="desc"
+                name="desc"
+                label="Description"
+                color="secondary"
+                margin="normal"
+                inputProps={{ maxLength: 1000, style: { fontSize: 14 } }}
+                InputLabelProps={{ style: { fontSize: 14 } }}
+              />
+              <TextField
+                value={formValue.start_date}
+                onChange={handleChange}
+                margin="normal"
+                required
+                fullWidth
+                name="start_date"
+                label="Start Date"
+                type="date"
+                id="start_date"
+                autoComplete="start_date"
+                autoFocus
+                variant="standard"
+              />
+              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+                Edit Challenge
+              </Button>
             </Box>
-            <TextField
-              value={formValue.days}
-              onChange={handleChange}
-              margin="normal"
-              required
-              fullWidth
-              name="days"
-              label="How long would you need? "
-              type="number"
-              id="days"
-              autoComplete="days"
-              autoFocus
-              variant="standard"
-            />
-            <TextField
-              value={formValue.desc}
-              onChange={handleChange}
-              multiline
-              rows={6}
-              required
-              fullWidth
-              id="desc"
-              name="desc"
-              label="Description"
-              color="secondary"
-              margin="normal"
-              inputProps={{ maxLength: 1000, style: { fontSize: 14 } }}
-              InputLabelProps={{ style: { fontSize: 14 } }}
-            />
-            <TextField
-              value={formValue.start_date}
-              onChange={handleChange}
-              margin="normal"
-              required
-              fullWidth
-              name="start_date"
-              label="Start Date"
-              type="date"
-              id="start_date"
-              autoComplete="start_date"
-              autoFocus
-              variant="standard"
-            />
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              Add new Challenge
-            </Button>
           </Box>
         </Box>
       </Container>

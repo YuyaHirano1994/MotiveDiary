@@ -138,7 +138,7 @@ const MyPage = () => {
               </Link>
             </Box>
             <Box sx={{ marginTop: "10px" }}>
-              <Link to={"/day/create"} className="link">
+              <Link to={"/day/create/none"} className="link">
                 <Button variant="contained" sx={{ minWidth: 200 }}>
                   Register Day
                 </Button>
