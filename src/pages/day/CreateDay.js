@@ -117,24 +117,20 @@ const CreateDay = () => {
     });
   };
 
-  console.log(formValue.date);
   console.log(days.filter((day) => day.date === formValue.date));
-  console.log(days);
 
   const checkInputData = () => {
-    if (days.filter((day) => day.date === formValue.date)) {
+    const arr = days.filter((day) => day.date === formValue.date);
+    if (arr.length) {
       alert("同じ日付のデータは登録できません");
       return false;
     }
-    if (days[0]?.date >= formValue.date) {
-      alert("日付は最新データより未来にしてください");
-      return false;
-    }
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // if (!checkInputData()) return; // 登録データのチェックを実施
+    if (!checkInputData()) return; // 登録データのチェックを実施
     const now = new Date();
 
     try {
@@ -193,10 +189,15 @@ const CreateDay = () => {
   return (
     <>
       <Container>
-        <Typography variant="h5" align="center">
+        <Typography variant="h2" align="center">
           Register Today Your Work!
         </Typography>
       </Container>
+      <Box component={"div"}>
+        <Typography variant="h5" align="center">
+          Challenge Data Area
+        </Typography>
+      </Box>
       <Container sx={{ minHeight: "600px" }}>
         <Box display={"flex"}>
           <Container>

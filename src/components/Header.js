@@ -97,7 +97,9 @@ const Header = () => {
                 <Typography sx={{ minWidth: 100 }}>About</Typography>
                 <Typography sx={{ minWidth: 100 }}>How it Works?</Typography>
                 <div style={{ flexGrow: 1 }}></div>
-                <Button variant="contained">Create Challenge</Button>
+                <Button variant="contained">
+                  <Link to={"/day/create/none"}>Register Day</Link>
+                </Button>
                 <Tooltip title="Profile">
                   <IconButton
                     onClick={handleClick}
