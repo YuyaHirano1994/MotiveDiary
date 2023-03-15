@@ -5,7 +5,7 @@ import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
 import { sessionState } from "../../atom/sessionAtom";
 import { useRecoilState } from "recoil";
 import { Box } from "@mui/system";
-import { Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
+import { Avatar, Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
 
 // const styles = {
 //   paperContainer: {
@@ -112,13 +112,36 @@ const Challenge = () => {
   const checkUser = () => {
     if (user?.id === challenge.user_id) {
       return (
-        <Box style={{ textAlign: "right" }}>
-          <Link style={{ paddingLeft: "80px" }} to={"/challenge/update/" + challenge.challenge_id} className="button">
-            <BsFillPencilFill size={32} />
-          </Link>
-          <Link style={{ paddingLeft: "20px" }} onClick={handleDelete} className="button">
-            <BsFillTrashFill size={32} />
-          </Link>
+        <Box component="div">
+          <Button variant="outlined">
+            <Link to={"/mypage"} className="button">
+              {/* <BsFillTrashFill size={32} /> */}
+              BACK
+            </Link>
+          </Button>
+          <Button variant="outlined" sx={{ marginLeft: 2 }}>
+            <Link to={"/challenge/update/" + challenge.challenge_id} className="button">
+              {/* <BsFillPencilFill size={32} /> */}
+              Edit
+            </Link>
+          </Button>
+          <Button variant="outlined" color="error" sx={{ marginLeft: 2 }}>
+            <Link onClick={handleDelete} className="button">
+              {/* <BsFillTrashFill size={32} /> */}
+              Delete
+            </Link>
+          </Button>
+        </Box>
+      );
+    } else {
+      return (
+        <Box component="div">
+          <Button variant="outlined">
+            <Link to={"/mypage"} className="button">
+              {/* <BsFillTrashFill size={32} /> */}
+              BACK
+            </Link>
+          </Button>
         </Box>
       );
     }
@@ -137,104 +160,91 @@ const Challenge = () => {
   };
 
   return (
-    <Box container>
-      <Box sx={{ display: "flex", margin: "20px", color: "white", justifyContent: "right" }}>
-        <Link to={"/mypage"} className="link">
-          <Button variant="contained" sx={{ marginLeft: "30px", minWidth: 100 }}>
-            BACK
-          </Button>
-        </Link>
-      </Box>
-      <Container sx={{}}>
-        <Box sx={{ margin: "0 auto" }}>
-          <Typography
-            variant="h2"
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              paddingTop: `50px`,
-              paddingLeft: `100px`,
-            }}
+    <>
+      <Container component="main" maxWidth="md">
+        <Box
+          sx={{
+            marginTop: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Box
+            component="div"
+            display={"flex"}
+            justifyContent={"space-between"}
+            sx={{ width: "100%", marginBottom: 4 }}
           >
-            {challenge.title}
-          </Typography>
-          <Box>
-            <Box
-              sx={{
-                paddingLeft: `100px`,
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-            >
-              <Typography variant="h5">
-                {challenge.start_date}~{challenge.end_date}
+            <Box component="div" display={"flex"}>
+              <Avatar src={""} sx={{ width: 25, height: 25 }}></Avatar>
+              <Typography variant="subtitle1" align="center" marginLeft={2}>
+                Author Name
               </Typography>
-              {checkUser()}
             </Box>
+            {checkUser()}
           </Box>
-          <hr />
-          <Box sx={{ margin: "30px 30px  0 30px" }}>
-            <Box sx={{ margin: "0 70px" }}>
-              <h3>{challenge.desc}</h3>
-            </Box>
-            <Container sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Box sx={{ marginLeft: "30px", textAlign: "right" }}>
-                <Typography
-                  sx={{
-                    padding: "10px",
-                    display: "inline",
-                    borderRadius: "10px",
-                    backgroundColor: "blue",
-                    color: "white",
-                  }}
-                >
-                  #{challenge.category}
-                </Typography>
-              </Box>
-              <Box sx={{}}>
-                <Typography variant="h4">{challenge.days} Days</Typography>
-              </Box>
-            </Container>
+          <Box align="center" sx={{ width: "100%", marginBottom: 4 }}>
+            <Typography variant="h5" align="left">
+              {challenge.start_date}~{challenge.end_date}
+            </Typography>
+            <Typography variant="h3" align="left" sx={{ marginBottom: 2 }}>
+              {challenge.title}
+            </Typography>
+            <hr />
+            <Typography variant="h6" align="left" sx={{ marginLeft: 2 }}>
+              {changeFormat(challenge.desc)}
+              {/* {challenge.desc} */}
+            </Typography>
           </Box>
-          <hr />
-          <Container sx={{}}>
-            <Button variant="outlined">
+          <Box display="flex" justifyContent={"space-between"} sx={{ width: "100%", marginBottom: 4 }}>
+            <Button variant="contained">#{challenge.category}</Button>
+            <Typography variant="h4">{challenge.days} Days</Typography>
+          </Box>
+        </Box>
+        <Box align="right" sx={{ width: "100%", marginBottom: 4 }}>
+          {user?.id === challenge.user_id ? (
+            <Button variant="contained">
               <Link style={{}} to={"/day/create/" + challenge.challenge_id} className="button">
                 Register Day
               </Link>
             </Button>
-          </Container>
-          <Container>
-            {days.map((day) => (
-              <Card className="challenge" key={day.day_id} sx={{ minHeight: 100 }}>
-                <CardContent>
-                  <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                    <Typography variant="h5">{day.date}</Typography>
-                    <Typography variant="h5">DAY {day.day}</Typography>
-                  </Box>
-                  <hr />
-                  <Box sx={{ margin: "0 30px" }}>
-                    <Typography sx={{ wordBreak: "break-all" }} variant="body1" gutterBottom>
-                      {/* {day.content} */}
-                      {changeFormat(day.content)}
-                    </Typography>
-                  </Box>
-                  <CardActions sx={{ justifyContent: "right" }}>
-                    {user?.id === challenge.user_id ? (
+          ) : (
+            <></>
+          )}
+        </Box>
+        <Container>
+          {days.map((day) => (
+            <Card className="challenge" key={day.day_id} sx={{ minHeight: 100 }}>
+              <CardContent>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography variant="h5">{day.date}</Typography>
+                  <Typography variant="h5">DAY {day.day}</Typography>
+                </Box>
+                <hr />
+                <Box sx={{ margin: "0 30px" }}>
+                  <Typography sx={{ wordBreak: "break-all" }} variant="body1" gutterBottom>
+                    {/* {day.content} */}
+                    {changeFormat(day.content)}
+                  </Typography>
+                </Box>
+                <CardActions sx={{ justifyContent: "right" }}>
+                  {user?.id === challenge.user_id ? (
+                    <Button variant="outlined">
                       <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
                         Edit Day
                       </Link>
-                    ) : (
-                      <></>
-                    )}
-                  </CardActions>
-                </CardContent>
-              </Card>
-            ))}
-          </Container>
-        </Box>
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
+                </CardActions>
+              </CardContent>
+            </Card>
+          ))}
+        </Container>
       </Container>
-    </Box>
+    </>
   );
 };
 
