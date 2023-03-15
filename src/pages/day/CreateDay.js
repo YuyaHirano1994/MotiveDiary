@@ -6,6 +6,7 @@ import { useRecoilState } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 import { Box, Container } from "@mui/system";
 import {
+  Avatar,
   Button,
   Card,
   CardActions,
@@ -19,6 +20,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import BackButton from "../../components/BackButton";
 
 const CreateDay = () => {
   const dt = new Date();
@@ -179,6 +181,7 @@ const CreateDay = () => {
   //   // handleChange(e);
   // };
   const changeFormat = (content) => {
+    if (!content) return;
     const texts = content.split("\n").map((item, index) => {
       return (
         <React.Fragment key={index}>
@@ -193,7 +196,124 @@ const CreateDay = () => {
 
   return (
     <>
-      <Container component="main">
+      <Container component="main" maxWidth="md">
+        <Box
+          sx={{
+            marginTop: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Box
+            component="div"
+            display={"flex"}
+            justifyContent={"space-between"}
+            sx={{ width: "100%", marginBottom: 4 }}
+          >
+            <Box component="div" display={"flex"}>
+              <Avatar src={""} sx={{ width: 25, height: 25 }}></Avatar>
+              <Typography variant="subtitle1" align="center" marginLeft={2}>
+                Author Name
+              </Typography>
+            </Box>
+            <BackButton />
+          </Box>
+          <Box align="center" sx={{ width: "100%", marginBottom: 4 }}>
+            <Typography variant="h5" align="left">
+              {challenge.start_date}~{challenge.end_date}
+            </Typography>
+            <Typography variant="h3" align="left" sx={{ marginBottom: 2 }}>
+              {challenge.title}
+            </Typography>
+            <hr />
+            <Typography variant="h6" align="left" sx={{ marginLeft: 2 }}>
+              {changeFormat(challenge?.desc)}
+            </Typography>
+          </Box>
+          <Box display="flex" justifyContent={"space-between"} sx={{ width: "100%", marginBottom: 4 }}>
+            <Button variant="contained">#{challenge.category}</Button>
+            <Typography variant="h4">{challenge.days} Days</Typography>
+          </Box>
+        </Box>
+        <Box component="form" onSubmit={handleSubmit} noValidate>
+          <Typography variant="h5" sx={{ margin: 2 }}>
+            Day {maxDay + 1}...
+          </Typography>
+          <FormControl>
+            <InputLabel id="category">Challenge</InputLabel>
+            <Select
+              labelId="Challenge"
+              id="challenge_id"
+              name="challenge_id"
+              value={formValue.challenge_id}
+              onChange={handleChange}
+            >
+              {challenges.map((challenge) => (
+                <MenuItem value={challenge.challenge_id}>{challenge.title}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          {/* <img src={image} width="240" height="240" alt="ホームアイコン" /> */}
+          <br />
+          <TextField
+            value={formValue.date || today}
+            onChange={handleChange}
+            margin="normal"
+            required
+            // fullWidth
+            name="date"
+            label="Date"
+            type="date"
+            id="date"
+            variant="standard"
+          />
+          <TextareaAutosize
+            style={{ width: "100%" }}
+            minRows={10}
+            value={formValue.content}
+            onChange={handleChange}
+            placeholder="What did you do today?"
+            id="content"
+            name="content"
+            required
+          ></TextareaAutosize>
+          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            Register!
+          </Button>
+        </Box>
+        <Container>
+          {days.map((day, i) => (
+            <Card className="challenge" key={day.day_id} sx={{ minHeight: 100 }}>
+              <CardContent>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Typography variant="h5">{day.date}</Typography>
+                  <Typography variant="h5">DAY {days.length - i}</Typography>
+                </Box>
+                <hr />
+                <Box sx={{ margin: "0 30px" }}>
+                  <Typography variant="body1" gutterBottom>
+                    {/* {day.content} */}
+                    {changeFormat(day?.content)}
+                  </Typography>
+                </Box>
+                <CardActions sx={{ justifyContent: "right" }}>
+                  {user?.id === challenge.user_id ? (
+                    <Button variant="outlined">
+                      <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
+                        Edit Day
+                      </Link>
+                    </Button>
+                  ) : (
+                    <></>
+                  )}
+                </CardActions>
+              </CardContent>
+            </Card>
+          ))}
+        </Container>
+      </Container>
+      {/* <Container component="main">
         <Box
           sx={{
             margin: 4,
@@ -240,7 +360,7 @@ const CreateDay = () => {
                         <hr />
                         <Box sx={{ margin: "0 30px" }}>
                           <Typography sx={{ wordBreak: "break-all" }} variant="body1" gutterBottom>
-                            {/* {day.content} */}
+                            
                             {changeFormat(day.content)}
                           </Typography>
                         </Box>
@@ -261,8 +381,7 @@ const CreateDay = () => {
             </Grid>
             <Grid xs={8}>
               <Box component="form" onSubmit={handleSubmit} noValidate>
-                {/* <Typography variant="h5">You've already done {maxDay} days!!</Typography>
-                <Typography variant="h5">You can add Day {maxDay + 1}</Typography> */}
+                 <Typography variant="h5">You can add Day {maxDay + 1}</Typography> 
 
                 <Typography variant="h5" sx={{ margin: 2 }}>
                   Day {maxDay + 1}
@@ -281,7 +400,7 @@ const CreateDay = () => {
                     ))}
                   </Select>
                 </FormControl>
-                {/* <img src={image} width="240" height="240" alt="ホームアイコン" /> */}
+                {/* <img src={image} width="240" height="240" alt="ホームアイコン" /> 
                 <br />
                 <TextField
                   value={formValue.date || today}
@@ -312,7 +431,7 @@ const CreateDay = () => {
             </Grid>
           </Grid>
         </Box>
-      </Container>
+      </Container> */}
     </>
   );
 };

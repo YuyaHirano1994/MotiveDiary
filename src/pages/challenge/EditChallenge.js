@@ -6,6 +6,7 @@ import { sessionState } from "../../atom/sessionAtom";
 import { useRecoilState } from "recoil";
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
+import BackButton from "../../components/BackButton";
 
 const EditChallenge = () => {
   const { id } = useParams();
@@ -223,6 +224,7 @@ const EditChallenge = () => {
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Edit Challenge
               </Button>
+              <BackButton />
             </Box>
           </Box>
         </Box>

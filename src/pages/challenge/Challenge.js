@@ -6,6 +6,7 @@ import { sessionState } from "../../atom/sessionAtom";
 import { useRecoilState } from "recoil";
 import { Box } from "@mui/system";
 import { Avatar, Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
+import BackButton from "../../components/BackButton";
 
 // const styles = {
 //   paperContainer: {
@@ -60,7 +61,7 @@ const Challenge = () => {
         .from("day")
         .select("*")
         .eq("challenge_id", id)
-        .order("day", { ascending: false });
+        .order("date", { ascending: false });
 
       console.log(data.length); //２件あれば２日目までのデータが実質登録されていることになる
       setDays(data);
@@ -113,12 +114,7 @@ const Challenge = () => {
     if (user?.id === challenge.user_id) {
       return (
         <Box component="div">
-          <Button variant="outlined">
-            <Link to={"/mypage"} className="button">
-              {/* <BsFillTrashFill size={32} /> */}
-              BACK
-            </Link>
-          </Button>
+          <BackButton />
           <Button variant="outlined" sx={{ marginLeft: 2 }}>
             <Link to={"/challenge/update/" + challenge.challenge_id} className="button">
               {/* <BsFillPencilFill size={32} /> */}
@@ -136,12 +132,7 @@ const Challenge = () => {
     } else {
       return (
         <Box component="div">
-          <Button variant="outlined">
-            <Link to={"/mypage"} className="button">
-              {/* <BsFillTrashFill size={32} /> */}
-              BACK
-            </Link>
-          </Button>
+          <BackButton />
         </Box>
       );
     }
@@ -214,17 +205,16 @@ const Challenge = () => {
           )}
         </Box>
         <Container>
-          {days.map((day) => (
+          {days.map((day, i) => (
             <Card className="challenge" key={day.day_id} sx={{ minHeight: 100 }}>
               <CardContent>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="h5">{day.date}</Typography>
-                  <Typography variant="h5">DAY {day.day}</Typography>
+                  <Typography variant="h5">DAY {days.length - i}</Typography>
                 </Box>
                 <hr />
                 <Box sx={{ margin: "0 30px" }}>
-                  <Typography sx={{ wordBreak: "break-all" }} variant="body1" gutterBottom>
-                    {/* {day.content} */}
+                  <Typography variant="body1" gutterBottom>
                     {changeFormat(day.content)}
                   </Typography>
                 </Box>
