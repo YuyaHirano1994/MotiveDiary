@@ -47,9 +47,8 @@ const Home = () => {
   };
 
   return (
-    <Box container textAlign={"center"} sx={{ width: "100vw", height: "200px", mt: "150px" }}>
-      Under constructions
-      {/* <Paper style={styles.paperContainer}>
+    <Box container>
+      <Paper style={styles.paperContainer}>
         <Typography variant="h3" align="center" style={{ paddingTop: `100px`, color: `white` }}>
           Let's get start your new Challenge!
         </Typography>
@@ -93,7 +92,7 @@ const Home = () => {
             </Grid>
           </Grid>
         </Grid>
-      </Box> */}
+      </Box>
     </Box>
   );
 };
