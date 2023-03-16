@@ -33,8 +33,6 @@ const CreateDay = () => {
   const [session, setSession] = useRecoilState(sessionState);
   const user = session.session?.user || null;
 
-  console.log(id);
-
   const [formValue, setFormValue] = useState({
     day_id: "",
     challenge_id: id,
@@ -47,6 +45,8 @@ const CreateDay = () => {
   });
 
   const [challenge, setChallenge] = useState([]);
+  const [profile, setProfile] = useState();
+  const [imageSrc, setImageSrc] = useState();
 
   const [days, setDays] = useState([]);
 
@@ -61,7 +61,6 @@ const CreateDay = () => {
         .eq("challenge_id", formValue.challenge_id, "user_id", user.id)
         .order("date", { ascending: false });
 
-      // console.log(data.length); //２件あれば２日目までのデータが実質登録されていることになる
       setMaxDay(data.length);
       setDays(data);
     } catch (error) {}
@@ -77,7 +76,6 @@ const CreateDay = () => {
         throw error;
       }
       console.log("getChallenges fetch Success");
-      console.log(data);
       if (id === "none") {
         setFormValue({ ...formValue, challenge_id: data[0].challenge_id });
       }
@@ -105,14 +103,44 @@ const CreateDay = () => {
     }
   };
 
+  const getProfile = async () => {
+    try {
+      const { data, error } = await supabase.from("profile").select("*").eq("user_id", challenge.user_id);
+      if (error) {
+        throw error;
+      }
+      setProfile({ ...profile, ...data[0] });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAvatar = async () => {
+    let filePath = profile.avatar_url;
+    const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
+    if (data) {
+      const imageUrl = data.publicUrl;
+      setImageSrc(imageUrl);
+    } else {
+      setImageSrc("");
+    }
+  };
+
   useEffect(() => {
     getChallenges();
     getChallenge();
     getDays();
   }, []);
 
-  console.log(challenge);
+  useEffect(() => {
+    getProfile();
+  }, [challenge]);
 
+  useEffect(() => {
+    getAvatar();
+  }, [profile]);
+
+  //パフォーマンスカス
   useEffect(() => {
     getChallenge();
     getDays();
@@ -125,8 +153,6 @@ const CreateDay = () => {
       [e.target.name]: e.target.value,
     });
   };
-
-  console.log(days.filter((day) => day.date === formValue.date));
 
   const checkInputData = () => {
     const arr = days.filter((day) => day.date === formValue.date);
@@ -168,18 +194,6 @@ const CreateDay = () => {
     }
   };
 
-  const backHome = () => {
-    navigate("/mypage");
-  };
-
-  // const [showTitle, setShowTitle] = useState([]);
-
-  // const handleChallengeChange = (e) => {
-  //   const target = challenges.filter((challenge) => challenge.challenge_id === e.target.value);
-  //   console.log(target);
-  //   setShowTitle(target[0]?.title);
-  //   // handleChange(e);
-  // };
   const changeFormat = (content) => {
     if (!content) return;
     const texts = content.split("\n").map((item, index) => {
@@ -192,7 +206,6 @@ const CreateDay = () => {
     });
     return <div>{texts}</div>;
   };
-  console.log(formValue);
 
   return (
     <>
@@ -212,9 +225,9 @@ const CreateDay = () => {
             sx={{ width: "100%", marginBottom: 4 }}
           >
             <Box component="div" display={"flex"}>
-              <Avatar src={""} sx={{ width: 25, height: 25 }}></Avatar>
+              <Avatar src={imageSrc} sx={{ width: 50, height: 50 }}></Avatar>
               <Typography variant="subtitle1" align="center" marginLeft={2}>
-                Author Name
+                {profile?.nickname}
               </Typography>
             </Box>
             <BackButton />

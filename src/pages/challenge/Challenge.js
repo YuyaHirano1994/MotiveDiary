@@ -21,6 +21,9 @@ import BackButton from "../../components/BackButton";
 
 const Challenge = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const [session, setSession] = useRecoilState(sessionState);
+  const user = session.session?.user || null;
 
   const [challenge, setChallenge] = useState({
     challenge_id: "",
@@ -33,12 +36,9 @@ const Challenge = () => {
     created_at: "",
     updated_at: "",
   });
-
+  const [profile, setProfile] = useState();
+  const [imageSrc, setImageSrc] = useState();
   const [days, setDays] = useState([]);
-
-  const navigate = useNavigate();
-  const [session, setSession] = useRecoilState(sessionState);
-  const user = session.session?.user || null;
 
   const getChallenge = async () => {
     try {
@@ -54,7 +54,6 @@ const Challenge = () => {
     }
   };
 
-  // dayデータ取得
   const getDays = async () => {
     try {
       const { data, error } = await supabase
@@ -63,23 +62,51 @@ const Challenge = () => {
         .eq("challenge_id", id)
         .order("date", { ascending: false });
 
-      console.log(data.length); //２件あれば２日目までのデータが実質登録されていることになる
       setDays(data);
     } catch (error) {}
+  };
+
+  const getProfile = async () => {
+    try {
+      const { data, error } = await supabase.from("profile").select("*").eq("user_id", challenge.user_id);
+      if (error) {
+        throw error;
+      }
+      setProfile({ ...profile, ...data[0] });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAvatar = async () => {
+    let filePath = profile.avatar_url;
+    const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
+    if (data) {
+      const imageUrl = data.publicUrl;
+      setImageSrc(imageUrl);
+    } else {
+      setImageSrc("");
+    }
   };
 
   useEffect(() => {
     getChallenge();
     getDays();
-  }, [user]);
+  }, []);
+
+  useEffect(() => {
+    getProfile();
+  }, [challenge]);
+
+  useEffect(() => {
+    getAvatar();
+  }, [profile]);
 
   const backHome = () => {
     navigate(-1);
   };
 
   const handleDelete = async () => {
-    console.log(challenge.challenge_id);
-
     if (user.id === challenge.user_id) {
       try {
         if (window.confirm("削除しますか? Dayデータも同時にすべて削除されます。")) {
@@ -95,8 +122,6 @@ const Challenge = () => {
             throw error;
           }
 
-          console.log(data);
-          console.log(data2);
           console.log("Delete your challenge Success");
           navigate("/mypage");
         } else {
@@ -168,9 +193,9 @@ const Challenge = () => {
             sx={{ width: "100%", marginBottom: 4 }}
           >
             <Box component="div" display={"flex"}>
-              <Avatar src={""} sx={{ width: 25, height: 25 }}></Avatar>
+              <Avatar src={imageSrc} sx={{ width: 50, height: 50 }}></Avatar>
               <Typography variant="subtitle1" align="center" marginLeft={2}>
-                Author Name
+                {profile?.nickname}
               </Typography>
             </Box>
             {checkUser()}
