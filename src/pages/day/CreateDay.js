@@ -209,7 +209,7 @@ const CreateDay = () => {
 
   return (
     <>
-      <Container component="main" maxWidth="md">
+      <Container component="main" maxWidth="md" sx={{ mt: 2, mb: 2, border: "1px solid grey", borderRadius: 3 }}>
         <Box
           sx={{
             marginTop: 4,
@@ -226,18 +226,18 @@ const CreateDay = () => {
           >
             <Box component="div" display={"flex"}>
               <Avatar src={imageSrc} sx={{ width: 50, height: 50 }}></Avatar>
-              <Typography variant="subtitle1" align="center" marginLeft={2}>
+              <Typography variant="subtitle1" align="center" sx={{ ml: 2, pt: 1 }}>
                 {profile?.nickname}
               </Typography>
             </Box>
             <BackButton />
           </Box>
           <Box align="center" sx={{ width: "100%", marginBottom: 4 }}>
+            <Typography variant="h3" align="left" sx={{ mt: 2 }}>
+              {challenge.title}
+            </Typography>
             <Typography variant="h5" align="left">
               {challenge.start_date}~{challenge.end_date}
-            </Typography>
-            <Typography variant="h3" align="left" sx={{ marginBottom: 2 }}>
-              {challenge.title}
             </Typography>
             <hr />
             <Typography variant="h6" align="left" sx={{ marginLeft: 2 }}>

@@ -201,16 +201,15 @@ const Challenge = () => {
             {checkUser()}
           </Box>
           <Box align="center" sx={{ width: "100%", mb: 4 }}>
-            <Typography variant="h3" align="left" sx={{ mt: 2, fontFamily: "Arial" }}>
+            <Typography variant="h3" align="left" sx={{ mt: 2 }}>
               {challenge.title}
             </Typography>
             <Typography variant="h5" align="left">
               {challenge.start_date}~{challenge.end_date}
             </Typography>
             <hr />
-            <Typography variant="h6" align="left" sx={{ marginLeft: 2 }}>
-              {changeFormat(challenge.desc)}
-              {/* {challenge.desc} */}
+            <Typography variant="h6" align="left" sx={{ ml: 2 }}>
+              {changeFormat(challenge?.desc)}
             </Typography>
             <hr />
           </Box>

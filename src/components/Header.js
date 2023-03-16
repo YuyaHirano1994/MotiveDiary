@@ -108,7 +108,7 @@ const Header = () => {
               {user?.id ? (
                 <>
                   <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
-                    <Button variant="contained">
+                    <Button variant="contained" size="small">
                       <Link to={"/day/create/none"}>Register Day</Link>
                     </Button>
                     <Tooltip title="Profile">
