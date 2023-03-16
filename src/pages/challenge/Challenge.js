@@ -177,7 +177,7 @@ const Challenge = () => {
 
   return (
     <>
-      <Container component="main" maxWidth="md">
+      <Container component="main" maxWidth="md" sx={{ mt: 2, mb: 2, border: "1px solid grey", borderRadius: 3 }}>
         <Box
           sx={{
             marginTop: 4,
@@ -194,24 +194,25 @@ const Challenge = () => {
           >
             <Box component="div" display={"flex"}>
               <Avatar src={imageSrc} sx={{ width: 50, height: 50 }}></Avatar>
-              <Typography variant="subtitle1" align="center" marginLeft={2}>
+              <Typography variant="subtitle1" align="center" sx={{ ml: 2, pt: 1 }}>
                 {profile?.nickname}
               </Typography>
             </Box>
             {checkUser()}
           </Box>
-          <Box align="center" sx={{ width: "100%", marginBottom: 4 }}>
+          <Box align="center" sx={{ width: "100%", mb: 4 }}>
+            <Typography variant="h3" align="left" sx={{ mt: 2, fontFamily: "Arial" }}>
+              {challenge.title}
+            </Typography>
             <Typography variant="h5" align="left">
               {challenge.start_date}~{challenge.end_date}
-            </Typography>
-            <Typography variant="h3" align="left" sx={{ marginBottom: 2, fontFamily: "Arial" }}>
-              {challenge.title}
             </Typography>
             <hr />
             <Typography variant="h6" align="left" sx={{ marginLeft: 2 }}>
               {changeFormat(challenge.desc)}
               {/* {challenge.desc} */}
             </Typography>
+            <hr />
           </Box>
           <Box display="flex" justifyContent={"space-between"} sx={{ width: "100%", marginBottom: 4 }}>
             <Button variant="contained">#{challenge.category}</Button>

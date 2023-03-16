@@ -98,7 +98,7 @@ const CreateDay = () => {
       console.log("Data fetch Success");
       setChallenge(data[0]);
     } catch (error) {
-      alert("Database error");
+      console.log("Data fetch Error");
       console.log(error.error_description || error.message);
     }
   };
