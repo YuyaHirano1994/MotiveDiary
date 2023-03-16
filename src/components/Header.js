@@ -87,7 +87,7 @@ const Header = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" sx={{ padding: `0 100px` }}>
+        <AppBar position="static" sx={{ padding: `0 100px`, height: "60px" }}>
           {user?.id ? (
             <>
               <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
@@ -177,7 +177,7 @@ const Header = () => {
                 </Link>
               </Typography>
               <div style={{ flexGrow: 1 }}></div>
-              <Button variant="outlined">
+              <Button variant="contained">
                 <Link to={"user/signin"}>Sign In</Link>
               </Button>
             </Box>

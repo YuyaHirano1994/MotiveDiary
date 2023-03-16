@@ -185,17 +185,14 @@ const MyPage = () => {
               </Select>
             </FormControl>
           </Box>
-          <Box
-            component="div"
-            sx={{ width: "100%", backgroundColor: "grey", color: "white", mt: 4, mb: 4, borderRadius: 3 }}
-          >
+          <Box component="div" sx={{ width: "100%", mt: 4, mb: 4, borderRadius: 3, border: "1px solid black" }}>
             {challenges.map((challenge) => (
               <Box
                 component="div"
                 key={challenge.challenge_id}
                 display={"flex"}
                 justifyContent="space-between"
-                sx={{ p: 2, borderBottom: "1px solid white" }}
+                sx={{ p: 2, borderBottom: "1px solid grey" }}
               >
                 <Box component="div" width={500} sx={{}}>
                   <Typography variant="h5">{challenge.title}</Typography>

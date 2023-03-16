@@ -204,7 +204,7 @@ const Challenge = () => {
             <Typography variant="h5" align="left">
               {challenge.start_date}~{challenge.end_date}
             </Typography>
-            <Typography variant="h3" align="left" sx={{ marginBottom: 2 }}>
+            <Typography variant="h3" align="left" sx={{ marginBottom: 2, fontFamily: "Arial" }}>
               {challenge.title}
             </Typography>
             <hr />
