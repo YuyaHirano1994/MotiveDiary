@@ -132,11 +132,11 @@ const MyPage = () => {
             </Box>
             <Box component="div" sx={{ mt: 2, ml: 2, width: "100%" }}>
               <Typography variant="h4">{profile.nickname}</Typography>
-              <Typography variant="subtitle1" sx={{ ml: 2 }}>
+              <Typography variant="subtitle1" sx={{ ml: 1 }}>
                 {profile.comment}
               </Typography>
               <Link to={"/mypage/setting"}>
-                <Button size="small">Setting</Button>
+                <Button size="small">Edit Profile</Button>
               </Link>
             </Box>
             <Box

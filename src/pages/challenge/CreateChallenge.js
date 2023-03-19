@@ -132,7 +132,7 @@ const CreateChallenge = () => {
                     <MenuItem value={"other"}>Other</MenuItem>
                   </Select>
                 </FormControl>
-                {hiddenEl ? (
+                {/* {hiddenEl ? (
                   <></>
                 ) : (
                   <TextField
@@ -151,7 +151,7 @@ const CreateChallenge = () => {
                     disabled={hiddenEl}
                     sx={{ width: "50%" }}
                   />
-                )}
+                )} */}
               </Box>
               <TextField
                 value={formValue.days}
