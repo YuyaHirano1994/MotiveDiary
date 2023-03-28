@@ -30,15 +30,12 @@ const styles = {
 
 const Home = () => {
   const [challenges, setChallenges] = useState([]);
-
   const getAllChallenges = async () => {
     try {
       const { data, error } = await supabase.from("home_challenge").select("*");
       if (error) {
         throw error;
       }
-      console.log(data);
-      console.log("Data fetch Success");
       setChallenges(data);
     } catch (error) {
       alert("Database error");

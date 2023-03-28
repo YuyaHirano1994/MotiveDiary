@@ -11,7 +11,9 @@ import { Avatar } from "@mui/material";
 
 /**
  *
- * @param {id} string // string
+ * @param {userID} string // string
+ * @param {width} string // number
+ * @param {height} string // number
  * @returns
  */
 
@@ -19,8 +21,6 @@ const UserIcon = (props) => {
   // props = userID,width,height
   const userID = props.userID;
   const [src, setSrc] = useState("");
-
-  console.log(userID);
 
   const getProfile = async () => {
     try {
@@ -36,7 +36,6 @@ const UserIcon = (props) => {
 
   const getAvatar = async () => {
     const userProfile = await getProfile();
-    console.log(userProfile);
     let filePath = userProfile.avatar_url;
     const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
     const imageUrl = data.publicUrl;
@@ -44,9 +43,8 @@ const UserIcon = (props) => {
   };
 
   useEffect(() => {
-    // getProfile()
     getAvatar();
-  }, []);
+  }, [userID]);
 
   return (
     <Avatar src={src} sx={{ width: props.width ? props.width : 120, height: props.height ? props.height : 120 }} />

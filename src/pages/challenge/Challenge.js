@@ -28,6 +28,7 @@ const Challenge = () => {
 
   const [challenge, setChallenge] = useState({
     challenge_id: "",
+    user_id: "",
     title: "",
     category: "",
     days: 0,
@@ -174,7 +175,7 @@ const Challenge = () => {
             sx={{ width: "100%", marginBottom: 4 }}
           >
             <Box component="div" display={"flex"}>
-              <UserIcon userID={user.id} width={50} height={50} />
+              <UserIcon userID={challenge.user_id} width={50} height={50} />
               <Typography variant="subtitle1" align="center" sx={{ ml: 2, pt: 1 }}>
                 {profile?.nickname}
               </Typography>

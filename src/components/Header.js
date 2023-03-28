@@ -30,14 +30,11 @@ const Header = () => {
   const [profile, setProfile] = useState({});
 
   const getProfile = async () => {
-    console.log("Header getProfile is reading");
     try {
       const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
-
       if (error) {
         throw error;
       }
-
       setProfile({ ...profile, ...data[0] });
     } catch (error) {
       console.log(error);

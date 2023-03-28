@@ -9,7 +9,6 @@ const SessionLoader = () => {
   const [session, setSession] = useRecoilState(sessionState);
 
   useEffect(() => {
-    console.log("sessionLoad is reading");
     const getSession = async () => {
       try {
         const { data, error } = await supabase.auth.getSession();
