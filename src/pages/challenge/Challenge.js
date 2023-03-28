@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { Box } from "@mui/system";
 import { Avatar, Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
 import BackButton from "../../components/BackButton";
+import UserIcon from "../../components/UserIcon";
 
 // const styles = {
 //   paperContainer: {
@@ -37,7 +38,6 @@ const Challenge = () => {
     updated_at: "",
   });
   const [profile, setProfile] = useState();
-  const [imageSrc, setImageSrc] = useState();
   const [days, setDays] = useState([]);
 
   const getChallenge = async () => {
@@ -78,17 +78,6 @@ const Challenge = () => {
     }
   };
 
-  const getAvatar = async () => {
-    let filePath = profile.avatar_url;
-    const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
-    if (data) {
-      const imageUrl = data.publicUrl;
-      setImageSrc(imageUrl);
-    } else {
-      setImageSrc("");
-    }
-  };
-
   useEffect(() => {
     getChallenge();
     getDays();
@@ -97,14 +86,6 @@ const Challenge = () => {
   useEffect(() => {
     getProfile();
   }, [challenge]);
-
-  useEffect(() => {
-    getAvatar();
-  }, [profile]);
-
-  const backHome = () => {
-    navigate(-1);
-  };
 
   const handleDelete = async () => {
     if (user.id === challenge.user_id) {
@@ -193,7 +174,7 @@ const Challenge = () => {
             sx={{ width: "100%", marginBottom: 4 }}
           >
             <Box component="div" display={"flex"}>
-              <Avatar src={imageSrc} sx={{ width: 50, height: 50 }}></Avatar>
+              <UserIcon userID={user.id} width={50} height={50} />
               <Typography variant="subtitle1" align="center" sx={{ ml: 2, pt: 1 }}>
                 {profile?.nickname}
               </Typography>

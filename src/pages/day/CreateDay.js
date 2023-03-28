@@ -1,18 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import image from "../../assets/images/Left hander-pana.svg";
 import supabase from "../../common/supabase";
 import { useRecoilState } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 import { Box, Container } from "@mui/system";
 import {
-  Avatar,
   Button,
   Card,
   CardActions,
   CardContent,
   FormControl,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -21,6 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import BackButton from "../../components/BackButton";
+import UserIcon from "../../components/UserIcon";
 
 const CreateDay = () => {
   const dt = new Date();
@@ -46,7 +44,6 @@ const CreateDay = () => {
 
   const [challenge, setChallenge] = useState([]);
   const [profile, setProfile] = useState();
-  const [imageSrc, setImageSrc] = useState();
 
   const [days, setDays] = useState([]);
 
@@ -115,17 +112,6 @@ const CreateDay = () => {
     }
   };
 
-  const getAvatar = async () => {
-    let filePath = profile.avatar_url;
-    const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
-    if (data) {
-      const imageUrl = data.publicUrl;
-      setImageSrc(imageUrl);
-    } else {
-      setImageSrc("");
-    }
-  };
-
   useEffect(() => {
     getChallenges();
     getChallenge();
@@ -135,10 +121,6 @@ const CreateDay = () => {
   useEffect(() => {
     getProfile();
   }, [challenge]);
-
-  useEffect(() => {
-    getAvatar();
-  }, [profile]);
 
   //パフォーマンスカス
   useEffect(() => {
@@ -225,12 +207,12 @@ const CreateDay = () => {
             sx={{ width: "100%", marginBottom: 4 }}
           >
             <Box component="div" display={"flex"}>
-              <Avatar src={imageSrc} sx={{ width: 50, height: 50 }}></Avatar>
+              <UserIcon userID={user.id} width={50} height={50} />
               <Typography variant="subtitle1" align="center" sx={{ ml: 2, pt: 1 }}>
                 {profile?.nickname}
               </Typography>
             </Box>
-            <BackButton />
+            <BackButton to="/mypage" />
           </Box>
           <Box align="center" sx={{ width: "100%", marginBottom: 4 }}>
             <Typography variant="h3" align="left" sx={{ mt: 2 }}>

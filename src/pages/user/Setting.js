@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
 import { useRecoilState } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";

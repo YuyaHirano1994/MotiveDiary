@@ -1,19 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  Table,
-  TableBody,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Button, FormControl, InputLabel, MenuItem, Select, TableRow, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import React, { useEffect, useState } from "react";
@@ -22,6 +7,7 @@ import { useRecoilState } from "recoil";
 import supabase from "../common/supabase";
 import { sessionState } from "../atom/sessionAtom";
 import { Container } from "@mui/system";
+import UserIcon from "../components/UserIcon";
 
 const styles = {
   paperContainer: {
@@ -80,31 +66,16 @@ const MyPage = () => {
       if (error) {
         throw error;
       }
-
       setProfile({ ...profile, ...data[0] });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [imageSrc, setImageSrc] = useState();
-
-  const getAvatar = async () => {
-    let filePath = profile.avatar_url;
-    console.log(filePath);
-    const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
-    const imageUrl = data.publicUrl;
-    setImageSrc(imageUrl);
-  };
-
   useEffect(() => {
     getYourChallenges();
     getProfile();
   }, []);
-
-  useEffect(() => {
-    getAvatar();
-  }, [profile]);
 
   const editDesc = (desc) => {
     if (desc.length >= 40) {
@@ -128,7 +99,7 @@ const MyPage = () => {
         >
           <Box component="div" display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
             <Box component="div">
-              <Avatar src={imageSrc} sx={{ width: 120, height: 120 }} />
+              <UserIcon userID={user.id} />
             </Box>
             <Box component="div" sx={{ mt: 2, ml: 2, width: "100%" }}>
               <Typography variant="h4">{profile.nickname}</Typography>

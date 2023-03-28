@@ -2,10 +2,10 @@ import { Button } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const BackButton = () => {
+const BackButton = (props) => {
   return (
     <Button variant="outlined">
-      <Link to={-1} className="button">
+      <Link to={props?.to ? props.to : -1} className="button">
         BACK
       </Link>
     </Button>

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import supabase from "../common/supabase";
+import { Avatar } from "@mui/material";
 
-// challenge_idからユーザー情報を検索し、ユーザーアイコンとネームをそのものを変えす
-// パラメーターは
-// challenge_id
+// user_id
 // width Size
 // height Size
 // 返り値はAvatarそのものを返す
@@ -16,7 +16,41 @@ import React from "react";
  */
 
 const UserIcon = (props) => {
-  return <div>{props.id}</div>;
+  // props = userID,width,height
+  const userID = props.userID;
+  const [src, setSrc] = useState("");
+
+  console.log(userID);
+
+  const getProfile = async () => {
+    try {
+      const { data, error } = await supabase.from("profile").select("*").eq("user_id", userID);
+      if (error) {
+        throw error;
+      }
+      return data[0];
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getAvatar = async () => {
+    const userProfile = await getProfile();
+    console.log(userProfile);
+    let filePath = userProfile.avatar_url;
+    const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
+    const imageUrl = data.publicUrl;
+    setSrc(imageUrl);
+  };
+
+  useEffect(() => {
+    // getProfile()
+    getAvatar();
+  }, []);
+
+  return (
+    <Avatar src={src} sx={{ width: props.width ? props.width : 120, height: props.height ? props.height : 120 }} />
+  );
 };
 
 export default UserIcon;

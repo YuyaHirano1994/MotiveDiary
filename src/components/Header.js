@@ -2,11 +2,9 @@ import { Logout, Settings } from "@mui/icons-material";
 import PersonIcon from "@mui/icons-material/Person";
 import {
   AppBar,
-  Avatar,
   Box,
   Button,
   Divider,
-  Grid,
   IconButton,
   ListItemIcon,
   Menu,
@@ -16,21 +14,21 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import ImportContactsSharpIcon from "@mui/icons-material/ImportContactsSharp";
 import { useNavigate, Link } from "react-router-dom";
 import supabase from "../common/supabase";
 import { useRecoilState } from "recoil";
 import { sessionState } from "../atom/sessionAtom";
 import { BsFillJournalBookmarkFill } from "react-icons/bs";
 import { Container } from "@mui/system";
+import UserIcon from "./UserIcon";
 
 const Header = () => {
   const navigate = useNavigate();
   const [session, setSession] = useRecoilState(sessionState);
   const user = session?.session?.user || null;
   const [anchorEl, setAnchorEl] = useState(null);
-
   const [profile, setProfile] = useState({});
+
   const getProfile = async () => {
     console.log("Header getProfile is reading");
     try {
@@ -46,27 +44,9 @@ const Header = () => {
     }
   };
 
-  const [imageSrc, setImageSrc] = useState();
-
-  const getAvatar = async () => {
-    let filePath = profile.avatar_url;
-    console.log(filePath);
-    const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
-    if (data) {
-      const imageUrl = data.publicUrl;
-      setImageSrc(imageUrl);
-    } else {
-      setImageSrc("");
-    }
-  };
-
   useEffect(() => {
     getProfile();
   }, [session]);
-
-  useEffect(() => {
-    getAvatar();
-  }, [profile]);
 
   const open = Boolean(anchorEl);
 
@@ -121,7 +101,7 @@ const Header = () => {
                           aria-haspopup="true"
                           aria-expanded={open ? "true" : undefined}
                         >
-                          <Avatar src={imageSrc} sx={{ width: 48, height: 48 }} />
+                          <UserIcon userID={user.id} width={48} height={48} />
                         </IconButton>
                       </Tooltip>
                     </Box>
