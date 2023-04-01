@@ -30,6 +30,7 @@ const UserIcon = (props) => {
       }
       return data[0];
     } catch (error) {
+      console.log("Avatar image cannot read");
       console.log(error);
     }
   };
