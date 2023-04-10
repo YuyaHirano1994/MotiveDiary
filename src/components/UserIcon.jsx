@@ -2,13 +2,6 @@ import React, { useState, useEffect } from "react";
 import supabase from "../common/supabase";
 import { Avatar } from "@mui/material";
 
-// user_id
-// width Size
-// height Size
-// 返り値はAvatarそのものを返す
-
-// sample: 6f9d6f2b-b5b5-435e-a403-d08b51235af6
-
 /**
  *
  * @param {userID} string // string
