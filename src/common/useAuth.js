@@ -6,7 +6,6 @@ export default function useAuth() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("useAuth is reading...");
     async function fetchAuthUser() {
       try {
         const { data: session, error } = await supabase.auth.getSession();

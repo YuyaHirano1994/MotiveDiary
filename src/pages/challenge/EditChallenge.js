@@ -29,10 +29,9 @@ const EditChallenge = () => {
   const getChallenge = async () => {
     try {
       const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id, "user_id", user.id);
-      // if (error) {
-      //   throw error;
-      // }
-      console.log("Data fetch Success");
+      if (error) {
+        throw error;
+      }
       setFormValue({ ...formValue, ...data[0] });
     } catch (error) {
       console.log(error.error_description || error.message);

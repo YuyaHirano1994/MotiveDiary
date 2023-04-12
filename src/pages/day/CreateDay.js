@@ -71,8 +71,6 @@ const CreateDay = () => {
         throw error;
       }
 
-      console.log("getChallenges fetch Success");
-
       if (id === "none") {
         setFormValue({ ...formValue, challenge_id: data[0].challenge_id });
       }
@@ -95,11 +93,8 @@ const CreateDay = () => {
       if (error) {
         throw error;
       }
-
-      console.log("Data fetch Success");
       setChallenge(data[0]);
     } catch (error) {
-      console.log("Data fetch Error");
       console.error(error);
     }
   };

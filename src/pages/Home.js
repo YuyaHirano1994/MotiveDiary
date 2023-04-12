@@ -27,7 +27,6 @@ const Home = () => {
       }
       setChallenges(data);
     } catch (error) {
-      alert("Database error");
       console.log(error.error_description || error.message);
     }
   };
@@ -78,6 +77,7 @@ const Home = () => {
                   {challenges.map((challenge) => (
                     <Box
                       component="div"
+                      key={challenge.challenge_id}
                       sx={{ pr: 1, pl: 1, mb: 2, backgroundColor: "white", border: "1px solid white", borderRadius: 2 }}
                     >
                       <Box component="div" display={"flex"} sx={{ mt: 2 }}>

@@ -44,10 +44,8 @@ const Challenge = () => {
       if (error) {
         throw error;
       }
-      console.log("Data fetch Success");
       setChallenge({ ...challenge, ...data[0] });
     } catch (error) {
-      alert("Database error");
       console.log(error.error_description || error.message);
     }
   };
@@ -100,8 +98,6 @@ const Challenge = () => {
           if (error || error2) {
             throw error;
           }
-
-          console.log("Delete your challenge Success");
           navigate("/mypage");
         } else {
           return;

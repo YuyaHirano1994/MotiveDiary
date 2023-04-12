@@ -23,12 +23,7 @@ import useAuth from "../common/useAuth";
 
 const MyPage = () => {
   const [challenges, setChallenges] = useState([]);
-  // const [session, setSession] = useRecoilState(sessionState);
   const { user, error } = useAuth();
-
-  console.log("user", user, "error", error);
-
-  // const user = session.session?.user || null;
 
   const getYourChallenges = async () => {
     try {
@@ -36,7 +31,6 @@ const MyPage = () => {
       if (error) {
         throw error;
       }
-      console.log("Data fetch Success");
       setChallenges(data);
     } catch (error) {
       console.log(error.error_description || error.message);
