@@ -14,8 +14,6 @@ const SignIn = () => {
   const [isPassError, setIsPassError] = useState(false);
   const [session, setSession] = useRecoilState(sessionState);
 
-  // const auth = SessionLoader();
-
   const navigate = useNavigate();
 
   const regex = new RegExp(/^[0-9a-zA-Z]*$/);

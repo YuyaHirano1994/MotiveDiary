@@ -14,14 +14,13 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import EditDay from "./pages/day/EditDay";
 import Setting from "./pages/user/Setting";
-import SessionLoader from "./common/SessionLoader";
 import { sessionState } from "./atom/sessionAtom";
+import useAuth from "./common/useAuth";
 
 const App = () => {
+  const { user, error } = useAuth();
+
   const NotSignedRoute = ({ children }) => {
-    const [session, setSession] = useRecoilState(sessionState);
-    const user = session.session?.user;
-    console.log(user);
     if (user) {
       return <Navigate to="/home" />;
     } else {
@@ -30,9 +29,6 @@ const App = () => {
   };
 
   const SignedRoute = ({ children }) => {
-    const [session, setSession] = useRecoilState(sessionState);
-    const user = session.session?.user;
-    console.log(user);
     if (user) {
       return children;
     } else {
@@ -43,7 +39,6 @@ const App = () => {
   return (
     <RecoilRoot>
       <BrowserRouter>
-        <SessionLoader />
         <Header />
         <Routes>
           <Route path="/home" element={<Home />} />

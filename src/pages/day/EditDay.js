@@ -25,8 +25,13 @@ const EditDay = () => {
       const { data, error } = await supabase
         .from("day")
         .select("*")
-        .eq("day_id", day_id, "challenge_id", id, "user_id", user.id);
-      setFormValue({ ...formValue, ...data[0] });
+        .eq("day_id", day_id)
+        .eq("challenge_id", id)
+        .eq("user_id", user.id);
+
+      if (data.length > 0) {
+        setFormValue((formValue) => ({ ...formValue, ...data[0] }));
+      }
     } catch (error) {}
   };
 
@@ -47,7 +52,6 @@ const EditDay = () => {
     e.preventDefault();
     const now = new Date();
     try {
-      console.log("user: " + user.id);
       const { error } = await supabase
         .from("day")
         .update([
@@ -57,7 +61,10 @@ const EditDay = () => {
             updated_at: now,
           },
         ])
-        .eq("day_id", formValue.day_id, "challenge_id", formValue.challenge_id, "user_id", user.id);
+        .eq("day_id", formValue.day_id)
+        .eq("challenge_id", formValue.challenge_id)
+        .eq("user_id", user.id);
+
       if (error) {
         throw error;
       }

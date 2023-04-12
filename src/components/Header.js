@@ -16,8 +16,6 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import supabase from "../common/supabase";
-import { useRecoilState } from "recoil";
-import { sessionState } from "../atom/sessionAtom";
 import { BsFillJournalBookmarkFill } from "react-icons/bs";
 import { Container } from "@mui/system";
 import UserIcon from "./UserIcon";
@@ -42,7 +40,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    getProfile();
+    if (user) {
+      getProfile();
+    } else {
+    }
   }, [user]);
 
   const open = Boolean(anchorEl);

@@ -20,11 +20,12 @@ import UserIcon from "../../components/UserIcon";
 import useAuth from "../../common/useAuth";
 
 const CreateDay = () => {
-  const dt = new Date();
-  var y = dt.getFullYear();
-  var m = ("00" + (dt.getMonth() + 1)).slice(-2);
-  var d = ("00" + dt.getDate()).slice(-2);
-  var today = `${y}-${m}-${d}`;
+  function formatDate(date) {
+    const y = date.getFullYear();
+    const m = ("00" + (date.getMonth() + 1)).slice(-2);
+    const d = ("00" + date.getDate()).slice(-2);
+    return `${y}-${m}-${d}`;
+  }
   const { id } = useParams(); //challengeID
   const navigate = useNavigate();
   const { user, error } = useAuth();
@@ -32,12 +33,13 @@ const CreateDay = () => {
     day_id: "",
     challenge_id: id,
     user_id: "",
-    date: today,
+    date: formatDate(new Date()),
     day: 0,
     content: "",
     created_at: "",
     updated_at: "",
   });
+  const [challenges, setChallenges] = useState([]);
   const [challenge, setChallenge] = useState([]);
   const [profile, setProfile] = useState();
   const [days, setDays] = useState([]);
@@ -49,30 +51,35 @@ const CreateDay = () => {
       const { data, error } = await supabase
         .from("day")
         .select("*")
-        .eq("challenge_id", formValue.challenge_id, "user_id", user.id)
+        .eq("challenge_id", formValue.challenge_id)
+        .eq("user_id", user.id)
         .order("date", { ascending: false });
 
       setMaxDay(data.length);
       setDays(data);
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // challengeデータ取得
-  const [challenges, setChallenges] = useState([]);
-
   const getChallenges = async () => {
     try {
       const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", user.id);
+
       if (error) {
         throw error;
       }
+
       console.log("getChallenges fetch Success");
+
       if (id === "none") {
         setFormValue({ ...formValue, challenge_id: data[0].challenge_id });
       }
+
       setChallenges(data);
     } catch (error) {
-      console.log(error.error_description || error.message);
+      console.error(error);
     }
   };
 
@@ -82,45 +89,51 @@ const CreateDay = () => {
       const { data, error } = await supabase
         .from("challenge")
         .select("*")
-        .eq("challenge_id", formValue.challenge_id, "user_id", user.id);
+        .eq("challenge_id", formValue.challenge_id)
+        .eq("user_id", user.id);
+
       if (error) {
         throw error;
       }
+
       console.log("Data fetch Success");
       setChallenge(data[0]);
     } catch (error) {
       console.log("Data fetch Error");
-      console.log(error.error_description || error.message);
+      console.error(error);
     }
   };
 
   const getProfile = async () => {
     try {
-      const { data, error } = await supabase.from("profile").select("*").eq("user_id", challenge.user_id);
+      const { data, error } = await supabase.from("profile").select("*").eq("user_id", challenge?.user_id);
+
       if (error) {
         throw error;
       }
-      setProfile({ ...profile, ...data[0] });
+
+      setProfile((profile) => ({ ...profile, ...data[0] }));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    getChallenges();
-    getChallenge();
-    getDays();
+    if (user) {
+      getChallenges();
+    }
   }, [user]);
 
   useEffect(() => {
-    getProfile();
+    if (challenge) {
+      getProfile();
+    }
   }, [challenge]);
 
-  //パフォーマンスカス
   useEffect(() => {
     getChallenge();
     getDays();
-  }, [formValue]);
+  }, [formValue.challenge_id, user]);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -246,7 +259,7 @@ const CreateDay = () => {
           {/* <img src={image} width="240" height="240" alt="ホームアイコン" /> */}
           <br />
           <TextField
-            value={formValue.date || today}
+            value={formValue.date || formatDate(new Date())}
             onChange={handleChange}
             margin="normal"
             required

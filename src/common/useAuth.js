@@ -10,7 +10,6 @@ export default function useAuth() {
     async function fetchAuthUser() {
       try {
         const { data: session, error } = await supabase.auth.getSession();
-        console.log(session.session.user);
         setUser(session?.session?.user ?? null);
         setError(null);
       } catch (error) {
@@ -20,13 +19,16 @@ export default function useAuth() {
     }
     fetchAuthUser();
 
-    // const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-    //   setUser(session?.user ?? null);
-    // });
-
-    // return () => {
-    //   authListener?.unsubscribe();
-    // };
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === "SIGNED_OUT") {
+        setUser(null);
+        if (authListener) {
+          authListener.unsubscribe();
+        }
+      } else {
+        setUser(session?.user ?? null);
+      }
+    });
   }, []);
 
   return { user, error };
