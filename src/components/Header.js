@@ -21,11 +21,11 @@ import { sessionState } from "../atom/sessionAtom";
 import { BsFillJournalBookmarkFill } from "react-icons/bs";
 import { Container } from "@mui/system";
 import UserIcon from "./UserIcon";
+import useAuth from "../common/useAuth";
 
 const Header = () => {
   const navigate = useNavigate();
-  const [session, setSession] = useRecoilState(sessionState);
-  const user = session?.session?.user || null;
+  const { user, error } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [profile, setProfile] = useState({});
 
@@ -43,7 +43,7 @@ const Header = () => {
 
   useEffect(() => {
     getProfile();
-  }, [session]);
+  }, [user]);
 
   const open = Boolean(anchorEl);
 
@@ -58,8 +58,6 @@ const Header = () => {
   const signOut = async () => {
     const { error } = await supabase.auth.signOut();
     console.log(error);
-    setProfile({});
-    setSession({});
     navigate("/user/signin");
   };
 

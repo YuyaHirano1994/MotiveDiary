@@ -1,15 +1,4 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Container,
-  Grid,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Button, Container, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";

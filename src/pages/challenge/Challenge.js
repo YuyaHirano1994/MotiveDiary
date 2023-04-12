@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import supabase from "../../common/supabase";
-import { BsFillTrashFill, BsFillPencilFill } from "react-icons/bs";
-import { sessionState } from "../../atom/sessionAtom";
-import { useRecoilState } from "recoil";
 import { Box } from "@mui/system";
-import { Avatar, Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
 import BackButton from "../../components/BackButton";
 import UserIcon from "../../components/UserIcon";
+import useAuth from "../../common/useAuth";
 
 // const styles = {
 //   paperContainer: {
@@ -23,8 +21,7 @@ import UserIcon from "../../components/UserIcon";
 const Challenge = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [session, setSession] = useRecoilState(sessionState);
-  const user = session.session?.user || null;
+  const { user, error } = useAuth();
 
   const [challenge, setChallenge] = useState({
     challenge_id: "",

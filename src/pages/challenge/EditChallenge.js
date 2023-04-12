@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
-import SessionLoader from "../../common/SessionLoader";
-import { sessionState } from "../../atom/sessionAtom";
-import { useRecoilState } from "recoil";
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import BackButton from "../../components/BackButton";
+import useAuth from "../../common/useAuth";
 
 const EditChallenge = () => {
   const { id } = useParams();
-  const [session, setSession] = useRecoilState(sessionState);
-  const user = session.session?.user || null;
+  const { user, error } = useAuth();
   const [showCategory, setShowCategory] = useState("");
   const [hiddenEl, setHiddenEl] = useState(true);
 
@@ -32,23 +29,20 @@ const EditChallenge = () => {
   const getChallenge = async () => {
     try {
       const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id, "user_id", user.id);
-      if (error) {
-        throw error;
-      }
+      // if (error) {
+      //   throw error;
+      // }
       console.log("Data fetch Success");
       setFormValue({ ...formValue, ...data[0] });
     } catch (error) {
-      alert("Database error");
       console.log(error.error_description || error.message);
     }
   };
 
-  console.log(formValue.category);
-
   useEffect(() => {
     getChallenge();
     setShowCategory(formValue.category);
-  }, []);
+  }, [user]);
 
   const handleChange = (e) => {
     e.preventDefault();

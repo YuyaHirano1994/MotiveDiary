@@ -8,42 +8,27 @@ import supabase from "../common/supabase";
 import { sessionState } from "../atom/sessionAtom";
 import { Container } from "@mui/system";
 import UserIcon from "../components/UserIcon";
+import useAuth from "../common/useAuth";
 
-const styles = {
-  paperContainer: {
-    backgroundImage: `url("https://source.unsplash.com/random/")`,
-    backgroundSize: `cover`,
-    width: `100%`,
-    height: `100px`,
-    backgroundRepeat: `no-repeat`,
-    textAlign: `center`,
-  },
-};
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  "&:nth-of-type(odd)": {
-    backgroundColor: theme.palette.action.hover,
-  },
-  // hide last border
-  "&:last-child td, &:last-child th": {
-    border: 0,
-  },
-}));
+// const styles = {
+//   paperContainer: {
+//     backgroundImage: `url("https://source.unsplash.com/random/")`,
+//     backgroundSize: `cover`,
+//     width: `100%`,
+//     height: `100px`,
+//     backgroundRepeat: `no-repeat`,
+//     textAlign: `center`,
+//   },
+// };
 
 const MyPage = () => {
   const [challenges, setChallenges] = useState([]);
-  const [session, setSession] = useRecoilState(sessionState);
-  const user = session.session?.user || null;
+  // const [session, setSession] = useRecoilState(sessionState);
+  const { user, error } = useAuth();
+
+  console.log("user", user, "error", error);
+
+  // const user = session.session?.user || null;
 
   const getYourChallenges = async () => {
     try {
@@ -75,7 +60,7 @@ const MyPage = () => {
   useEffect(() => {
     getYourChallenges();
     getProfile();
-  }, []);
+  }, [user]);
 
   const editDesc = (desc) => {
     if (desc.length >= 40) {
@@ -99,7 +84,7 @@ const MyPage = () => {
         >
           <Box component="div" display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
             <Box component="div">
-              <UserIcon userID={user.id} />
+              <UserIcon userID={user?.id} />
             </Box>
             <Box component="div" sx={{ mt: 2, ml: 2, width: "100%" }}>
               <Typography variant="h4">{profile.nickname}</Typography>

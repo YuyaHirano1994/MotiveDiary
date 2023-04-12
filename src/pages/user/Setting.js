@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
-import { useRecoilState } from "recoil";
-import { sessionState } from "../../atom/sessionAtom";
 import { Box, Container } from "@mui/system";
 import { Avatar, Button, TextField, Typography } from "@mui/material";
+import useAuth from "../../common/useAuth";
 
 const Setting = () => {
   const navigate = useNavigate();
-  const [session, setSession] = useRecoilState(sessionState);
-  const user = session.session?.user || null;
+  const { user, error } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [formValue, setFormValue] = useState({});
   const [imageSrc, setImageSrc] = useState();
@@ -19,16 +17,12 @@ const Setting = () => {
     filename: "",
   });
 
-  console.log(avatar);
-
   const getProfile = async () => {
     try {
       const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
-
       if (error) {
         throw error;
       }
-
       setFormValue({ ...formValue, ...data[0] });
       setIsLoading(true);
     } catch (error) {
@@ -46,7 +40,7 @@ const Setting = () => {
 
   useEffect(() => {
     getProfile();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     getAvatar();
@@ -86,8 +80,6 @@ const Setting = () => {
       alert("error");
     }
   };
-
-  console.log(avatar);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

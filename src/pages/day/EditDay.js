@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
-import SessionLoader from "../../common/SessionLoader";
-import { sessionState } from "../../atom/sessionAtom";
-import { useRecoilState } from "recoil";
 import { Box, Button, Container, TextareaAutosize, TextField, Typography } from "@mui/material";
 import BackButton from "../../components/BackButton";
+import useAuth from "../../common/useAuth";
 
 const EditDay = () => {
   const { id, day_id } = useParams();
   const navigate = useNavigate();
-  const [session, setSession] = useRecoilState(sessionState);
-  const user = session.session?.user || null;
-
+  const { user, error } = useAuth();
   const [formValue, setFormValue] = useState({
     day_id: "",
     challenge_id: "",
@@ -37,7 +33,7 @@ const EditDay = () => {
   useEffect(() => {
     // getChallenge();
     getDay();
-  }, []);
+  }, [user]);
 
   const handleChange = (e) => {
     e.preventDefault();

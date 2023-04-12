@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
-import SessionLoader from "../../common/SessionLoader";
-import { sessionState } from "../../atom/sessionAtom";
-import { useRecoilState } from "recoil";
 import { Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from "@mui/material";
-import Challenge from "./Challenge";
 import { Box, Container } from "@mui/system";
+import useAuth from "../../common/useAuth";
 
 const CreateChallenge = () => {
   const dt = new Date();
@@ -28,8 +25,7 @@ const CreateChallenge = () => {
   });
 
   const navigate = useNavigate();
-  const [session, setSession] = useRecoilState(sessionState);
-  const user = session.session?.user || null;
+  const { user, error } = useAuth();
   const [showCategory, setShowCategory] = useState("");
   const [hiddenEl, setHiddenEl] = useState(true);
 

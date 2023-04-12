@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import supabase from "../../common/supabase";
-import { useRecoilState } from "recoil";
-import { sessionState } from "../../atom/sessionAtom";
 import { Box, Container } from "@mui/system";
 import {
   Button,
@@ -19,6 +17,7 @@ import {
 } from "@mui/material";
 import BackButton from "../../components/BackButton";
 import UserIcon from "../../components/UserIcon";
+import useAuth from "../../common/useAuth";
 
 const CreateDay = () => {
   const dt = new Date();
@@ -26,11 +25,9 @@ const CreateDay = () => {
   var m = ("00" + (dt.getMonth() + 1)).slice(-2);
   var d = ("00" + dt.getDate()).slice(-2);
   var today = `${y}-${m}-${d}`;
-  const { id } = useParams();
+  const { id } = useParams(); //challengeID
   const navigate = useNavigate();
-  const [session, setSession] = useRecoilState(sessionState);
-  const user = session.session?.user || null;
-
+  const { user, error } = useAuth();
   const [formValue, setFormValue] = useState({
     day_id: "",
     challenge_id: id,
@@ -41,12 +38,9 @@ const CreateDay = () => {
     created_at: "",
     updated_at: "",
   });
-
   const [challenge, setChallenge] = useState([]);
   const [profile, setProfile] = useState();
-
   const [days, setDays] = useState([]);
-
   const [maxDay, setMaxDay] = useState("");
 
   // dayデータ取得
@@ -116,7 +110,7 @@ const CreateDay = () => {
     getChallenges();
     getChallenge();
     getDays();
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     getProfile();
@@ -207,7 +201,7 @@ const CreateDay = () => {
             sx={{ width: "100%", marginBottom: 4 }}
           >
             <Box component="div" display={"flex"}>
-              <UserIcon userID={user.id} width={50} height={50} />
+              <UserIcon userID={user?.id} width={50} height={50} />
               <Typography variant="subtitle1" align="center" sx={{ ml: 2, pt: 1 }}>
                 {profile?.nickname}
               </Typography>
