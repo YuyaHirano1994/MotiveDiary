@@ -171,7 +171,35 @@ const CreateDay = () => {
       alert("Create your challenge Success");
       setFormValue({ ...formValue, date: "", content: "" });
       getDays();
+      /* 登録したデータが目標最終日だった場合、Challengeデータを更新する。 */
+      if (challenge.days === maxDay + 1) {
+        completedChallenge();
+      }
+
       navigate(`/day/create/${id}`);
+    } catch (error) {
+      alert("Failed");
+      console.log(error);
+    }
+  };
+
+  const completedChallenge = async () => {
+    console.log("reading comleted udate");
+    try {
+      const { error } = await supabase
+        .from("challenge")
+        .update([
+          {
+            completed: true,
+            updated_at: new Date(),
+          },
+        ])
+        .eq("challenge_id", formValue.challenge_id);
+      if (error) {
+        throw error;
+      }
+      alert("Completed your Challenge! Nice work!");
+      navigate("/mypage");
     } catch (error) {
       alert("Failed");
       console.log(error);
@@ -247,7 +275,9 @@ const CreateDay = () => {
               onChange={handleChange}
             >
               {challenges.map((challenge) => (
-                <MenuItem value={challenge.challenge_id}>{challenge.title}</MenuItem>
+                <MenuItem value={challenge.challenge_id} key={challenge.challenge_id}>
+                  {challenge.title}
+                </MenuItem>
               ))}
             </Select>
           </FormControl>

@@ -22,7 +22,9 @@ import useAuth from "../common/useAuth";
 // };
 
 const MyPage = () => {
-  const [challenges, setChallenges] = useState([]);
+  const [notCompletedChallenges, setNotCompletedChallenges] = useState([]);
+  const [completedChallenges, setCompletedChallenges] = useState([]);
+
   const { user, error } = useAuth();
 
   const getYourChallenges = async () => {
@@ -31,7 +33,8 @@ const MyPage = () => {
       if (error) {
         throw error;
       }
-      setChallenges(data);
+      setNotCompletedChallenges(data.filter((challenge) => challenge.completed === false));
+      setCompletedChallenges(data.filter((challenge) => challenge.completed === true));
     } catch (error) {
       console.log(error.error_description || error.message);
     }
@@ -52,8 +55,10 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    getYourChallenges();
-    getProfile();
+    if (user) {
+      getYourChallenges();
+      getProfile();
+    }
   }, [user]);
 
   const editDesc = (desc) => {
@@ -125,18 +130,46 @@ const MyPage = () => {
           }}
         >
           <Box component="div" display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
-            <Typography variant="h4">Diary</Typography>
-            <FormControl sx={{ minWidth: "150px" }}>
-              <InputLabel id="demo-simple-select-label">仮置</InputLabel>
-              <Select labelId="demo-simple-select-label" id="demo-simple-select" label="Age">
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </FormControl>
+            <Typography variant="h5">Challenging</Typography>
           </Box>
-          <Box component="div" sx={{ width: "100%", mt: 4, mb: 4, borderRadius: 3, border: "1px solid black" }}>
-            {challenges.map((challenge) => (
+          <Box component="div" sx={{ width: "100%", mt: 1, mb: 4, borderRadius: 3, border: "1px solid black" }}>
+            {notCompletedChallenges.map((challenge) => (
+              <Box
+                component="div"
+                key={challenge.challenge_id}
+                display={"flex"}
+                justifyContent="space-between"
+                sx={{ p: 2, borderBottom: "1px solid grey" }}
+              >
+                <Box component="div" width={500} sx={{}}>
+                  <Typography variant="h5">{challenge.title}</Typography>
+                  <Typography variant="subtitle1">
+                    {challenge.start_date} ~ {challenge.end_date}
+                  </Typography>
+                </Box>
+                <Box component="div" width={200} display="flex" align="left" sx={{}}>
+                  <Button>
+                    <Link to={"/day/create/" + challenge.challenge_id}>Write</Link>
+                  </Button>
+                  <Button>
+                    <Link to={"/challenge/" + challenge.challenge_id}>More detail...</Link>
+                  </Button>
+                </Box>
+                <Box component="div" display="flex" width={100} sx={{}}>
+                  {/* {editDesc(challenge.desc)} */}
+                  <Typography variant="h5">
+                    <Typography variant="subtitle1">day</Typography>
+                    {challenge.day ? challenge.day : 0} / {challenge.days}{" "}
+                  </Typography>
+                </Box>
+              </Box>
+            ))}
+          </Box>
+          <Box component="div" display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
+            <Typography variant="h5">Achieved</Typography>
+          </Box>
+          <Box component="div" sx={{ width: "100%", mt: 1, mb: 4, borderRadius: 3, border: "1px solid black" }}>
+            {completedChallenges.map((challenge) => (
               <Box
                 component="div"
                 key={challenge.challenge_id}

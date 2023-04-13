@@ -37,6 +37,9 @@ const UserIcon = (props) => {
   };
 
   useEffect(() => {
+    if (!userID) {
+      return;
+    }
     getAvatar();
   }, [userID]);
 

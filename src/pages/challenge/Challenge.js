@@ -6,6 +6,7 @@ import { Button, Card, CardActions, CardContent, Container, Typography } from "@
 import BackButton from "../../components/BackButton";
 import UserIcon from "../../components/UserIcon";
 import useAuth from "../../common/useAuth";
+import { DialogModal } from "../../common/DialogModal";
 
 // const styles = {
 //   paperContainer: {
@@ -22,7 +23,7 @@ const Challenge = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user, error } = useAuth();
-
+  const [modalConfig, setModalConfig] = useState();
   const [challenge, setChallenge] = useState({
     challenge_id: "",
     user_id: "",
@@ -80,33 +81,41 @@ const Challenge = () => {
   }, []);
 
   useEffect(() => {
-    getProfile();
+    if (challenge.user_id) {
+      getProfile();
+    }
   }, [challenge]);
 
-  const handleDelete = async () => {
-    if (user.id === challenge.user_id) {
+  const handleDeleteClick = async () => {
+    const ret = await new Promise((resolve) => {
+      setModalConfig({
+        onClose: resolve,
+        title: "Delete data",
+        message: "When you delete, you can't restore it again. Are you sure?",
+      });
+    });
+    setModalConfig(undefined);
+    console.log(ret);
+    if (ret === "ok") {
       try {
-        if (window.confirm("削除しますか? Dayデータも同時にすべて削除されます。")) {
-          const { data, error } = await supabase.from("challenge").delete().eq("challenge_id", challenge.challenge_id);
+        const { data, error } = await supabase.from("challenge").delete().eq("challenge_id", challenge.challenge_id);
 
-          if (error) {
-            throw error;
-          }
-
-          const { data2, error2 } = await supabase.from("day").delete().eq("challenge_id", challenge.challenge_id);
-
-          if (error || error2) {
-            throw error;
-          }
-          navigate("/mypage");
-        } else {
-          return;
+        if (error) {
+          throw error;
         }
+
+        const { data2, error2 } = await supabase.from("day").delete().eq("challenge_id", challenge.challenge_id);
+
+        if (error || error2) {
+          throw error;
+        }
+        navigate("/mypage");
       } catch (error) {
         console.log(error);
       }
-    } else {
-      alert("not your data!!");
+    }
+    if (ret === "cancel") {
+      return;
     }
   };
 
@@ -122,7 +131,8 @@ const Challenge = () => {
             </Link>
           </Button>
           <Button variant="outlined" color="error" sx={{ marginLeft: 2 }}>
-            <Link onClick={handleDelete} className="button">
+            <Link onClick={handleDeleteClick} className="button">
+              {modalConfig && <DialogModal {...modalConfig} />}
               {/* <BsFillTrashFill size={32} /> */}
               Delete
             </Link>
