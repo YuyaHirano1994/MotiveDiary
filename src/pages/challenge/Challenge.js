@@ -92,6 +92,7 @@ const Challenge = () => {
         onClose: resolve,
         title: "Delete data",
         message: "When you delete, you can't restore it again. Are you sure?",
+        type: true,
       });
     });
     setModalConfig(undefined);

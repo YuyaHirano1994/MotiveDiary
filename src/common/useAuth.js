@@ -30,5 +30,50 @@ export default function useAuth() {
     });
   }, []);
 
-  return { user, error };
+  async function signIn(email, password) {
+    try {
+      const { user, error } = await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+      if (error) throw error;
+      setUser(user);
+      setError(null);
+      return true;
+    } catch (error) {
+      console.log(error.error_description || error.message);
+      setError(error);
+      return false;
+    }
+  }
+
+  async function signUp(email, password) {
+    try {
+      const { user, error } = await supabase.auth.signUp({ email, password });
+      if (error) throw error;
+      setUser(user);
+      setError(null);
+      return true;
+    } catch (error) {
+      console.log(error.error_description || error.message);
+      setError(error);
+      return false;
+    }
+  }
+
+  async function signOut() {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      setUser(null);
+      setError(null);
+      return true;
+    } catch (error) {
+      console.log(error.error_description || error.message);
+      setError(error);
+      return false;
+    }
+  }
+
+  return { user, error, signIn, signUp, signOut };
 }

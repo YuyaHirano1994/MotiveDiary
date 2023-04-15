@@ -3,8 +3,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
-import { useRecoilState } from "recoil";
-import { sessionState } from "../../atom/sessionAtom";
+import useAuth from "../../common/useAuth";
+import { DialogModal } from "../../common/DialogModal";
 
 const SignIn = () => {
   const [formValue, setFormValue] = useState({
@@ -12,7 +12,9 @@ const SignIn = () => {
     password: "",
   });
   const [isPassError, setIsPassError] = useState(false);
-  const [session, setSession] = useRecoilState(sessionState);
+  const { signIn, error } = useAuth();
+  const [modalConfig, setModalConfig] = useState();
+  // const [session, setSession] = useRecoilState(sessionState);
 
   const navigate = useNavigate();
 
@@ -38,22 +40,18 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formValue.email,
-        password: formValue.password,
+    const result = await signIn(formValue.email, formValue.password);
+    if (result) {
+      const ret = await new Promise((resolve) => {
+        setModalConfig({
+          onClose: resolve,
+          title: "",
+          message: "Login Success",
+          type: false,
+        });
       });
-      if (error) {
-        throw error;
-      }
-      console.log(data);
-      setSession(data);
-      alert("ログインしました");
+      setModalConfig(undefined);
       navigate("/mypage");
-    } catch (error) {
-      alert("Something error. Please re-try");
-      setIsPassError(true);
-      console.log(error.error_description || error.message);
     }
   };
 
@@ -77,6 +75,7 @@ const SignIn = () => {
           Sign In
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {modalConfig && <DialogModal {...modalConfig} />}
           <TextField
             value={formValue.email}
             onChange={handleChange}

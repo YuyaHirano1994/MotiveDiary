@@ -1,7 +1,7 @@
 import { Dialog, DialogTitle, DialogContent, DialogActions, DialogContentText, Button } from "@mui/material";
 
 export function DialogModal(props) {
-  const { onClose, title, message } = props;
+  const { onClose, title, message, type } = props;
 
   return (
     <Dialog open onClose={() => onClose("close")}>
@@ -9,12 +9,18 @@ export function DialogModal(props) {
       <DialogContent>
         <DialogContentText>{message}</DialogContentText>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={() => onClose("ok")}>OK</Button>
-        <Button onClick={() => onClose("cancel")} autoFocus>
-          Cancel
-        </Button>
-      </DialogActions>
+      {type ? (
+        <DialogActions>
+          <Button onClick={() => onClose("ok")}>OK</Button>
+          <Button onClick={() => onClose("cancel")} autoFocus>
+            Cancel
+          </Button>
+        </DialogActions>
+      ) : (
+        <DialogActions>
+          <Button onClick={() => onClose("ok")}>OK</Button>
+        </DialogActions>
+      )}
     </Dialog>
   );
 }

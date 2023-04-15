@@ -4,10 +4,13 @@ import supabase from "../../common/supabase";
 import { Box, Container } from "@mui/system";
 import { Avatar, Button, TextField, Typography } from "@mui/material";
 import useAuth from "../../common/useAuth";
+import { userInfoState } from "../../atom/userAtom";
+import { useRecoilState } from "recoil";
 
 const Setting = () => {
   const navigate = useNavigate();
   const { user, error } = useAuth();
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
   const [isLoading, setIsLoading] = useState(false);
   const [formValue, setFormValue] = useState({});
   const [imageSrc, setImageSrc] = useState();
@@ -24,6 +27,7 @@ const Setting = () => {
         throw error;
       }
       setFormValue({ ...formValue, ...data[0] });
+      setUserInfo({ ...formValue, ...data[0] });
       setIsLoading(true);
     } catch (error) {
       console.log(error);
@@ -102,6 +106,8 @@ const Setting = () => {
       }
 
       const { data1, error1 } = await supabase.storage.from("avatars").upload(avatar.filename, avatar.file);
+
+      getProfile();
 
       if (error1) {
         throw error1;

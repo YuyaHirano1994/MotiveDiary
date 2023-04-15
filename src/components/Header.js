@@ -20,12 +20,16 @@ import { BsFillJournalBookmarkFill } from "react-icons/bs";
 import { Container } from "@mui/system";
 import UserIcon from "./UserIcon";
 import useAuth from "../common/useAuth";
+import { userInfoState } from "../atom/userAtom";
+import { useRecoilState } from "recoil";
 
 const Header = () => {
+  /* Recoil または Reduxを使ってグローバルに値を管理し、変更時点を感知する方法 */
   const navigate = useNavigate();
   const { user, error } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
   const [profile, setProfile] = useState({});
+  const [userInfo] = useRecoilState(userInfoState);
 
   const getProfile = async () => {
     try {
@@ -42,9 +46,8 @@ const Header = () => {
   useEffect(() => {
     if (user) {
       getProfile();
-    } else {
     }
-  }, [user]);
+  }, [user, userInfo]);
 
   const open = Boolean(anchorEl);
 

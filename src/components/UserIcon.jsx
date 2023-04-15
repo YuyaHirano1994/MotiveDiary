@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import supabase from "../common/supabase";
 import { Avatar } from "@mui/material";
+import { userInfoState } from "../atom/userAtom";
+import { useRecoilState } from "recoil";
 
 /**
  *
@@ -11,9 +13,9 @@ import { Avatar } from "@mui/material";
  */
 
 const UserIcon = (props) => {
-  // props = userID,width,height
   const userID = props.userID;
   const [src, setSrc] = useState("");
+  const [userInfo] = useRecoilState(userInfoState);
 
   const getProfile = async () => {
     try {
@@ -41,7 +43,7 @@ const UserIcon = (props) => {
       return;
     }
     getAvatar();
-  }, [userID]);
+  }, [userID, userInfo]);
 
   return (
     <Avatar src={src} sx={{ width: props.width ? props.width : 120, height: props.height ? props.height : 120 }} />

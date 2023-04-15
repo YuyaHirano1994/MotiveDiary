@@ -14,27 +14,26 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import EditDay from "./pages/day/EditDay";
 import Setting from "./pages/user/Setting";
-import { sessionState } from "./atom/sessionAtom";
 import useAuth from "./common/useAuth";
 
 const App = () => {
   const { user, error } = useAuth();
 
-  const NotSignedRoute = ({ children }) => {
-    if (user) {
-      return <Navigate to="/home" />;
-    } else {
-      return children;
-    }
-  };
+  // const NotSignedRoute = ({ children }) => {
+  //   if (user) {
+  //     return <Navigate to="/home" />;
+  //   } else {
+  //     return children;
+  //   }
+  // };
 
-  const SignedRoute = ({ children }) => {
-    if (user) {
-      return children;
-    } else {
-      return <Navigate to="/user/signin" />;
-    }
-  };
+  // const SignedRoute = ({ children }) => {
+  //   if (user) {
+  //     return children;
+  //   } else {
+  //     return <Navigate to="/user/signin" />;
+  //   }
+  // };
 
   return (
     <RecoilRoot>
@@ -42,71 +41,15 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/home" element={<Home />} />
-          <Route
-            path="/user/signup"
-            element={
-              <NotSignedRoute>
-                <SignUp />
-              </NotSignedRoute>
-            }
-          />
-          <Route
-            path="/user/signin"
-            element={
-              <NotSignedRoute>
-                <SignIn />
-              </NotSignedRoute>
-            }
-          />
-          <Route
-            path="/mypage"
-            element={
-              <SignedRoute>
-                <MyPage />
-              </SignedRoute>
-            }
-          />
-          <Route
-            path="/mypage/setting"
-            element={
-              <SignedRoute>
-                <Setting />
-              </SignedRoute>
-            }
-          />
+          <Route path="/user/signup" element={<SignUp />} />
+          <Route path="/user/signin" element={<SignIn />} />
+          <Route path="/mypage" element={<MyPage />} />
+          <Route path="/mypage/setting" element={<Setting />} />
           <Route path="/challenge/:id" element={<Challenge />} />
-          <Route
-            path="/challenge/create"
-            element={
-              <SignedRoute>
-                <CreateChallenge />
-              </SignedRoute>
-            }
-          />
-          <Route
-            path="/challenge/update/:id"
-            element={
-              <SignedRoute>
-                <EditChallenge />
-              </SignedRoute>
-            }
-          />
-          <Route
-            path="/day/create/:id"
-            element={
-              <SignedRoute>
-                <CreateDay />
-              </SignedRoute>
-            }
-          />
-          <Route
-            path="/day/edit/:id/:day_id"
-            element={
-              <SignedRoute>
-                <EditDay />
-              </SignedRoute>
-            }
-          />
+          <Route path="/challenge/create" element={<CreateChallenge />} />
+          <Route path="/challenge/update/:id" element={<EditChallenge />} />
+          <Route path="/day/create/:id" element={<CreateDay />} />
+          <Route path="/day/edit/:id/:day_id" element={<EditDay />} />
           <Route
             path="/*"
             element={

@@ -1,11 +1,7 @@
-import { Avatar, Box, Button, FormControl, InputLabel, MenuItem, Select, TableRow, Typography } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import { Box, Button, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import supabase from "../common/supabase";
-import { sessionState } from "../atom/sessionAtom";
 import { Container } from "@mui/system";
 import UserIcon from "../components/UserIcon";
 import useAuth from "../common/useAuth";
