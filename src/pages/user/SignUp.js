@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
 import { useRecoilState } from "recoil";
 // import { sessionState } from "../../atom/sessionAtom";
+import useAuth from "../../common/useAuth";
+import { DialogModal } from "../../common/DialogModal";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -13,6 +15,8 @@ const SignUp = () => {
     password1: "",
     password2: "",
   });
+  const { signUp, error } = useAuth();
+  const [modalConfig, setModalConfig] = useState();
 
   const regex = new RegExp(/^[0-9a-zA-Z]*$/);
 
@@ -36,29 +40,65 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      if (formValue.password1 !== formValue.password2) {
-        alert("Your passwords do no match");
-      } else {
-        const { data, error } = await supabase.auth.signUp({
-          email: formValue.email,
-          password: formValue.password1,
+    if (formValue.password1 !== formValue.password2) {
+      // alert("Your passwords do no match");
+      const ret = await new Promise((resolve) => {
+        setModalConfig({
+          onClose: resolve,
+          title: "",
+          message: "Your passwords do no match",
+          type: false,
         });
-
-        if (error) {
-          throw error;
-        }
-        alert("Create Success");
-
-        navigate("/mypage");
+      });
+      setModalConfig(undefined);
+    } else {
+      const result = await signUp(formValue.email, formValue.password1);
+      if (result) {
+        const ret = await new Promise((resolve) => {
+          setModalConfig({
+            onClose: resolve,
+            title: "",
+            message: "SignUp Success",
+            type: false,
+          });
+        });
+        setModalConfig(undefined);
+        navigate("/mypage/setting");
+      } else {
+        const ret = await new Promise((resolve) => {
+          setModalConfig({
+            onClose: resolve,
+            title: "SignUp Failed",
+            message: "Please re-try after few minutes",
+            type: false,
+          });
+        });
+        setModalConfig(undefined);
       }
-    } catch (error) {
-      alert("Create Failed");
-      console.log(error);
     }
-  };
 
-  console.log(formValue);
+    // e.preventDefault();
+    // try {
+    //   if (formValue.password1 !== formValue.password2) {
+    //     alert("Your passwords do no match");
+    //   } else {
+    //     const { data, error } = await supabase.auth.signUp({
+    //       email: formValue.email,
+    //       password: formValue.password1,
+    //     });
+
+    //     if (error) {
+    //       throw error;
+    //     }
+    //     alert("Create Success");
+
+    //     navigate("/mypage");
+    //   }
+    // } catch (error) {
+    //   alert("Create Failed");
+    //   console.log(error);
+    // }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -125,6 +165,7 @@ const SignUp = () => {
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
+          {modalConfig && <DialogModal {...modalConfig} />}
           <Grid container>
             <Grid item xs>
               <Link href="#" variant="body2">

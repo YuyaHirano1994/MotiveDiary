@@ -49,7 +49,10 @@ export default function useAuth() {
 
   async function signUp(email, password) {
     try {
-      const { user, error } = await supabase.auth.signUp({ email, password });
+      const { user, error } = await supabase.auth.signUp({
+        email: email,
+        password: password,
+      });
       if (error) throw error;
       setUser(user);
       setError(null);

@@ -52,6 +52,16 @@ const SignIn = () => {
       });
       setModalConfig(undefined);
       navigate("/mypage");
+    } else {
+      const ret = await new Promise((resolve) => {
+        setModalConfig({
+          onClose: resolve,
+          title: "Login Failed",
+          message: "Please re-try",
+          type: false,
+        });
+      });
+      setModalConfig(undefined);
     }
   };
 
