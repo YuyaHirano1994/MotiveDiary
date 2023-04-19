@@ -69,22 +69,18 @@ const SignIn = () => {
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
+          height: "500px",
           marginTop: 8,
+          marginBottom: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Link to={"/home"}>
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <AccountCircleIcon />
-          </Avatar>
-        </Link>
-
         <Typography variant="h3" align="center">
           Sign In
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
           {modalConfig && <DialogModal {...modalConfig} />}
           <TextField
             value={formValue.email}

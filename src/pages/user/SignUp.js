@@ -104,7 +104,9 @@ const SignUp = () => {
     <Container component="main" maxWidth="xs">
       <Box
         sx={{
+          height: "500px",
           marginTop: 8,
+          marginBottom: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -113,7 +115,7 @@ const SignUp = () => {
         <Typography variant="h3" align="center">
           Sign Up
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
           {/* <TextField
             value={formValue.nickname}
             onChange={handleChange}

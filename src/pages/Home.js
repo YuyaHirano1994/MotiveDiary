@@ -54,10 +54,7 @@ const Home = () => {
         </Paper>
         <Grid container sx={{}} justifyContent="center">
           <Grid item md={3} xs={1} sx={{}}>
-            <Box component="div" textAlign={"center"} sx={{ mt: 5 }}>
-              Side Area 1<br />
-              Under Constructions
-            </Box>
+            <Box component="div" textAlign={"center"} sx={{ mt: 5 }}></Box>
           </Grid>
           <Grid item md={6} xs={10} sx={{}}>
             <Box component="div" sx={{}}>
@@ -102,9 +99,9 @@ const Home = () => {
                           </Box>
                         </Box>
                         <Box display={"flex"}>
-                          <Box component="div" sx={{}}>
+                          {/* <Box component="div" sx={{}}>
                             <Button>Good Button</Button>
-                          </Box>
+                          </Box> */}
                           <Button>
                             <Link to={"/challenge/" + challenge.challenge_id}>More detail...</Link>
                           </Button>
@@ -117,10 +114,7 @@ const Home = () => {
             </Box>
           </Grid>{" "}
           <Grid item md={3} xs={1} sx={{}}>
-            <Box component="div" textAlign={"center"} sx={{ mt: 5 }}>
-              Side Area 2<br />
-              Under Constructions
-            </Box>
+            <Box component="div" textAlign={"center"} sx={{ mt: 5 }}></Box>
           </Grid>
         </Grid>
       </Container>
