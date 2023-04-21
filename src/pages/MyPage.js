@@ -96,7 +96,7 @@ const MyPage = () => {
               sx={{
                 display: "flex",
                 flexWrap: "wrap",
-                maxWidth: "200px",
+                maxWidth: "180px",
               }}
             >
               <Link to={"/challenge/create"} className="link">
@@ -111,7 +111,7 @@ const MyPage = () => {
               </Link>
               <Link to={"/home"} className="link">
                 <Button variant="contained" sx={{ mb: 1 }}>
-                  BACK
+                  HOME
                 </Button>
               </Link>
             </Box>

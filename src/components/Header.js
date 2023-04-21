@@ -13,6 +13,8 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import supabase from "../common/supabase";
@@ -24,7 +26,11 @@ import { userInfoState } from "../atom/userAtom";
 import { useRecoilState } from "recoil";
 
 const Header = () => {
-  /* Recoil または Reduxを使ってグローバルに値を管理し、変更時点を感知する方法 */
+  const titleTheme = createTheme({
+    typography: {
+      fontFamily: ["Play", "sans-serif"].join(","),
+    },
+  });
   const navigate = useNavigate();
   const { user, error } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -71,10 +77,16 @@ const Header = () => {
         <Container maxWidth="lg">
           <Toolbar disableGutters>
             <Box component="div" display={"flex"} justifyContent={"space-between"} width="100%">
-              <Box component="div" display={"flex"} sx={{ width: "auto", pt: 2 }}>
-                <Link to={"/home"}>
-                  <BsFillJournalBookmarkFill size={32} />
-                </Link>
+              <ThemeProvider theme={titleTheme}>
+                <Box component="div" display={"flex"} sx={{ width: "auto", pt: 1 }}>
+                  <Box component="div" display={"flex"} sx={{ width: "auto" }}>
+                    <Link to={"/home"}>
+                      <BsFillJournalBookmarkFill size={32} />{" "}
+                    </Link>
+                  </Box>
+                  <Typography variant="h6">Motive Diary</Typography>
+
+                  {/* // TODO 紹介ページを作成する
                 <Box component="div" display={"flex"}>
                   <Typography sx={{ ml: 4 }}>
                     <Link to={"/home"}>About</Link>
@@ -82,13 +94,14 @@ const Header = () => {
                   <Typography sx={{ ml: 4 }}>
                     <Link to={"/home"}>How it Works?</Link>
                   </Typography>
+                </Box> */}
                 </Box>
-              </Box>
+              </ThemeProvider>
               <Box component="div">
                 {user?.id ? (
                   <>
                     <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
-                      <Button variant="contained" size="small">
+                      <Button color="secondary" variant="contained" size="small">
                         <Link to={"/day/create/none"}>Register Day</Link>
                       </Button>
                       <Tooltip title="Profile">

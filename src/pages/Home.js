@@ -60,7 +60,7 @@ const Home = () => {
             <Box component="div" sx={{}}>
               <Box component="div">
                 <Box component="div" sx={{ mt: 2 }}>
-                  <Button variant="text" size="large">
+                  {/* <Button variant="text" size="large">
                     Latest
                   </Button>
                   <Button variant="text" size="large">
@@ -68,7 +68,7 @@ const Home = () => {
                   </Button>
                   <Button variant="text" size="large">
                     Recommend
-                  </Button>
+                  </Button> */}
                 </Box>
                 <Box component="div" sx={{ m: 1 }}>
                   {challenges.map((challenge) => (
