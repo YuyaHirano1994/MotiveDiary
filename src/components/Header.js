@@ -1,5 +1,6 @@
 import { Logout, Settings } from "@mui/icons-material";
 import PersonIcon from "@mui/icons-material/Person";
+import MenuBookIcon from "@mui/icons-material/MenuBook";
 import {
   AppBar,
   Box,
@@ -76,17 +77,16 @@ const Header = () => {
       <AppBar position="static">
         <Container maxWidth="lg">
           <Toolbar disableGutters>
-            <Box component="div" display={"flex"} justifyContent={"space-between"} width="100%">
-              <ThemeProvider theme={titleTheme}>
-                <Box component="div" display={"flex"} sx={{ width: "auto", pt: 1 }}>
-                  <Box component="div" display={"flex"} sx={{ width: "auto" }}>
-                    <Link to={"/home"}>
-                      <BsFillJournalBookmarkFill size={32} />{" "}
-                    </Link>
-                  </Box>
+            <Box display="flex" justifyContent="space-between" width="100%">
+              <Box display="flex" sx={{ pt: 1 }}>
+                <Link to={"/home"}>
+                  <BsFillJournalBookmarkFill size={32} />
+                </Link>
+                <ThemeProvider theme={titleTheme}>
                   <Typography variant="h6">Motive Diary</Typography>
+                </ThemeProvider>
 
-                  {/* // TODO 紹介ページを作成する
+                {/* // TODO 紹介ページを作成する
                 <Box component="div" display={"flex"}>
                   <Typography sx={{ ml: 4 }}>
                     <Link to={"/home"}>About</Link>
@@ -95,15 +95,16 @@ const Header = () => {
                     <Link to={"/home"}>How it Works?</Link>
                   </Typography>
                 </Box> */}
-                </Box>
-              </ThemeProvider>
-              <Box component="div">
+              </Box>
+              <Box>
                 {user?.id ? (
                   <>
                     <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
-                      <Button color="secondary" variant="contained" size="small">
-                        <Link to={"/day/create/none"}>Register Day</Link>
-                      </Button>
+                      <Box display={{ xs: "none", sm: "block" }}>
+                        <Button color="secondary" variant="contained" size="small">
+                          <Link to={"/day/create/none"}>Register Day</Link>
+                        </Button>
+                      </Box>
                       <Tooltip title="Profile">
                         <IconButton
                           onClick={handleClick}
@@ -157,6 +158,12 @@ const Header = () => {
                           <PersonIcon fontSize="small" />
                         </ListItemIcon>
                         <Link to={"/mypage"}>MyPage</Link>
+                      </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                          <MenuBookIcon fontSize="small" />
+                        </ListItemIcon>
+                        <Link to={"/day/create/none"}>Register</Link>
                       </MenuItem>
                       <Divider />
                       <MenuItem onClick={handleClose}>

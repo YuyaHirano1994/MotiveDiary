@@ -68,7 +68,7 @@ const MyPage = () => {
 
   return (
     <>
-      <Container component="main" maxWidth="md" sx={{}}>
+      <Container component="main" maxWidth="md">
         <Box
           sx={{
             marginTop: 4,
@@ -77,43 +77,53 @@ const MyPage = () => {
             alignItems: "center",
           }}
         >
-          <Box component="div" display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
-            <Box component="div">
+          <Box display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
+            <Box display={{ xs: "none", sm: "block" }}>
               <UserIcon userID={user?.id} />
             </Box>
-            <Box component="div" sx={{ mt: 2, ml: 2, width: "100%" }}>
-              <Typography variant="h4">{profile.nickname}</Typography>
-              <Typography variant="subtitle1" sx={{ ml: 1 }}>
-                {profile.comment}
-              </Typography>
-              <Link to={"/mypage/setting"}>
-                <Button size="small">Edit Profile</Button>
-              </Link>
-            </Box>
             <Box
-              component="div"
-              align="center"
               sx={{
                 display: "flex",
-                flexWrap: "wrap",
-                maxWidth: "180px",
+                justifyContent: "space-between",
+                mt: 2,
+                ml: 2,
+                width: "100%",
               }}
             >
-              <Link to={"/challenge/create"} className="link">
-                <Button variant="contained" sx={{ mb: 1 }}>
-                  New Challenge
-                </Button>
-              </Link>
-              <Link to={"/day/create/none"} className="link">
-                <Button variant="contained" sx={{ mb: 1 }}>
-                  Register Day
-                </Button>
-              </Link>
-              <Link to={"/home"} className="link">
-                <Button variant="contained" sx={{ mb: 1 }}>
-                  HOME
-                </Button>
-              </Link>
+              <Box>
+                <Typography variant="h4">{profile.nickname}</Typography>
+                <Typography variant="subtitle1" sx={{ ml: 1 }}>
+                  {profile.comment}
+                </Typography>
+                <Link to={"/mypage/setting"}>
+                  <Button size="small">Edit Profile</Button>
+                </Link>
+              </Box>
+              <Box
+                align="center"
+                width="auto"
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  maxWidth: "180px",
+                }}
+              >
+                <Link to={"/challenge/create"} className="link">
+                  <Button variant="contained" sx={{ mb: 1 }}>
+                    <Typography variant="button">New Challenge</Typography>
+                  </Button>
+                </Link>
+                <Link to={"/day/create/none"} className="link">
+                  <Button variant="contained" sx={{ mb: 1 }}>
+                    Register Day
+                  </Button>
+                </Link>
+                <Link to={"/home"} className="link">
+                  <Button variant="contained" sx={{ mb: 1 }}>
+                    HOME
+                  </Button>
+                </Link>
+              </Box>
             </Box>
           </Box>
         </Box>
@@ -125,74 +135,96 @@ const MyPage = () => {
             alignItems: "center",
           }}
         >
-          <Box component="div" display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
+          <Box display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
             <Typography variant="h5">Challenging</Typography>
           </Box>
-          <Box component="div" sx={{ width: "100%", mt: 1, mb: 4, borderRadius: 3, border: "1px solid black" }}>
+          <Box sx={{ width: "100%", mt: 1, mb: 4, borderRadius: 3, border: "1px solid black" }}>
             {notCompletedChallenges.map((challenge) => (
               <Box
-                component="div"
                 key={challenge.challenge_id}
                 display={"flex"}
                 justifyContent="space-between"
                 sx={{ p: 2, borderBottom: "1px solid grey" }}
               >
-                <Box component="div" width={500} sx={{}}>
+                <Box width={500} sx={{}}>
                   <Typography variant="h5">{challenge.title}</Typography>
                   <Typography variant="subtitle1">
                     {challenge.start_date} ~ {challenge.end_date}
                   </Typography>
                 </Box>
-                <Box component="div" width={200} display="flex" align="left" sx={{}}>
+                <Box
+                  width={200}
+                  sx={{
+                    display: "block",
+                    align: "left",
+                    "@media screen and (min-width:600px)": {
+                      display: "flex",
+                      align: "left",
+                    },
+                  }}
+                >
                   <Button>
                     <Link to={"/day/create/" + challenge.challenge_id}>Write</Link>
                   </Button>
                   <Button>
-                    <Link to={"/challenge/" + challenge.challenge_id}>More detail...</Link>
+                    <Link to={"/challenge/" + challenge.challenge_id}>Detail</Link>
                   </Button>
                 </Box>
-                <Box component="div" display="flex" width={100} sx={{}}>
+                <Box display="flex" sx={{ width: "100px" }}>
                   {/* {editDesc(challenge.desc)} */}
-                  <Typography variant="h5">
-                    <Typography variant="subtitle1">day</Typography>
-                    {challenge.day ? challenge.day : 0} / {challenge.days}{" "}
-                  </Typography>
+                  <Box>
+                    <Typography variant="h6">Day</Typography>
+                    <Typography variant="h6">
+                      {challenge.day ? challenge.day : 0}/{challenge.days}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
             ))}
           </Box>
-          <Box component="div" display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
+          <Box display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
             <Typography variant="h5">Achieved</Typography>
           </Box>
-          <Box component="div" sx={{ width: "100%", mt: 1, mb: 4, borderRadius: 3, border: "1px solid black" }}>
+          <Box sx={{ width: "100%", mt: 1, mb: 4, borderRadius: 3, border: "1px solid black" }}>
             {completedChallenges.map((challenge) => (
               <Box
-                component="div"
                 key={challenge.challenge_id}
                 display={"flex"}
                 justifyContent="space-between"
                 sx={{ p: 2, borderBottom: "1px solid grey" }}
               >
-                <Box component="div" width={500} sx={{}}>
+                <Box width={500} sx={{}}>
                   <Typography variant="h5">{challenge.title}</Typography>
                   <Typography variant="subtitle1">
                     {challenge.start_date} ~ {challenge.end_date}
                   </Typography>
                 </Box>
-                <Box component="div" width={200} display="flex" align="left" sx={{}}>
+                <Box
+                  width={200}
+                  sx={{
+                    display: "block",
+                    align: "left",
+                    "@media screen and (min-width:600px)": {
+                      display: "flex",
+                      align: "left",
+                    },
+                  }}
+                >
                   <Button>
                     <Link to={"/day/create/" + challenge.challenge_id}>Write</Link>
                   </Button>
                   <Button>
-                    <Link to={"/challenge/" + challenge.challenge_id}>More detail...</Link>
+                    <Link to={"/challenge/" + challenge.challenge_id}>Detail</Link>
                   </Button>
                 </Box>
-                <Box component="div" display="flex" width={100} sx={{}}>
+                <Box display="flex" sx={{ width: "100px" }}>
                   {/* {editDesc(challenge.desc)} */}
-                  <Typography variant="h5">
-                    <Typography variant="subtitle1">day</Typography>
-                    {challenge.day ? challenge.day : 0} / {challenge.days}{" "}
-                  </Typography>
+                  <Box>
+                    <Typography variant="h6">Day</Typography>
+                    <Typography variant="h6">
+                      {challenge.day ? challenge.day : 0}/{challenge.days}
+                    </Typography>
+                  </Box>
                 </Box>
               </Box>
             ))}

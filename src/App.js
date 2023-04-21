@@ -15,12 +15,13 @@ import Footer from "./components/Footer";
 import EditDay from "./pages/day/EditDay";
 import Setting from "./pages/user/Setting";
 import useAuth from "./common/useAuth";
-import { createTheme, Snackbar, ThemeProvider } from "@mui/material";
+import { createTheme, Snackbar, ThemeProvider, responsiveFontSizes } from "@mui/material";
 import { themeOptions } from "./theme-options";
 
 const App = () => {
   const { user, error } = useAuth();
-  const theme = createTheme(themeOptions);
+  let theme = createTheme(themeOptions);
+  theme = responsiveFontSizes(theme);
 
   // const NotSignedRoute = ({ children }) => {
   //   if (user) {

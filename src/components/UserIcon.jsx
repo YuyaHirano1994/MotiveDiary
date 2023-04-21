@@ -46,7 +46,17 @@ const UserIcon = (props) => {
   }, [userID, userInfo]);
 
   return (
-    <Avatar src={src} sx={{ width: props.width ? props.width : 120, height: props.height ? props.height : 120 }} />
+    <Avatar
+      src={src}
+      sx={{
+        width: props.width ? props.width : 80,
+        height: props.height ? props.height : 80,
+        "@media screen and (min-width:600px)": {
+          width: props.width ? props.width : 120,
+          height: props.height ? props.height : 120,
+        },
+      }}
+    />
   );
 };
 
