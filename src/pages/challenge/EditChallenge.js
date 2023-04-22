@@ -150,7 +150,7 @@ const EditChallenge = () => {
                     <MenuItem value={"other"}>Other</MenuItem>
                   </Select>
                 </FormControl>
-                {hiddenEl ? (
+                {/* {hiddenEl ? (
                   <></>
                 ) : (
                   <TextField
@@ -169,7 +169,7 @@ const EditChallenge = () => {
                     disabled={hiddenEl}
                     sx={{ width: "50%" }}
                   />
-                )}
+                )} */}
               </Box>
               <TextField
                 value={formValue.days}

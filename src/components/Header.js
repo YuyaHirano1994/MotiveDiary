@@ -34,16 +34,18 @@ const Header = () => {
   });
   const navigate = useNavigate();
   const { user, error } = useAuth();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [profile, setProfile] = useState({});
   const [userInfo] = useRecoilState(userInfoState);
+  const [profile, setProfile] = useState({});
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  console.log(user);
+  console.log(userInfo);
 
   const getProfile = async () => {
+    console.log("getProfile");
     try {
       const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       setProfile({ ...profile, ...data[0] });
     } catch (error) {
       console.log(error);
@@ -97,7 +99,7 @@ const Header = () => {
                 </Box> */}
               </Box>
               <Box>
-                {user?.id ? (
+                {user ? (
                   <>
                     <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
                       <Box display={{ xs: "none", sm: "block" }}>

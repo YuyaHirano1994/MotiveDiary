@@ -44,15 +44,17 @@ const CreateChallenge = () => {
       setFormValue({ ...formValue, category: e.target.value });
       setHiddenEl(true);
     } else {
-      setFormValue({ ...formValue, category: "" });
+      setFormValue({ ...formValue, category: "other" });
       setHiddenEl(false);
     }
   };
 
+  console.log(formValue);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("user: " + user.id);
+      console.log(formValue);
       const { error } = await supabase.from("challenge").insert([
         {
           user_id: user.id,

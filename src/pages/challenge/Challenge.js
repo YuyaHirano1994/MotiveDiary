@@ -205,7 +205,7 @@ const Challenge = () => {
               </Button>
             </Box>
             <Box>
-              <Typography variant="h4">Day</Typography>{" "}
+              <Typography variant="h4">Day</Typography>
               <Typography variant="h4">
                 {days.length} / {challenge.days}
               </Typography>

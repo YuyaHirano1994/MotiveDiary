@@ -41,6 +41,7 @@ const App = () => {
 
   return (
     <RecoilRoot>
+      <useAuth />
       <BrowserRouter>
         <ThemeProvider theme={theme}>
           <Header />

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import supabase from "./supabase";
+import { userInfoState } from "../atom/userAtom";
+import { useRecoilState } from "recoil";
 
 export default function useAuth() {
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
+  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
 
   useEffect(() => {
     async function fetchAuthUser() {
@@ -21,6 +24,7 @@ export default function useAuth() {
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_OUT") {
         setUser(null);
+        setUserInfo(null);
         if (authListener) {
           authListener?.subscription.unsubscribe();
         }
@@ -68,8 +72,6 @@ export default function useAuth() {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
-      setUser(null);
-      setError(null);
       return true;
     } catch (error) {
       console.log(error.error_description || error.message);
