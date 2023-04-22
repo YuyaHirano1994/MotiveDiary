@@ -257,8 +257,15 @@ const CreateDay = () => {
             </Typography>
           </Box>
           <Box display="flex" justifyContent={"space-between"} sx={{ width: "100%", marginBottom: 4 }}>
-            <Button variant="contained">#{challenge.category}</Button>
-            <Typography variant="h4">{challenge.days} Days</Typography>
+            <Box>
+              <Button variant="contained">#{challenge.category}</Button>
+            </Box>
+            <Box>
+              <Typography variant="h4">Day</Typography>{" "}
+              <Typography variant="h4">
+                {days.length} / {challenge.days}
+              </Typography>
+            </Box>
           </Box>
         </Box>
         <Box component="form" onSubmit={handleSubmit} noValidate>

@@ -173,7 +173,6 @@ const CreateChallenge = () => {
                 id="desc"
                 name="desc"
                 label="Description"
-                color="secondary"
                 margin="normal"
                 inputProps={{ maxLength: 1000, style: { fontSize: 14 } }}
                 InputLabelProps={{ style: { fontSize: 14 } }}
@@ -183,7 +182,7 @@ const CreateChallenge = () => {
                 onChange={handleChange}
                 margin="normal"
                 required
-                fullWidth
+                // fullWidth
                 name="start_date"
                 label="Start Date"
                 type="date"

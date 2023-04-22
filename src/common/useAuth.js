@@ -22,7 +22,7 @@ export default function useAuth() {
       if (event === "SIGNED_OUT") {
         setUser(null);
         if (authListener) {
-          authListener.unsubscribe();
+          authListener?.subscription.unsubscribe();
         }
       } else {
         setUser(session?.user ?? null);

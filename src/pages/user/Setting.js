@@ -21,22 +21,23 @@ const Setting = () => {
   });
 
   const getProfile = async () => {
-    try {
-      const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
-      if (error) {
-        throw error;
+    if (user?.id) {
+      try {
+        const { data, error } = await supabase.from("profile").select("*").eq("user_id", user?.id);
+        if (error) {
+          throw error;
+        }
+        setFormValue({ ...formValue, ...data[0] });
+        setUserInfo({ ...formValue, ...data[0] });
+        setIsLoading(true);
+      } catch (error) {
+        console.log(error);
       }
-      setFormValue({ ...formValue, ...data[0] });
-      setUserInfo({ ...formValue, ...data[0] });
-      setIsLoading(true);
-    } catch (error) {
-      console.log(error);
     }
   };
 
   const getAvatar = async () => {
     let filePath = formValue.avatar_url;
-    console.log(filePath);
     const { data } = await supabase.storage.from("avatars").getPublicUrl(filePath);
     const imageUrl = data.publicUrl;
     setImageSrc(imageUrl);
