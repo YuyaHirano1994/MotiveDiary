@@ -58,14 +58,7 @@ const App = () => {
               </SignedRoute>
             }
           />
-          <Route
-            path="/challenge/:id"
-            element={
-              <SignedRoute>
-                <Challenge />
-              </SignedRoute>
-            }
-          />
+          <Route path="/challenge/:id" element={<Challenge />} />
           <Route
             path="/challenge/create"
             element={

@@ -5,13 +5,14 @@ import { Link } from "react-router-dom";
 import supabase from "../common/supabase";
 import topImage from "../assets/images/library.jpg";
 import UserIcon from "../components/UserIcon";
+import ScrollToTop from "../components/ScrollToTop";
 
 const styles = {
   paperContainer: {
     backgroundImage: `url(${topImage})`,
     backgroundSize: `cover`,
     width: `100%`,
-    height: `300px`,
+    height: `200px`,
     backgroundRepeat: `no-repeat`,
     textAlign: `center`,
   },
@@ -118,6 +119,7 @@ const Home = () => {
           </Grid>
         </Grid>
       </Container>
+      <ScrollToTop />
     </>
   );
 };

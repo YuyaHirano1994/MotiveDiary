@@ -17,7 +17,6 @@ import {
 } from "@mui/material";
 import BackButton from "../../components/BackButton";
 import UserIcon from "../../components/UserIcon";
-import useAuth from "../../common/useAuth";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 import { profileState } from "../../atom/profileAtom";
@@ -58,7 +57,7 @@ const CreateDay = () => {
         .eq("challenge_id", formValue.challenge_id)
         .eq("user_id", session.id)
         .order("date", { ascending: false });
-
+      if (error) throw error;
       setMaxDay(data.length);
       setDays(data);
     } catch (error) {
@@ -69,7 +68,11 @@ const CreateDay = () => {
   // challengeデータ取得
   const getChallenges = async () => {
     try {
-      const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", session.id);
+      const { data, error } = await supabase
+        .from("home_challenge")
+        .select("*")
+        .eq("user_id", session.id)
+        .eq("completed", "FALSE");
       if (error) throw error;
       if (id === "none") {
         setFormValue({ ...formValue, challenge_id: data[0].challenge_id });

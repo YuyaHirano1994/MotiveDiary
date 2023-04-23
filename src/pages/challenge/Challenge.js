@@ -9,6 +9,7 @@ import useAuth from "../../common/useAuth";
 import { DialogModal } from "../../common/DialogModal";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
+import ScrollToTop from "../../components/ScrollToTop";
 
 // const styles = {
 //   paperContainer: {
@@ -248,6 +249,7 @@ const Challenge = () => {
           ))}
         </Container>
       </Container>
+      <ScrollToTop />
     </>
   );
 };
