@@ -18,6 +18,9 @@ import {
 import BackButton from "../../components/BackButton";
 import UserIcon from "../../components/UserIcon";
 import useAuth from "../../common/useAuth";
+import { useRecoilValue } from "recoil";
+import { sessionState } from "../../atom/sessionAtom";
+import { profileState } from "../../atom/profileAtom";
 
 const CreateDay = () => {
   function formatDate(date) {
@@ -28,7 +31,8 @@ const CreateDay = () => {
   }
   const { id } = useParams(); //challengeID
   const navigate = useNavigate();
-  const { user, error } = useAuth();
+  const session = useRecoilValue(sessionState);
+  const profile = useRecoilValue(profileState);
   const [formValue, setFormValue] = useState({
     day_id: "",
     challenge_id: id,
@@ -41,7 +45,7 @@ const CreateDay = () => {
   });
   const [challenges, setChallenges] = useState([]);
   const [challenge, setChallenge] = useState([]);
-  const [profile, setProfile] = useState();
+  // const [profile, setProfile] = useState();
   const [days, setDays] = useState([]);
   const [maxDay, setMaxDay] = useState("");
 
@@ -52,7 +56,7 @@ const CreateDay = () => {
         .from("day")
         .select("*")
         .eq("challenge_id", formValue.challenge_id)
-        .eq("user_id", user.id)
+        .eq("user_id", session.id)
         .order("date", { ascending: false });
 
       setMaxDay(data.length);
@@ -65,16 +69,11 @@ const CreateDay = () => {
   // challengeデータ取得
   const getChallenges = async () => {
     try {
-      const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", user.id);
-
-      if (error) {
-        throw error;
-      }
-
+      const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", session.id);
+      if (error) throw error;
       if (id === "none") {
         setFormValue({ ...formValue, challenge_id: data[0].challenge_id });
       }
-
       setChallenges(data);
     } catch (error) {
       console.error(error);
@@ -88,47 +87,22 @@ const CreateDay = () => {
         .from("challenge")
         .select("*")
         .eq("challenge_id", formValue.challenge_id)
-        .eq("user_id", user.id);
-
-      if (error) {
-        throw error;
-      }
+        .eq("user_id", session.id);
+      if (error) throw error;
       setChallenge(data[0]);
     } catch (error) {
       console.error(error);
     }
   };
 
-  const getProfile = async () => {
-    try {
-      const { data, error } = await supabase.from("profile").select("*").eq("user_id", challenge?.user_id);
-
-      if (error) {
-        throw error;
-      }
-
-      setProfile((profile) => ({ ...profile, ...data[0] }));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
-    if (user) {
-      getChallenges();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (challenge) {
-      getProfile();
-    }
-  }, [challenge]);
+    getChallenges();
+  }, []);
 
   useEffect(() => {
     getChallenge();
     getDays();
-  }, [formValue.challenge_id, user]);
+  }, [formValue.challenge_id]);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -158,7 +132,7 @@ const CreateDay = () => {
         .insert([
           {
             challenge_id: formValue.challenge_id,
-            user_id: user.id,
+            user_id: session.id,
             date: formValue.date,
             day: maxDay + 1,
             content: formValue.content,
@@ -237,7 +211,7 @@ const CreateDay = () => {
             sx={{ width: "100%", marginBottom: 4 }}
           >
             <Box component="div" display={"flex"}>
-              <UserIcon userID={user?.id} width={50} height={50} />
+              <UserIcon width={50} height={50} />
               <Typography variant="subtitle1" align="center" sx={{ ml: 2, pt: 1 }}>
                 {profile?.nickname}
               </Typography>
@@ -261,7 +235,7 @@ const CreateDay = () => {
               <Button variant="contained">#{challenge.category}</Button>
             </Box>
             <Box>
-              <Typography variant="h4">Day</Typography>{" "}
+              <Typography variant="h4">Day</Typography>
               <Typography variant="h4">
                 {days.length} / {challenge.days}
               </Typography>
@@ -332,7 +306,7 @@ const CreateDay = () => {
                   </Typography>
                 </Box>
                 <CardActions sx={{ justifyContent: "right" }}>
-                  {user?.id === challenge.user_id ? (
+                  {session?.id === challenge.user_id ? (
                     <Button variant="outlined">
                       <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
                         Edit Day

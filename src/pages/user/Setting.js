@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
 import { Box, Container } from "@mui/system";
 import { Avatar, Button, TextField, Typography } from "@mui/material";
-import useAuth from "../../common/useAuth";
-import { userInfoState } from "../../atom/userAtom";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { profileState } from "../../atom/profileAtom";
+import { sessionState } from "../../atom/sessionAtom";
 
 const Setting = () => {
   const navigate = useNavigate();
-  const { user, error } = useAuth();
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const session = useRecoilValue(sessionState);
+  const [profile, setProfile] = useRecoilState(profileState);
   const [isLoading, setIsLoading] = useState(false);
   const [formValue, setFormValue] = useState({});
   const [imageSrc, setImageSrc] = useState();
@@ -21,14 +21,14 @@ const Setting = () => {
   });
 
   const getProfile = async () => {
-    if (user?.id) {
+    if (session?.id) {
       try {
-        const { data, error } = await supabase.from("profile").select("*").eq("user_id", user?.id);
+        const { data, error } = await supabase.from("profile").select("*").eq("user_id", session?.id);
         if (error) {
           throw error;
         }
         setFormValue({ ...formValue, ...data[0] });
-        setUserInfo({ ...formValue, ...data[0] });
+        setProfile({ ...profile, ...data[0] });
         setIsLoading(true);
       } catch (error) {
         console.log(error);
@@ -45,7 +45,7 @@ const Setting = () => {
 
   useEffect(() => {
     getProfile();
-  }, [user]);
+  }, [session]);
 
   useEffect(() => {
     getAvatar();
@@ -90,7 +90,7 @@ const Setting = () => {
     e.preventDefault();
     const now = new Date();
     try {
-      console.log("user: " + user.id);
+      console.log("user: " + session.id);
       const { error } = await supabase
         .from("profile")
         .update([
@@ -101,18 +101,14 @@ const Setting = () => {
             updated_at: now,
           },
         ])
-        .eq("user_id", user.id);
-      if (error) {
-        throw error;
-      }
+        .eq("user_id", session.id);
+      if (error) throw error;
 
       const { data1, error1 } = await supabase.storage.from("avatars").upload(avatar.filename, avatar.file);
 
       getProfile();
 
-      if (error1) {
-        throw error1;
-      }
+      if (error1) throw error1;
 
       // 登録時のURLをアカウントごとに登録
       // すでに登録されている場合は既存の画像を削除

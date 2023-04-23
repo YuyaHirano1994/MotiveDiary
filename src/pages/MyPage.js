@@ -5,6 +5,9 @@ import supabase from "../common/supabase";
 import { Container } from "@mui/system";
 import UserIcon from "../components/UserIcon";
 import useAuth from "../common/useAuth";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { sessionState } from "../atom/sessionAtom";
+import { profileState } from "../atom/profileAtom";
 
 // const styles = {
 //   paperContainer: {
@@ -18,14 +21,17 @@ import useAuth from "../common/useAuth";
 // };
 
 const MyPage = () => {
+  const session = useRecoilValue(sessionState);
+  const [profile, setProfile] = useRecoilState(profileState);
   const [notCompletedChallenges, setNotCompletedChallenges] = useState([]);
   const [completedChallenges, setCompletedChallenges] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { user, error } = useAuth();
+  console.log(profile);
 
   const getYourChallenges = async () => {
     try {
-      const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", user.id);
+      const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", session.id);
       if (error) {
         throw error;
       }
@@ -36,10 +42,9 @@ const MyPage = () => {
     }
   };
 
-  const [profile, setProfile] = useState({});
   const getProfile = async () => {
     try {
-      const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
+      const { data, error } = await supabase.from("profile").select("*").eq("user_id", session.id);
 
       if (error) {
         throw error;
@@ -51,11 +56,11 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    if (user) {
-      getYourChallenges();
+    if (session) {
       getProfile();
+      getYourChallenges();
     }
-  }, [user]);
+  }, [session]);
 
   const editDesc = (desc) => {
     if (desc.length >= 40) {
@@ -79,7 +84,7 @@ const MyPage = () => {
         >
           <Box display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
             <Box display={{ xs: "none", sm: "block" }}>
-              <UserIcon userID={user?.id} />
+              <UserIcon />
             </Box>
             <Box
               sx={{
@@ -231,57 +236,6 @@ const MyPage = () => {
           </Box>
         </Box>
       </Container>
-      {/* <Box container>
-        <Box sx={{ border: `1px solid grey`, margin: "30px 100px" }}>
-          <Paper sx={{ width: "100%", overflow: "hidden" }}>
-            <TableContainer sx={{ maxHeight: 540, minHeight: 500 }}>
-              <Table sx={{ minWidth: 650 }} stickyHeader aria-label="simple table">
-                <TableHead sx={{ backgrounfColor: "black", color: "white" }}>
-                  <TableRow>
-                    <StyledTableCell>Challenge</StyledTableCell>
-                    <StyledTableCell align="center">Date</StyledTableCell>
-                    <TableCell align="right">End Date</TableCell> 
-                    <StyledTableCell align="left">Description</StyledTableCell>
-                    <StyledTableCell align="center">Day</StyledTableCell>
-                    <StyledTableCell align="center">Write</StyledTableCell>
-                    <StyledTableCell align="center">Detail</StyledTableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {challenges.map((challenge) => (
-                    <StyledTableRow
-                      key={challenge.challenge_id}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <StyledTableCell component="th" scope="row">
-                        {challenge.title}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {challenge.start_date} ~ {challenge.end_date}
-                      </StyledTableCell>
-                      <TableCell align="right">{challenge.fat}</TableCell>
-                      <StyledTableCell align="left">{editDesc(challenge.desc)}</StyledTableCell>
-                      <StyledTableCell align="center">
-                        {challenge.day ? challenge.day : 0} / {challenge.days}
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <Button>
-                          <Link to={"/day/create/" + challenge.challenge_id}>Write</Link>
-                        </Button>
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        <Button>
-                          <Link to={"/challenge/" + challenge.challenge_id}>More detail...</Link>
-                        </Button>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </Box>
-      </Box> */}
     </>
   );
 };

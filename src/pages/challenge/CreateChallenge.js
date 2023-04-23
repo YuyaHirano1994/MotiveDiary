@@ -4,6 +4,8 @@ import supabase from "../../common/supabase";
 import { Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import useAuth from "../../common/useAuth";
+import { useRecoilValue } from "recoil";
+import { sessionState } from "../../atom/sessionAtom";
 
 const CreateChallenge = () => {
   const dt = new Date();
@@ -25,7 +27,7 @@ const CreateChallenge = () => {
   });
 
   const navigate = useNavigate();
-  const { user, error } = useAuth();
+  const session = useRecoilValue(sessionState);
   const [showCategory, setShowCategory] = useState("");
   const [hiddenEl, setHiddenEl] = useState(true);
 
@@ -57,7 +59,7 @@ const CreateChallenge = () => {
       console.log(formValue);
       const { error } = await supabase.from("challenge").insert([
         {
-          user_id: user.id,
+          user_id: session.id,
           title: formValue.title,
           category: formValue.category,
           days: formValue.days,

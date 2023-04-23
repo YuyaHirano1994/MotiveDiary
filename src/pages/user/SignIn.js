@@ -1,8 +1,6 @@
-import { Avatar, Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import supabase from "../../common/supabase";
 import useAuth from "../../common/useAuth";
 import { DialogModal } from "../../common/DialogModal";
 
@@ -12,10 +10,8 @@ const SignIn = () => {
     password: "",
   });
   const [isPassError, setIsPassError] = useState(false);
-  const { signIn, error } = useAuth();
+  const { signIn } = useAuth();
   const [modalConfig, setModalConfig] = useState();
-  // const [session, setSession] = useRecoilState(sessionState);
-
   const navigate = useNavigate();
 
   const regex = new RegExp(/^[0-9a-zA-Z]*$/);

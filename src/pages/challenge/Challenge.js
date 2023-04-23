@@ -7,6 +7,8 @@ import BackButton from "../../components/BackButton";
 import UserIcon from "../../components/UserIcon";
 import useAuth from "../../common/useAuth";
 import { DialogModal } from "../../common/DialogModal";
+import { useRecoilValue } from "recoil";
+import { sessionState } from "../../atom/sessionAtom";
 
 // const styles = {
 //   paperContainer: {
@@ -22,7 +24,7 @@ import { DialogModal } from "../../common/DialogModal";
 const Challenge = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, error } = useAuth();
+  const session = useRecoilValue(sessionState);
   const [modalConfig, setModalConfig] = useState();
   const [challenge, setChallenge] = useState({
     challenge_id: "",
@@ -42,9 +44,7 @@ const Challenge = () => {
   const getChallenge = async () => {
     try {
       const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id);
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       setChallenge({ ...challenge, ...data[0] });
     } catch (error) {
       console.log(error.error_description || error.message);
@@ -58,9 +58,11 @@ const Challenge = () => {
         .select("*")
         .eq("challenge_id", id)
         .order("date", { ascending: false });
-
+      if (error) throw error;
       setDays(data);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error.error_description || error.message);
+    }
   };
 
   const getProfile = async () => {
@@ -100,16 +102,9 @@ const Challenge = () => {
     if (ret === "ok") {
       try {
         const { data, error } = await supabase.from("challenge").delete().eq("challenge_id", challenge.challenge_id);
-
-        if (error) {
-          throw error;
-        }
-
+        if (error) throw error;
         const { data2, error2 } = await supabase.from("day").delete().eq("challenge_id", challenge.challenge_id);
-
-        if (error || error2) {
-          throw error;
-        }
+        if (error2) throw error;
         navigate("/mypage");
       } catch (error) {
         console.log(error);
@@ -121,7 +116,7 @@ const Challenge = () => {
   };
 
   const checkUser = () => {
-    if (user?.id === challenge.user_id) {
+    if (session?.id === challenge.user_id) {
       return (
         <Box component="div">
           <BackButton />
@@ -213,7 +208,7 @@ const Challenge = () => {
           </Box>
         </Box>
         <Box align="right" sx={{ width: "100%", marginBottom: 4 }}>
-          {user?.id === challenge.user_id ? (
+          {session?.id === challenge.user_id ? (
             <Button variant="contained">
               <Link style={{}} to={"/day/create/" + challenge.challenge_id} className="button">
                 Register Day
@@ -238,7 +233,7 @@ const Challenge = () => {
                   </Typography>
                 </Box>
                 <CardActions sx={{ justifyContent: "right" }}>
-                  {user?.id === challenge.user_id ? (
+                  {session?.id === challenge.user_id ? (
                     <Button variant="outlined">
                       <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
                         Edit Day

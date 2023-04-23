@@ -1,3 +1,17 @@
+import React, { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import UserIcon from "./UserIcon";
+import useAuth from "../common/useAuth";
+
+/* supabase */
+import supabase from "../common/supabase";
+
+/* Recoil */
+import { useRecoilValue } from "recoil";
+import { sessionState } from "../atom/sessionAtom";
+import { profileState } from "../atom/profileAtom";
+
+/*Material UI */
 import { Logout, Settings } from "@mui/icons-material";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
@@ -14,17 +28,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import React, { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import supabase from "../common/supabase";
 import { BsFillJournalBookmarkFill } from "react-icons/bs";
 import { Container } from "@mui/system";
-import UserIcon from "./UserIcon";
-import useAuth from "../common/useAuth";
-import { userInfoState } from "../atom/userAtom";
-import { useRecoilState } from "recoil";
 
 const Header = () => {
   const titleTheme = createTheme({
@@ -33,30 +39,12 @@ const Header = () => {
     },
   });
   const navigate = useNavigate();
-  const { user, error } = useAuth();
-  const [userInfo] = useRecoilState(userInfoState);
-  const [profile, setProfile] = useState({});
+  const { signOut } = useAuth();
   const [anchorEl, setAnchorEl] = useState(null);
+  const session = useRecoilValue(sessionState);
+  const profile = useRecoilValue(profileState);
 
-  console.log(user);
-  console.log(userInfo);
-
-  const getProfile = async () => {
-    console.log("getProfile");
-    try {
-      const { data, error } = await supabase.from("profile").select("*").eq("user_id", user.id);
-      if (error) throw error;
-      setProfile({ ...profile, ...data[0] });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (user) {
-      getProfile();
-    }
-  }, [user, userInfo]);
+  useEffect(() => {}, [session, profile]);
 
   const open = Boolean(anchorEl);
 
@@ -68,8 +56,8 @@ const Header = () => {
     setAnchorEl(null);
   };
 
-  const signOut = async () => {
-    const { error } = await supabase.auth.signOut();
+  const hadleClickSignOut = async () => {
+    const { error } = signOut();
     console.log(error);
     navigate("/user/signin");
   };
@@ -99,7 +87,7 @@ const Header = () => {
                 </Box> */}
               </Box>
               <Box>
-                {user ? (
+                {session ? (
                   <>
                     <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
                       <Box display={{ xs: "none", sm: "block" }}>
@@ -116,7 +104,7 @@ const Header = () => {
                           aria-haspopup="true"
                           aria-expanded={open ? "true" : undefined}
                         >
-                          <UserIcon userID={user.id} width={48} height={48} />
+                          <UserIcon width={48} height={48} />
                         </IconButton>
                       </Tooltip>
                     </Box>
@@ -178,7 +166,7 @@ const Header = () => {
                         <ListItemIcon>
                           <Logout fontSize="small" />
                         </ListItemIcon>
-                        <Box onClick={signOut}>Sign out</Box>
+                        <Box onClick={hadleClickSignOut}>Sign out</Box>
                       </MenuItem>
                     </Menu>
                   </>

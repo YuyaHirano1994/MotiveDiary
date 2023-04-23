@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import supabase from "../common/supabase";
 import { Avatar } from "@mui/material";
-import { userInfoState } from "../atom/userAtom";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
+import { sessionState } from "../atom/sessionAtom";
 
 /**
  *
@@ -13,37 +13,31 @@ import { useRecoilState } from "recoil";
  */
 
 const UserIcon = (props) => {
-  const userID = props.userID;
+  const session = useRecoilValue(sessionState);
+  const userID = props.userID || session.id;
   const [src, setSrc] = useState("");
-  const [userInfo] = useRecoilState(userInfoState);
 
   const getProfile = async () => {
     try {
       const { data, error } = await supabase.from("profile").select("*").eq("user_id", userID);
-      if (error) {
-        throw error;
-      }
-      return data[0];
+      if (error) throw error;
+      getAvatar(data[0]);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getAvatar = async () => {
-    const userProfile = await getProfile();
-    if (userProfile) {
-      const { data } = await supabase.storage.from("avatars").getPublicUrl(userProfile.avatar_url);
+  const getAvatar = async (profile) => {
+    if (profile) {
+      const { data } = await supabase.storage.from("avatars").getPublicUrl(profile.avatar_url);
       const imageUrl = data.publicUrl;
       setSrc(imageUrl);
     }
   };
 
   useEffect(() => {
-    if (!userID) {
-      return;
-    }
-    getAvatar();
-  }, [userID, userInfo]);
+    getProfile();
+  }, [userID]);
 
   return (
     <Avatar

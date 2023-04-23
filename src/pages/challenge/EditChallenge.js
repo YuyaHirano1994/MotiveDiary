@@ -5,10 +5,12 @@ import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typograph
 import { Box, Container } from "@mui/system";
 import BackButton from "../../components/BackButton";
 import useAuth from "../../common/useAuth";
+import { useRecoilValue } from "recoil";
+import { sessionState } from "../../atom/sessionAtom";
 
 const EditChallenge = () => {
   const { id } = useParams();
-  const { user, error } = useAuth();
+  const session = useRecoilValue(sessionState);
   const [showCategory, setShowCategory] = useState("");
   const [hiddenEl, setHiddenEl] = useState(true);
 
@@ -28,7 +30,10 @@ const EditChallenge = () => {
 
   const getChallenge = async () => {
     try {
-      const { data, error } = await supabase.from("challenge").select("*").eq("challenge_id", id, "user_id", user.id);
+      const { data, error } = await supabase
+        .from("challenge")
+        .select("*")
+        .eq("challenge_id", id, "user_id", session.id);
       if (error) {
         throw error;
       }
@@ -41,7 +46,7 @@ const EditChallenge = () => {
   useEffect(() => {
     getChallenge();
     setShowCategory(formValue.category);
-  }, [user]);
+  }, []);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -67,7 +72,6 @@ const EditChallenge = () => {
     e.preventDefault();
     const now = new Date();
     try {
-      console.log("user: " + user.id);
       const { error } = await supabase
         .from("challenge")
         .update([

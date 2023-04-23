@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import supabase from "./supabase";
-import { userInfoState } from "../atom/userAtom";
-import { useRecoilState } from "recoil";
+import { sessionState } from "../atom/sessionAtom";
+import { profileState } from "../atom/profileAtom";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 
 export default function useAuth() {
-  const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const [userInfo, setUserInfo] = useRecoilState(userInfoState);
+  const setSession = useSetRecoilState(sessionState);
+  const setProfile = useSetRecoilState(profileState);
+  const a = useRecoilValue(sessionState);
+
+  console.log(a);
 
   useEffect(() => {
     async function fetchAuthUser() {
       try {
         const { data: session, error } = await supabase.auth.getSession();
-        setUser(session?.session?.user ?? null);
         setError(null);
       } catch (error) {
         console.log(error.error_description || error.message);
@@ -23,13 +26,13 @@ export default function useAuth() {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === "SIGNED_OUT") {
-        setUser(null);
-        setUserInfo(null);
+        setSession(null);
+        setProfile(null);
         if (authListener) {
           authListener?.subscription.unsubscribe();
         }
       } else {
-        setUser(session?.user ?? null);
+        setSession(session?.user || null);
       }
     });
   }, []);
@@ -41,8 +44,6 @@ export default function useAuth() {
         password: password,
       });
       if (error) throw error;
-      setUser(user);
-      setError(null);
       return true;
     } catch (error) {
       console.log(error.error_description || error.message);
@@ -58,8 +59,6 @@ export default function useAuth() {
         password: password,
       });
       if (error) throw error;
-      setUser(user);
-      setError(null);
       return true;
     } catch (error) {
       console.log(error.error_description || error.message);
@@ -80,5 +79,5 @@ export default function useAuth() {
     }
   }
 
-  return { user, error, signIn, signUp, signOut };
+  return { error, signIn, signUp, signOut };
 }

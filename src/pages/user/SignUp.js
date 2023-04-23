@@ -15,7 +15,7 @@ const SignUp = () => {
     password1: "",
     password2: "",
   });
-  const { signUp, error } = useAuth();
+  const { signUp } = useAuth();
   const [modalConfig, setModalConfig] = useState();
 
   const regex = new RegExp(/^[0-9a-zA-Z]*$/);
