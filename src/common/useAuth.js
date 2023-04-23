@@ -8,10 +8,6 @@ export default function useAuth() {
   const [error, setError] = useState(null);
   const setSession = useSetRecoilState(sessionState);
   const setProfile = useSetRecoilState(profileState);
-  const a = useRecoilValue(sessionState);
-
-  console.log(a);
-
   useEffect(() => {
     async function fetchAuthUser() {
       try {
@@ -39,11 +35,13 @@ export default function useAuth() {
 
   async function signIn(email, password) {
     try {
-      const { user, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       });
       if (error) throw error;
+      console.log(data);
+      setSession(data.user);
       return true;
     } catch (error) {
       console.log(error.error_description || error.message);
