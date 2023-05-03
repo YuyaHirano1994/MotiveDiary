@@ -38,6 +38,7 @@ export default function useAuth() {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
+        rememberMe: true,
       });
       if (error) throw error;
       console.log(data);
@@ -51,6 +52,7 @@ export default function useAuth() {
   }
 
   async function signUp(email, password) {
+    console.log("signOut");
     try {
       const { user, error } = await supabase.auth.signUp({
         email: email,

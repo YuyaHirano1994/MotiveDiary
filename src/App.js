@@ -18,12 +18,25 @@ import { createTheme, Snackbar, ThemeProvider, responsiveFontSizes } from "@mui/
 import { themeOptions } from "./theme-options";
 import { sessionState } from "./atom/sessionAtom";
 import { useRecoilState } from "recoil";
+import supabase from "./common/supabase";
 
 const App = () => {
   let theme = createTheme(themeOptions);
   theme = responsiveFontSizes(theme);
-
   const [session, setSession] = useRecoilState(sessionState);
+
+  useEffect(() => {
+    async function fetchAuthUser() {
+      try {
+        const { data: session, error } = await supabase.auth.getSession();
+        if (error) throw error;
+        setSession(session?.session?.user || null);
+      } catch (error) {
+        console.log(error.error_description || error.message);
+      }
+    }
+    fetchAuthUser();
+  }, []);
 
   /* サインインしていない指定のページにアクセスさせない制御 */
   const SignedRoute = ({ children }) => {
@@ -34,6 +47,16 @@ const App = () => {
     }
   };
 
+  /* サインインしているとき指定のページにアクセスさせない制御 */
+  const NotSignedRoute = ({ children }) => {
+    console.log(session);
+    if (session) {
+      return <Navigate to="/home" />;
+    } else {
+      return children;
+    }
+  };
+
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
@@ -41,7 +64,14 @@ const App = () => {
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/user/signup" element={<SignUp />} />
-          <Route path="/user/signin" element={<SignIn />} />
+          <Route
+            path="/user/signin"
+            element={
+              <NotSignedRoute>
+                <SignIn />
+              </NotSignedRoute>
+            }
+          />
           <Route
             path="/mypage"
             element={

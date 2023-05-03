@@ -27,8 +27,6 @@ const MyPage = () => {
   const [completedChallenges, setCompletedChallenges] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(profile);
-
   const getYourChallenges = async () => {
     try {
       const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", session.id);
