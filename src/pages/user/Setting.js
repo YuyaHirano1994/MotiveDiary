@@ -103,11 +103,8 @@ const Setting = () => {
         ])
         .eq("user_id", session.id);
       if (error) throw error;
-
       const { data1, error1 } = await supabase.storage.from("avatars").upload(avatar.filename, avatar.file);
-
       getProfile();
-
       if (error1) throw error1;
 
       // 登録時のURLをアカウントごとに登録
