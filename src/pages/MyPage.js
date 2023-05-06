@@ -156,24 +156,31 @@ const MyPage = () => {
                   </Typography>
                 </Box>
                 <Box
-                  width={200}
+                  width={150}
                   sx={{
                     display: "block",
                     align: "left",
                     "@media screen and (min-width:600px)": {
                       display: "flex",
+                      justifyContent: "space-between",
                       align: "left",
+                      marginRight: "10px",
+                      marginTop: "20px",
                     },
                   }}
                 >
-                  <Button>
-                    <Link to={"/day/create/" + challenge.challenge_id}>Write</Link>
-                  </Button>
-                  <Button>
-                    <Link to={"/challenge/" + challenge.challenge_id}>Detail</Link>
-                  </Button>
+                  <Link to={"/day/create/" + challenge.challenge_id}>
+                    <Button variant="contained" size="small" color="info" sx={{ marginBottom: "10px" }}>
+                      Write
+                    </Button>
+                  </Link>
+                  <Link to={"/challenge/" + challenge.challenge_id}>
+                    <Button variant="contained" size="small" color="info">
+                      Detail
+                    </Button>
+                  </Link>
                 </Box>
-                <Box display="flex" sx={{ width: "100px" }}>
+                <Box display="flex" sx={{ width: "100px", marginLeft: "10px" }}>
                   {/* {editDesc(challenge.desc)} */}
                   <Box>
                     <Typography variant="h6">Day</Typography>
@@ -203,24 +210,29 @@ const MyPage = () => {
                   </Typography>
                 </Box>
                 <Box
-                  width={200}
+                  width={150}
                   sx={{
                     display: "block",
                     align: "left",
+                    marginTop: "20px",
                     "@media screen and (min-width:600px)": {
                       display: "flex",
+                      justifyContent: "space-between",
                       align: "left",
+                      marginRight: "10px",
                     },
                   }}
                 >
-                  <Button>
+                  {/* <Button color="info">
                     <Link to={"/day/create/" + challenge.challenge_id}>Write</Link>
-                  </Button>
-                  <Button>
-                    <Link to={"/challenge/" + challenge.challenge_id}>Detail</Link>
-                  </Button>
+                  </Button> */}
+                  <Link to={"/challenge/" + challenge.challenge_id}>
+                    <Button variant="contained" size="small" color="info">
+                      Detail
+                    </Button>
+                  </Link>
                 </Box>
-                <Box display="flex" sx={{ width: "100px" }}>
+                <Box display="flex" sx={{ width: "100px", marginLeft: "10px" }}>
                   {/* {editDesc(challenge.desc)} */}
                   <Box>
                     <Typography variant="h6">Day</Typography>
