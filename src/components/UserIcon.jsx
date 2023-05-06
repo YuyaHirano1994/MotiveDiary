@@ -3,6 +3,7 @@ import supabase from "../common/supabase";
 import { Avatar } from "@mui/material";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../atom/sessionAtom";
+import { profileState } from "../atom/profileAtom";
 
 /**
  *
@@ -14,6 +15,7 @@ import { sessionState } from "../atom/sessionAtom";
 
 const UserIcon = (props) => {
   const session = useRecoilValue(sessionState);
+  const profile = useRecoilValue(profileState);
   const userID = props.userID || session.id;
   const [src, setSrc] = useState("");
 
@@ -23,7 +25,7 @@ const UserIcon = (props) => {
       if (error) throw error;
       getAvatar(data[0]);
     } catch (error) {
-      console.log(error);
+      console.log(error.error_description || error.message);
     }
   };
 
@@ -37,7 +39,7 @@ const UserIcon = (props) => {
 
   useEffect(() => {
     getProfile();
-  }, [userID]);
+  }, [userID, profile]);
 
   return (
     <Avatar

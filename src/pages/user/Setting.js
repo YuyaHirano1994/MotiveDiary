@@ -31,7 +31,7 @@ const Setting = () => {
         setProfile({ ...profile, ...data[0] });
         setIsLoading(true);
       } catch (error) {
-        console.log(error);
+        console.log(error.error_description || error.message);
       }
     }
   };
@@ -61,22 +61,14 @@ const Setting = () => {
 
   const handleImageChange = (e) => {
     e.preventDefault();
-    console.log("target");
-    console.log(e.target.files);
     try {
       if (e.target.files.length === 0) {
         console.log("cancel event");
         return;
       }
-
-      // ファイルネームはUserName＋なにかにしていればいいんじゃないか？
-      // そしてファイルは常に上書きすればいいのでは？
-      // avatar_urlには保存した画像のURLを保存するのが一番はやい！！！
       const file = e.target.files[0];
-      const file_name = file.name;
+      const file_name = file.name + session.id;
       const file_url = URL.createObjectURL(file);
-      console.log(file_url);
-      console.log(file_name);
       setAvatar({ ...avatar, file: file, filepath: file_url, filename: file_name });
       setFormValue({ ...formValue, avatar_url: file_name });
       setImageSrc(file_url);
@@ -86,11 +78,26 @@ const Setting = () => {
     }
   };
 
+  const uploadAvatar = async () => {
+    try {
+      if (profile.avatar_url) {
+        const { data, error } = await supabase.storage.from("avatars").remove([`${profile.avatar_url}`]);
+        if (error) throw error;
+      }
+      const { data, error } = await supabase.storage.from("avatars").upload(avatar.filename, avatar.file);
+      if (error) throw error;
+      return; // Promiseの解決として何も返さない（undefinedを返す）
+    } catch (error) {
+      console.log(error.error_description || error.message);
+      throw error; // エラーを再スローする
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const now = new Date();
     try {
-      console.log("user: " + session.id);
+      await uploadAvatar(); // uploadAvatarの完了を待つ
       const { error } = await supabase
         .from("profile")
         .update([
@@ -103,14 +110,7 @@ const Setting = () => {
         ])
         .eq("user_id", session.id);
       if (error) throw error;
-      const { data1, error1 } = await supabase.storage.from("avatars").upload(avatar.filename, avatar.file);
       getProfile();
-      if (error1) throw error1;
-
-      // 登録時のURLをアカウントごとに登録
-      // すでに登録されている場合は既存の画像を削除
-      // 画面読み込み時に画像をURLから取得？たぶん
-      console.log(data1);
       alert("Update your profile Success");
       navigate(`/mypage`);
     } catch (error) {
