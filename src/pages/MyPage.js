@@ -8,6 +8,8 @@ import useAuth from "../common/useAuth";
 import { useRecoilValue, useRecoilState } from "recoil";
 import { sessionState } from "../atom/sessionAtom";
 import { profileState } from "../atom/profileAtom";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 // const styles = {
 //   paperContainer: {
@@ -139,7 +141,10 @@ const MyPage = () => {
           }}
         >
           <Box display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
-            <Typography variant="h5">Challenging</Typography>
+            <Typography variant="h5">
+              <BorderColorIcon />
+              Challenging
+            </Typography>
           </Box>
           <Box sx={{ width: "100%", mt: 1, mb: 4, borderRadius: 3, border: "1px solid black" }}>
             {notCompletedChallenges.map((challenge) => (
@@ -156,7 +161,7 @@ const MyPage = () => {
                   </Typography>
                 </Box>
                 <Box
-                  width={150}
+                  width={200}
                   sx={{
                     display: "block",
                     align: "left",
@@ -180,7 +185,7 @@ const MyPage = () => {
                     </Button>
                   </Link>
                 </Box>
-                <Box display="flex" sx={{ width: "100px", ml: "10px" }}>
+                <Box display="flex" sx={{ width: "100px", ml: 1 }}>
                   {/* {editDesc(challenge.desc)} */}
                   <Box>
                     <Typography variant="h6">Day</Typography>
@@ -193,7 +198,10 @@ const MyPage = () => {
             ))}
           </Box>
           <Box display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
-            <Typography variant="h5">Achieved</Typography>
+            <Typography variant="h5">
+              <EmojiEventsIcon color="error" />
+              Achieved
+            </Typography>
           </Box>
           <Box sx={{ width: "100%", mt: 1, mb: 4, borderRadius: 3, border: "1px solid black" }}>
             {completedChallenges.map((challenge) => (
@@ -210,7 +218,7 @@ const MyPage = () => {
                   </Typography>
                 </Box>
                 <Box
-                  width={150}
+                  width={200}
                   sx={{
                     display: "block",
                     align: "left",
