@@ -74,7 +74,7 @@ const MyPage = () => {
       <Container component="main" maxWidth="md">
         <Box
           sx={{
-            marginTop: 4,
+            mt: 4,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -132,7 +132,7 @@ const MyPage = () => {
         </Box>
         <Box
           sx={{
-            marginTop: 4,
+            mt: 4,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -164,13 +164,13 @@ const MyPage = () => {
                       display: "flex",
                       justifyContent: "space-between",
                       align: "left",
-                      marginRight: "10px",
-                      marginTop: "20px",
+                      ml: "10px",
+                      mt: "20px",
                     },
                   }}
                 >
                   <Link to={"/day/create/" + challenge.challenge_id}>
-                    <Button variant="contained" size="small" color="info" sx={{ marginBottom: "10px" }}>
+                    <Button variant="contained" size="small" color="info" sx={{ mb: "10px" }}>
                       Write
                     </Button>
                   </Link>
@@ -180,7 +180,7 @@ const MyPage = () => {
                     </Button>
                   </Link>
                 </Box>
-                <Box display="flex" sx={{ width: "100px", marginLeft: "10px" }}>
+                <Box display="flex" sx={{ width: "100px", ml: "10px" }}>
                   {/* {editDesc(challenge.desc)} */}
                   <Box>
                     <Typography variant="h6">Day</Typography>
@@ -219,7 +219,7 @@ const MyPage = () => {
                       display: "flex",
                       justifyContent: "space-between",
                       align: "left",
-                      marginRight: "10px",
+                      ml: "10px",
                     },
                   }}
                 >
@@ -232,7 +232,7 @@ const MyPage = () => {
                     </Button>
                   </Link>
                 </Box>
-                <Box display="flex" sx={{ width: "100px", marginLeft: "10px" }}>
+                <Box display="flex" sx={{ width: "100px", ml: "10px" }}>
                   {/* {editDesc(challenge.desc)} */}
                   <Box>
                     <Typography variant="h6">Day</Typography>
