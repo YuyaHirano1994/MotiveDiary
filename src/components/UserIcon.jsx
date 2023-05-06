@@ -16,7 +16,7 @@ import { profileState } from "../atom/profileAtom";
 const UserIcon = (props) => {
   const session = useRecoilValue(sessionState);
   const profile = useRecoilValue(profileState);
-  const userID = props.userID || session.id;
+  const userID = props?.userID || session?.id || undefined;
   const [src, setSrc] = useState("");
 
   const getProfile = async () => {
