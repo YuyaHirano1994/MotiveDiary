@@ -149,7 +149,7 @@ const MyPage = () => {
                 justifyContent="space-between"
                 sx={{ p: 2, borderBottom: "1px solid grey" }}
               >
-                <Box width={500} sx={{}}>
+                <Box width={"100%"} sx={{}}>
                   <Typography variant="h5">{challenge.title}</Typography>
                   <Typography variant="subtitle1">
                     {challenge.start_date} ~ {challenge.end_date}
@@ -203,7 +203,7 @@ const MyPage = () => {
                 justifyContent="space-between"
                 sx={{ p: 2, borderBottom: "1px solid grey" }}
               >
-                <Box width={500} sx={{}}>
+                <Box width={"100%"} sx={{}}>
                   <Typography variant="h5">{challenge.title}</Typography>
                   <Typography variant="subtitle1">
                     {challenge.start_date} ~ {challenge.end_date}
