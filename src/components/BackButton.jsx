@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const BackButton = (props) => {
   return (
-    <Button variant="outlined">
+    <Button variant="outlined" size="small">
       <Link to={props?.to ? props.to : -1} className="button">
         BACK
       </Link>

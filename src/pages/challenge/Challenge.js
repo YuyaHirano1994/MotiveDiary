@@ -119,21 +119,27 @@ const Challenge = () => {
   const checkUser = () => {
     if (session?.id === challenge.user_id) {
       return (
-        <Box component="div">
-          <BackButton />
-          <Button variant="outlined" sx={{ marginLeft: 2 }}>
-            <Link to={"/challenge/update/" + challenge.challenge_id} className="button">
+        <Box
+          component="div"
+          sx={{
+            display: "flex",
+            align: "left",
+          }}
+        >
+          <Button variant="outlined" size="small" sx={{ marginLeft: 2 }}>
+            <Link to={"/challenge/update/" + challenge.challenge_id}>
               {/* <BsFillPencilFill size={32} /> */}
               Edit
             </Link>
           </Button>
-          <Button variant="outlined" color="error" sx={{ marginLeft: 2 }}>
-            <Link onClick={handleDeleteClick} className="button">
+          <Button variant="outlined" size="small" color="error" sx={{ ml: 2, mr: 2 }}>
+            <Link onClick={handleDeleteClick}>
               {modalConfig && <DialogModal {...modalConfig} />}
               {/* <BsFillTrashFill size={32} /> */}
               Delete
             </Link>
           </Button>
+          <BackButton />
         </Box>
       );
     } else {
