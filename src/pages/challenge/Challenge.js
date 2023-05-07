@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import supabase from "../../common/supabase";
 import { Box } from "@mui/system";
-import { Button, Card, CardActions, CardContent, Container, Typography } from "@mui/material";
+import { Button, Card, CardActions, CardContent, Container, Typography, useMediaQuery } from "@mui/material";
 import BackButton from "../../components/BackButton";
 import UserIcon from "../../components/UserIcon";
 import useAuth from "../../common/useAuth";
@@ -11,6 +11,10 @@ import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 import ScrollToTop from "../../components/ScrollToTop";
 import { TwitterIcon, TwitterShareButton } from "react-share";
+import { useTheme } from "@mui/material/styles";
+import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 
 // const styles = {
 //   paperContainer: {
@@ -24,6 +28,8 @@ import { TwitterIcon, TwitterShareButton } from "react-share";
 // };
 
 const Challenge = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const { id } = useParams();
   const navigate = useNavigate();
   const session = useRecoilValue(sessionState);
@@ -127,20 +133,41 @@ const Challenge = () => {
             align: "left",
           }}
         >
-          <Button variant="outlined" size="small" sx={{ marginLeft: 2 }}>
-            <Link to={"/challenge/update/" + challenge.challenge_id}>
-              {/* <BsFillPencilFill size={32} /> */}
-              Edit
-            </Link>
-          </Button>
-          <Button variant="outlined" size="small" color="error" sx={{ ml: 2, mr: 2 }}>
-            <Link onClick={handleDeleteClick}>
-              {modalConfig && <DialogModal {...modalConfig} />}
-              {/* <BsFillTrashFill size={32} /> */}
-              Delete
-            </Link>
-          </Button>
-          <BackButton />
+          {isMobile ? (
+            <>
+              <Box sx={{ display: "block" }}>
+                <Link to={"/challenge/update/" + challenge.challenge_id}>
+                  <Button variant="outlined" size="small" sx={{ ml: 2, mb: 1 }}>
+                    <ModeEditOutlineIcon />
+                    Edit
+                  </Button>
+                </Link>
+                <Link onClick={handleDeleteClick}>
+                  <Button variant="outlined" size="small" color="error" sx={{ ml: 2, mr: 2 }}>
+                    {modalConfig && <DialogModal {...modalConfig} />}
+                    <DeleteOutlineIcon />
+                    Delete
+                  </Button>
+                </Link>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Link to={"/challenge/update/" + challenge.challenge_id}>
+                <Button variant="outlined" size="small" sx={{ marginLeft: 2 }}>
+                  <ModeEditOutlineIcon />
+                  Edit
+                </Button>
+              </Link>
+              <Link onClick={handleDeleteClick}>
+                <Button variant="outlined" size="small" color="error" sx={{ ml: 2, mr: 2 }}>
+                  {modalConfig && <DialogModal {...modalConfig} />}
+                  <DeleteOutlineIcon />
+                  Delete
+                </Button>
+              </Link>
+            </>
+          )}
         </Box>
       );
     } else {
