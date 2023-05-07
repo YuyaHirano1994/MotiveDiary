@@ -19,6 +19,7 @@ import { themeOptions } from "./theme-options";
 import { sessionState } from "./atom/sessionAtom";
 import { useRecoilState } from "recoil";
 import supabase from "./common/supabase";
+import Product from "./Product";
 
 const App = () => {
   let theme = createTheme(themeOptions);
@@ -62,6 +63,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <Header />
         <Routes>
+          <Route path="/" element={<Product />} />
           <Route path="/home" element={<Home />} />
           <Route path="/user/signup" element={<SignUp />} />
           <Route
