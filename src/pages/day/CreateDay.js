@@ -198,7 +198,7 @@ const CreateDay = () => {
   };
 
   const tweetContent = (text) => {
-    return text.substr(0, 20) + "...";
+    return text.substr(0, 50) + "...";
   };
 
   return (
@@ -230,9 +230,18 @@ const CreateDay = () => {
             <Typography variant="h3" align="left" sx={{ mt: 2 }}>
               {challenge.title}
             </Typography>
-            <Typography variant="h5" align="left">
-              {challenge.start_date}~{challenge.end_date}
-            </Typography>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Typography variant="h5" align="left">
+                {challenge.start_date}~{challenge.end_date}
+              </Typography>
+              <TwitterShareButton
+                url={"https://motive-diary.vercel.app/"}
+                title={`Taking on the challenge of ${challenge.title}! Join me in recording your own challenges on MotiveDiary. Let's keep track of our progress together!\n`}
+                hashtags={["MotiveDairy"]}
+              >
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+            </Box>
             <hr />
             <Typography variant="h6" align="left" sx={{ marginLeft: 2 }}>
               {changeFormat(challenge?.desc)}
@@ -318,7 +327,7 @@ const CreateDay = () => {
                     <>
                       <TwitterShareButton
                         url={"https://motive-diary.vercel.app/"}
-                        title={`${day?.date} DAY${days?.length - i}  ${tweetContent(day?.content)} `}
+                        title={`${challenge.title}\nDAY${days?.length - i}\n${tweetContent(day?.content)}\n`}
                         hashtags={["MotiveDairy"]}
                       >
                         <TwitterIcon size={32} round />

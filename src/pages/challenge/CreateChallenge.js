@@ -18,7 +18,7 @@ const CreateChallenge = () => {
     challenge_id: "",
     title: "",
     category: "",
-    days: 0,
+    days: 1,
     desc: "",
     start_date: today,
     end_date: "",

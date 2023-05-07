@@ -97,7 +97,10 @@ const Setting = () => {
     e.preventDefault();
     const now = new Date();
     try {
-      await uploadAvatar(); // uploadAvatarの完了を待つ
+      //アバターが変更され場合のみ実施
+      if (profile.avatar_url !== formValue.avatar_url) {
+        await uploadAvatar(); // uploadAvatarの完了を待つ
+      }
       const { error } = await supabase
         .from("profile")
         .update([

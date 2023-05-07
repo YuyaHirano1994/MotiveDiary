@@ -164,6 +164,10 @@ const Challenge = () => {
     return <div>{texts}</div>;
   };
 
+  const tweetContent = (text) => {
+    return text.substr(0, 50) + "...";
+  };
+
   return (
     <>
       <Container component="main" maxWidth="md" sx={{ mt: 2, mb: 2, border: "1px solid grey", borderRadius: 3 }}>
@@ -183,9 +187,14 @@ const Challenge = () => {
           >
             <Box component="div" display={"flex"}>
               <UserIcon userID={challenge.user_id} width={50} height={50} />
-              <Typography variant="subtitle1" align="center" sx={{ ml: 2, pt: 1 }}>
-                {profile?.nickname}
-              </Typography>
+              <Box sx={{ ml: 2 }}>
+                <Typography variant="subtitle1" align="left">
+                  {profile?.nickname}
+                </Typography>
+                <Typography variant="subtitle2" align="left">
+                  {profile?.comment}
+                </Typography>
+              </Box>
             </Box>
             {checkUser()}
           </Box>
@@ -199,7 +208,7 @@ const Challenge = () => {
               </Typography>
               <TwitterShareButton
                 url={"https://motive-diary.vercel.app/"}
-                title={`Taking on the challenge of ${challenge.title}! Join me in recording your own challenges on MotiveDiary. Let's keep track of our progress together!`}
+                title={`Taking on the challenge of ${challenge.title}! Join me in recording your own challenges on MotiveDiary. Let's keep track of our progress together!\n`}
                 hashtags={["MotiveDairy"]}
               >
                 <TwitterIcon size={32} round />
@@ -249,13 +258,22 @@ const Challenge = () => {
                     {changeFormat(day.content)}
                   </Typography>
                 </Box>
-                <CardActions sx={{ justifyContent: "right" }}>
+                <CardActions sx={{ justifyContent: "space-between" }}>
                   {session?.id === challenge.user_id ? (
-                    <Button variant="outlined">
-                      <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
-                        Edit Day
-                      </Link>
-                    </Button>
+                    <>
+                      <TwitterShareButton
+                        url={"https://motive-diary.vercel.app/"}
+                        title={`${challenge.title}\nDAY${days?.length - i}\n${tweetContent(day?.content)}\n`}
+                        hashtags={["MotiveDairy"]}
+                      >
+                        <TwitterIcon size={32} round />
+                      </TwitterShareButton>
+                      <Button variant="outlined">
+                        <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
+                          Edit Day
+                        </Link>
+                      </Button>
+                    </>
                   ) : (
                     <></>
                   )}
