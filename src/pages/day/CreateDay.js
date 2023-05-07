@@ -20,6 +20,7 @@ import UserIcon from "../../components/UserIcon";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 import { profileState } from "../../atom/profileAtom";
+import { TwitterIcon, TwitterShareButton } from "react-share";
 
 const CreateDay = () => {
   function formatDate(date) {
@@ -196,6 +197,10 @@ const CreateDay = () => {
     return <div>{texts}</div>;
   };
 
+  const tweetContent = (text) => {
+    return text.substr(0, 20) + "...";
+  };
+
   return (
     <>
       <Container component="main" maxWidth="md" sx={{ mt: 2, mb: 2, border: "1px solid grey", borderRadius: 3 }}>
@@ -308,13 +313,22 @@ const CreateDay = () => {
                     {changeFormat(day?.content)}
                   </Typography>
                 </Box>
-                <CardActions sx={{ justifyContent: "right" }}>
+                <CardActions sx={{ justifyContent: "space-between" }}>
                   {session?.id === challenge.user_id ? (
-                    <Button variant="outlined">
-                      <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
-                        Edit Day
-                      </Link>
-                    </Button>
+                    <>
+                      <TwitterShareButton
+                        url={"https://motive-diary.vercel.app/"}
+                        title={`${day?.date} DAY${days?.length - i}  ${tweetContent(day?.content)} `}
+                        hashtags={["MotiveDairy"]}
+                      >
+                        <TwitterIcon size={32} round />
+                      </TwitterShareButton>
+                      <Button variant="outlined">
+                        <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
+                          Edit Day
+                        </Link>
+                      </Button>
+                    </>
                   ) : (
                     <></>
                   )}

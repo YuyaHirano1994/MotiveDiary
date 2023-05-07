@@ -10,6 +10,7 @@ import { DialogModal } from "../../common/DialogModal";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 import ScrollToTop from "../../components/ScrollToTop";
+import { TwitterIcon, TwitterShareButton } from "react-share";
 
 // const styles = {
 //   paperContainer: {
@@ -192,9 +193,18 @@ const Challenge = () => {
             <Typography variant="h3" align="left" sx={{ mt: 2 }}>
               {challenge.title}
             </Typography>
-            <Typography variant="h5" align="left">
-              {challenge.start_date}~{challenge.end_date}
-            </Typography>
+            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Typography variant="h5" align="left">
+                {challenge.start_date}~{challenge.end_date}
+              </Typography>
+              <TwitterShareButton
+                url={"https://motive-diary.vercel.app/"}
+                title={`Taking on the challenge of ${challenge.title}! Join me in recording your own challenges on MotiveDiary. Let's keep track of our progress together!`}
+                hashtags={["MotiveDairy"]}
+              >
+                <TwitterIcon size={32} round />
+              </TwitterShareButton>
+            </Box>
             <hr />
             <Typography variant="h6" align="left" sx={{ ml: 2 }}>
               {changeFormat(challenge?.desc)}

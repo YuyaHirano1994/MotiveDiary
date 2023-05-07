@@ -30,7 +30,7 @@ const Product = () => {
           <Typography variant="h5">We are here to help you meet the challenge. services.</Typography>
           <Box sx={{ m: "20px" }}>
             <Button variant="contained" color="secondary" size="large" component={Link} to="/user/signup">
-              SignUp Now!!
+              SignUp Now
             </Button>
           </Box>
         </Container>
@@ -194,8 +194,8 @@ const Product = () => {
           <Typography variant="body1" gutterBottom>
             Sign up for our app and get started today!
           </Typography>
-          <Button variant="contained" color="primary" component={Link} to="/user/signup">
-            Sign Up!
+          <Button variant="contained" color="secondary" component={Link} to="/user/signup">
+            SignUp
           </Button>
         </Container>
       </Box>
