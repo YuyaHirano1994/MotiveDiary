@@ -31,3 +31,30 @@ a {
   text-decoration: none;
   color: white;
 }
+
+.fade-enter {
+  opacity: 0;
+  transition: opacity 300ms;
+  pointer-events: none;
+}
+
+.fade-enter-active {
+  opacity: 1;
+}
+
+.fade-exit {
+  opacity: 1;
+  transition: opacity 300ms;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 9999;
+}

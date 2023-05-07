@@ -9,12 +9,10 @@ import useAuth from "../../common/useAuth";
 import { DialogModal } from "../../common/DialogModal";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
-import ScrollToTop from "../../components/ScrollToTop";
 import { TwitterIcon, TwitterShareButton } from "react-share";
 import { useTheme } from "@mui/material/styles";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 
 // const styles = {
 //   paperContainer: {
@@ -224,13 +222,17 @@ const Challenge = () => {
               <Typography variant="h5" align="left">
                 {challenge.start_date}~{challenge.end_date}
               </Typography>
-              <TwitterShareButton
-                url={"https://motive-diary.vercel.app/"}
-                title={`Taking on the challenge of ${challenge.title}! Join me in recording your own challenges on MotiveDiary. Let's keep track of our progress together!\n`}
-                hashtags={["MotiveDairy"]}
-              >
-                <TwitterIcon size={32} round />
-              </TwitterShareButton>
+              {session?.id === challenge.user_id ? (
+                <TwitterShareButton
+                  url={"https://motive-diary.vercel.app/"}
+                  title={`Taking on the challenge of ${challenge.title}! Join me in recording your own challenges on MotiveDiary. Let's keep track of our progress together!\n`}
+                  hashtags={["MotiveDairy"]}
+                >
+                  <TwitterIcon size={32} round />
+                </TwitterShareButton>
+              ) : (
+                <></>
+              )}
             </Box>
             <hr />
             <Typography variant="h6" align="left" sx={{ ml: 2 }}>
@@ -301,7 +303,6 @@ const Challenge = () => {
           ))}
         </Container>
       </Container>
-      <ScrollToTop />
     </>
   );
 };

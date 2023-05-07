@@ -20,6 +20,7 @@ import { sessionState } from "./atom/sessionAtom";
 import { useRecoilState } from "recoil";
 import supabase from "./common/supabase";
 import Product from "./Product";
+import ScrollToTop from "./components/ScrollToTop";
 
 const App = () => {
   let theme = createTheme(themeOptions);
@@ -133,6 +134,7 @@ const App = () => {
           />
         </Routes>
         <Footer />
+        <ScrollToTop />
       </ThemeProvider>
     </BrowserRouter>
   );

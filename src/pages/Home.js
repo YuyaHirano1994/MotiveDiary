@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import supabase from "../common/supabase";
 import topImage from "../assets/images/library.jpg";
 import UserIcon from "../components/UserIcon";
-import ScrollToTop from "../components/ScrollToTop";
 
 const styles = {
   paperContainer: {
@@ -119,7 +118,6 @@ const Home = () => {
           </Grid>
         </Grid>
       </Container>
-      <ScrollToTop />
     </>
   );
 };

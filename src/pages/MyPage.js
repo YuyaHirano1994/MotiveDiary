@@ -96,9 +96,9 @@ const MyPage = () => {
               }}
             >
               <Box>
-                <Typography variant="h4">{profile.nickname}</Typography>
+                <Typography variant="h4">{profile?.nickname}</Typography>
                 <Typography variant="subtitle1" sx={{ ml: 1 }}>
-                  {profile.comment}
+                  {profile?.comment}
                 </Typography>
                 <Link to={"/mypage/setting"}>
                   <Button size="small">Edit Profile</Button>

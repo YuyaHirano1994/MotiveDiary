@@ -173,9 +173,11 @@ const Header = () => {
                 ) : (
                   <>
                     <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
-                      <Button variant="contained" color="secondary">
-                        <Link to={"user/signin"}>Sign In</Link>
-                      </Button>
+                      <Link to={"user/signin"}>
+                        <Button variant="contained" color="secondary">
+                          Sign in
+                        </Button>
+                      </Link>
                     </Box>
                   </>
                 )}
