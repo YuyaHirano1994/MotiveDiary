@@ -126,18 +126,30 @@ const Challenge = () => {
   const checkUser = () => {
     if (session?.id === challenge.user_id) {
       return (
-        <Box
-          component="div"
-          sx={{
-            display: "flex",
-            align: "left",
-          }}
-        >
+        <Box component="div">
           {isMobile ? (
             <>
-              <Box sx={{ display: "block" }}>
+              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
                 <Link to={"/challenge/update/" + challenge.challenge_id}>
                   <Button variant="outlined" size="small" sx={{ ml: 2, mb: 1 }}>
+                    <ModeEditOutlineIcon />
+                    Edit
+                  </Button>
+                </Link>
+                <Link onClick={handleDeleteClick}>
+                  <Button variant="outlined" size="small" color="error" sx={{ ml: 2 }}>
+                    {modalConfig && <DialogModal {...modalConfig} />}
+                    <DeleteOutlineIcon />
+                    Delete
+                  </Button>
+                </Link>
+              </Box>
+            </>
+          ) : (
+            <>
+              <Box sx={{ ml: "auto" }}>
+                <Link to={"/challenge/update/" + challenge.challenge_id}>
+                  <Button variant="outlined" size="small" sx={{ marginLeft: 2 }}>
                     <ModeEditOutlineIcon />
                     Edit
                   </Button>
@@ -150,22 +162,6 @@ const Challenge = () => {
                   </Button>
                 </Link>
               </Box>
-            </>
-          ) : (
-            <>
-              <Link to={"/challenge/update/" + challenge.challenge_id}>
-                <Button variant="outlined" size="small" sx={{ marginLeft: 2 }}>
-                  <ModeEditOutlineIcon />
-                  Edit
-                </Button>
-              </Link>
-              <Link onClick={handleDeleteClick}>
-                <Button variant="outlined" size="small" color="error" sx={{ ml: 2, mr: 2 }}>
-                  {modalConfig && <DialogModal {...modalConfig} />}
-                  <DeleteOutlineIcon />
-                  Delete
-                </Button>
-              </Link>
             </>
           )}
         </Box>
@@ -206,12 +202,7 @@ const Challenge = () => {
             alignItems: "center",
           }}
         >
-          <Box
-            component="div"
-            display={"flex"}
-            justifyContent={"space-between"}
-            sx={{ width: "100%", marginBottom: 4 }}
-          >
+          <Box component="div" display="flex" justifyContent="space-between" sx={{ width: "100%", marginBottom: 4 }}>
             <Box component="div" display={"flex"}>
               <UserIcon userID={challenge.user_id} width={50} height={50} />
               <Box sx={{ ml: 2 }}>
