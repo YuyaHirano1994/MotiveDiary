@@ -41,7 +41,6 @@ export default function useAuth() {
         rememberMe: true,
       });
       if (error) throw error;
-      console.log(data);
       setSession(data.user);
       return true;
     } catch (error) {

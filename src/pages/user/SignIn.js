@@ -37,6 +37,7 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await signIn(formValue.email, formValue.password);
+    navigate("/mypage");
     if (result) {
       const ret = await new Promise((resolve) => {
         setModalConfig({
@@ -53,7 +54,7 @@ const SignIn = () => {
         setModalConfig({
           onClose: resolve,
           title: "Login Failed",
-          message: "Please re-try",
+          message: "Please re-try. check your password",
           type: false,
         });
       });

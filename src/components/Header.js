@@ -58,7 +58,6 @@ const Header = () => {
 
   const hadleClickSignOut = async () => {
     const { error } = signOut();
-    console.log(error);
     navigate("/user/signin");
   };
 
@@ -74,17 +73,10 @@ const Header = () => {
                 </Link>
                 <ThemeProvider theme={titleTheme}>
                   <Typography variant="h6">Motive Diary</Typography>
+                  <Typography variant="subtitle1" sx={{ ml: 1 }}>
+                    β ver.
+                  </Typography>
                 </ThemeProvider>
-
-                {/* // TODO 紹介ページを作成する
-                <Box component="div" display={"flex"}>
-                  <Typography sx={{ ml: 4 }}>
-                    <Link to={"/home"}>About</Link>
-                  </Typography>
-                  <Typography sx={{ ml: 4 }}>
-                    <Link to={"/home"}>How it Works?</Link>
-                  </Typography>
-                </Box> */}
               </Box>
               <Box>
                 {session ? (

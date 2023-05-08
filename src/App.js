@@ -51,7 +51,6 @@ const App = () => {
 
   /* サインインしているとき指定のページにアクセスさせない制御 */
   const NotSignedRoute = ({ children }) => {
-    console.log(session);
     if (session) {
       return <Navigate to="/home" />;
     } else {
