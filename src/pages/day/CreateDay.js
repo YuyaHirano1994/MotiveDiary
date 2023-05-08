@@ -33,6 +33,7 @@ const CreateDay = () => {
   const navigate = useNavigate();
   const session = useRecoilValue(sessionState);
   const profile = useRecoilValue(profileState);
+  const [isLoading, setIsLoading] = useState(false);
   const [formValue, setFormValue] = useState({
     day_id: "",
     challenge_id: id,
@@ -45,7 +46,6 @@ const CreateDay = () => {
   });
   const [challenges, setChallenges] = useState([]);
   const [challenge, setChallenge] = useState([]);
-  // const [profile, setProfile] = useState();
   const [days, setDays] = useState([]);
   const [maxDay, setMaxDay] = useState("");
 
@@ -119,7 +119,8 @@ const CreateDay = () => {
   const checkInputData = () => {
     const arr = days.filter((day) => day.date === formValue.date);
     if (arr.length) {
-      alert("同じ日付のデータは登録できません");
+      alert("Cannot register data with the same date");
+      setIsLoading(false);
       return false;
     }
     return true;
@@ -127,9 +128,9 @@ const CreateDay = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (!checkInputData()) return; // 登録データのチェックを実施
     const now = new Date();
-
     try {
       const { error } = await supabase
         .from("day")
@@ -147,6 +148,7 @@ const CreateDay = () => {
         throw error;
       }
       alert("Create your challenge Success");
+      setIsLoading(false);
       setFormValue({ ...formValue, date: "", content: "" });
       getDays();
       /* 登録したデータが目標最終日だった場合、Challengeデータを更新する。 */
@@ -157,12 +159,12 @@ const CreateDay = () => {
       navigate(`/day/create/${id}`);
     } catch (error) {
       alert("Failed");
+      setIsLoading(false);
       console.log(error);
     }
   };
 
   const completedChallenge = async () => {
-    console.log("reading comleted udate");
     try {
       const { error } = await supabase
         .from("challenge")
@@ -279,11 +281,13 @@ const CreateDay = () => {
               ))}
             </Select>
           </FormControl>
+          <br />
           <TextField
             value={formValue.date || formatDate(new Date())}
             onChange={handleChange}
             margin="normal"
             required
+            // fullWidth
             name="date"
             label="Date"
             type="date"
@@ -300,7 +304,7 @@ const CreateDay = () => {
             name="content"
             required
           ></TextareaAutosize>
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
             Register!
           </Button>
         </Box>

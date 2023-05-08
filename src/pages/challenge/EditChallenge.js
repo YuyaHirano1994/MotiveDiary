@@ -4,7 +4,6 @@ import supabase from "../../common/supabase";
 import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import BackButton from "../../components/BackButton";
-import useAuth from "../../common/useAuth";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 
@@ -12,7 +11,7 @@ const EditChallenge = () => {
   const { id } = useParams();
   const session = useRecoilValue(sessionState);
   const [showCategory, setShowCategory] = useState("");
-  const [hiddenEl, setHiddenEl] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formValue, setFormValue] = useState({
     challenge_id: "",
@@ -61,15 +60,14 @@ const EditChallenge = () => {
     console.log(e.target.value);
     if (e.target.value !== "other") {
       setFormValue({ ...formValue, category: e.target.value });
-      setHiddenEl(true);
     } else {
       setFormValue({ ...formValue, category: "" });
-      setHiddenEl(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const now = new Date();
     try {
       const { error } = await supabase
@@ -87,9 +85,11 @@ const EditChallenge = () => {
       if (error) {
         throw error;
       }
+      setIsLoading(false);
       alert("Update your challenge Success");
       navigate("/mypage");
     } catch (error) {
+      setIsLoading(false);
       alert("Failed");
       console.log(error);
     }
@@ -187,7 +187,7 @@ const EditChallenge = () => {
                 autoComplete="start_date"
                 variant="standard"
               />
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
                 Edit Challenge
               </Button>
               <BackButton />

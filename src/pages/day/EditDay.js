@@ -10,6 +10,7 @@ const EditDay = () => {
   const { id, day_id } = useParams();
   const navigate = useNavigate();
   const session = useRecoilValue(sessionState);
+  const [isLoading, setIsLoading] = useState(false);
   const [formValue, setFormValue] = useState({
     day_id: "",
     challenge_id: "",
@@ -51,6 +52,7 @@ const EditDay = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const now = new Date();
     try {
       const { error } = await supabase
@@ -70,9 +72,12 @@ const EditDay = () => {
       alert("Update your day Success");
       setFormValue({ ...formValue, date: "", content: "" });
       getDay();
+      setIsLoading(false);
+
       navigate(`/challenge/${id}`);
     } catch (error) {
       alert("Failed");
+      setIsLoading(false);
       console.log(error);
     }
   };
@@ -114,7 +119,7 @@ const EditDay = () => {
               name="content"
               required
             ></TextareaAutosize>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
               Update
             </Button>
             <BackButton />

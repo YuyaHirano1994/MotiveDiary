@@ -28,7 +28,7 @@ const CreateChallenge = () => {
   const navigate = useNavigate();
   const session = useRecoilValue(sessionState);
   const [showCategory, setShowCategory] = useState("");
-  const [hiddenEl, setHiddenEl] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -43,15 +43,14 @@ const CreateChallenge = () => {
     console.log(e.target.value);
     if (e.target.value !== "other") {
       setFormValue({ ...formValue, category: e.target.value });
-      setHiddenEl(true);
     } else {
       setFormValue({ ...formValue, category: "other" });
-      setHiddenEl(false);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     try {
       console.log(formValue);
       const { error } = await supabase.from("challenge").insert([
@@ -67,9 +66,11 @@ const CreateChallenge = () => {
       if (error) {
         throw error;
       }
+      setIsLoading(false);
       alert("new challenge Success");
       navigate("/mypage");
     } catch (error) {
+      setIsLoading(false);
       alert("Failed");
       console.log(error);
     }
@@ -165,7 +166,7 @@ const CreateChallenge = () => {
                 autoComplete="start_date"
                 variant="standard"
               />
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
                 Add new Challenge
               </Button>
             </Box>
