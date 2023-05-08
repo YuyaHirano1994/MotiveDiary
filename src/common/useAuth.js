@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import supabase from "./supabase";
 import { sessionState } from "../atom/sessionAtom";
 import { profileState } from "../atom/profileAtom";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 export default function useAuth() {
   const [error, setError] = useState(null);
