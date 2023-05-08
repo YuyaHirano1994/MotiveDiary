@@ -12,6 +12,7 @@ const Setting = () => {
   const session = useRecoilValue(sessionState);
   const [profile, setProfile] = useRecoilState(profileState);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [formValue, setFormValue] = useState({});
   const [imageSrc, setImageSrc] = useState();
   const [avatar, setAvatar] = useState({
@@ -21,6 +22,7 @@ const Setting = () => {
   });
 
   const getProfile = async () => {
+    setIsLoading(true);
     if (session?.id) {
       try {
         const { data, error } = await supabase.from("profile").select("*").eq("user_id", session?.id);
@@ -29,7 +31,7 @@ const Setting = () => {
         }
         setFormValue({ ...formValue, ...data[0] });
         setProfile({ ...profile, ...data[0] });
-        setIsLoading(true);
+        setIsLoading(false);
       } catch (error) {
         console.log(error.error_description || error.message);
       }
@@ -95,6 +97,7 @@ const Setting = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsUpdating(true);
     const now = new Date();
     try {
       //アバターが変更され場合のみ実施
@@ -115,15 +118,13 @@ const Setting = () => {
       if (error) throw error;
       getProfile();
       alert("Update your profile Success");
+      setIsUpdating(false);
       navigate(`/mypage`);
     } catch (error) {
+      setIsUpdating(false);
       alert("Failed");
       console.log(error);
     }
-  };
-
-  const backHome = () => {
-    navigate("/mypage");
   };
 
   return (
@@ -141,6 +142,10 @@ const Setting = () => {
             Setting
           </Typography>
           {isLoading ? (
+            <>
+              <Typography>Now Loading...</Typography>
+            </>
+          ) : (
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
               <Box
                 sx={{
@@ -161,7 +166,6 @@ const Setting = () => {
                     name="avatar_url"
                     onChange={handleImageChange}
                     type="file"
-                    multiple
                     accept="image/*,.png,.jpg,.jpeg,.gif"
                     style={{ display: "none" }}
                   />
@@ -196,15 +200,11 @@ const Setting = () => {
                   type="text"
                   id="comment"
                 />
-                <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
+                <Button type="submit" variant="contained" disabled={isUpdating} sx={{ mt: 3, mb: 2 }}>
                   Update Profile
                 </Button>
               </Box>
             </Box>
-          ) : (
-            <>
-              <Typography>Now Loading...</Typography>
-            </>
           )}
         </Box>
       </Container>

@@ -5,7 +5,6 @@ import { Box } from "@mui/system";
 import { Button, Card, CardActions, CardContent, Container, Typography, useMediaQuery } from "@mui/material";
 import BackButton from "../../components/BackButton";
 import UserIcon from "../../components/UserIcon";
-import useAuth from "../../common/useAuth";
 import { DialogModal } from "../../common/DialogModal";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
@@ -13,17 +12,6 @@ import { TwitterIcon, TwitterShareButton } from "react-share";
 import { useTheme } from "@mui/material/styles";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-
-// const styles = {
-//   paperContainer: {
-//     backgroundImage: `url("https://source.unsplash.com/random/")`,
-//     backgroundSize: `cover`,
-//     width: `100%`,
-//     height: `150px`,
-//     backgroundRepeat: `no-repeat`,
-//     textAlign: `center`,
-//   },
-// };
 
 const Challenge = () => {
   const theme = useTheme();

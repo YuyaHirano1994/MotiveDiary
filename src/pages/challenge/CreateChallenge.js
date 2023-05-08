@@ -25,7 +25,6 @@ const CreateChallenge = () => {
     created_at: "",
     updated_at: "",
   });
-
   const navigate = useNavigate();
   const session = useRecoilValue(sessionState);
   const [showCategory, setShowCategory] = useState("");
@@ -51,8 +50,6 @@ const CreateChallenge = () => {
     }
   };
 
-  console.log(formValue);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -76,10 +73,6 @@ const CreateChallenge = () => {
       alert("Failed");
       console.log(error);
     }
-  };
-
-  const backHome = () => {
-    navigate(-1);
   };
 
   const categories = ["HTML", "CSS", "JavaScript", "TypeScript", "PHP"];
@@ -132,26 +125,6 @@ const CreateChallenge = () => {
                     <MenuItem value={"other"}>Other</MenuItem>
                   </Select>
                 </FormControl>
-                {/* {hiddenEl ? (
-                  <></>
-                ) : (
-                  <TextField
-                    value={formValue.category}
-                    onChange={handleChange}
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="category"
-                    label="category"
-                    type="text"
-                    id="category"
-                    autoComplete="category"
-                    autoFocus
-                    variant="standard"
-                    disabled={hiddenEl}
-                    sx={{ width: "50%" }}
-                  />
-                )} */}
               </Box>
               <TextField
                 value={formValue.days}
@@ -164,7 +137,6 @@ const CreateChallenge = () => {
                 type="number"
                 id="days"
                 autoComplete="days"
-                autoFocus
                 variant="standard"
               />
               <TextField
@@ -186,13 +158,11 @@ const CreateChallenge = () => {
                 onChange={handleChange}
                 margin="normal"
                 required
-                // fullWidth
                 name="start_date"
                 label="Start Date"
                 type="date"
                 id="start_date"
                 autoComplete="start_date"
-                autoFocus
                 variant="standard"
               />
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>

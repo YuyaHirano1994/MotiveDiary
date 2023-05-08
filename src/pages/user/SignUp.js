@@ -10,7 +10,6 @@ import { DialogModal } from "../../common/DialogModal";
 const SignUp = () => {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState({
-    // nickname: "",
     email: "",
     password1: "",
     password2: "",
@@ -41,7 +40,6 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formValue.password1 !== formValue.password2) {
-      // alert("Your passwords do no match");
       const ret = await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
@@ -76,28 +74,6 @@ const SignUp = () => {
         setModalConfig(undefined);
       }
     }
-
-    // e.preventDefault();
-    // try {
-    //   if (formValue.password1 !== formValue.password2) {
-    //     alert("Your passwords do no match");
-    //   } else {
-    //     const { data, error } = await supabase.auth.signUp({
-    //       email: formValue.email,
-    //       password: formValue.password1,
-    //     });
-
-    //     if (error) {
-    //       throw error;
-    //     }
-    //     alert("Create Success");
-
-    //     navigate("/mypage");
-    //   }
-    // } catch (error) {
-    //   alert("Create Failed");
-    //   console.log(error);
-    // }
   };
 
   return (
@@ -116,18 +92,6 @@ const SignUp = () => {
           Sign Up
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
-          {/* <TextField
-            value={formValue.nickname}
-            onChange={handleChange}
-            margin="normal"
-            required
-            fullWidth
-            id="nickname"
-            label="Nickname"
-            name="nickname"
-            autoComplete="nickname"
-            autoFocus
-          /> */}
           <TextField
             value={formValue.email}
             onChange={handleChange}

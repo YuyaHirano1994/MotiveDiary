@@ -35,15 +35,6 @@ const Home = () => {
     getAllChallenges();
   }, []);
 
-  const editDesc = (desc) => {
-    if (desc.length >= 40) {
-      const newDesc = desc.substr(0, 40) + "...";
-      return newDesc;
-    } else {
-      return desc;
-    }
-  };
-
   return (
     <>
       <Container component="main" maxWidth="lg" sx={{}}>
@@ -59,17 +50,7 @@ const Home = () => {
           <Grid item md={6} xs={10} sx={{}}>
             <Box component="div" sx={{}}>
               <Box component="div">
-                <Box component="div" sx={{ mt: 2 }}>
-                  {/* <Button variant="text" size="large">
-                    Latest
-                  </Button>
-                  <Button variant="text" size="large">
-                    Top
-                  </Button>
-                  <Button variant="text" size="large">
-                    Recommend
-                  </Button> */}
-                </Box>
+                <Box component="div" sx={{ mt: 2 }}></Box>
                 <Box component="div" sx={{ m: 1 }}>
                   {challenges.map((challenge) => (
                     <Box
@@ -99,9 +80,6 @@ const Home = () => {
                           </Box>
                         </Box>
                         <Box display={"flex"}>
-                          {/* <Box component="div">
-                            <Button>Good Button</Button>
-                          </Box> */}
                           <Button>
                             <Link to={"/challenge/" + challenge.challenge_id}>More detail...</Link>
                           </Button>

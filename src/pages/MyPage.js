@@ -11,17 +11,6 @@ import { profileState } from "../atom/profileAtom";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
-// const styles = {
-//   paperContainer: {
-//     backgroundImage: `url("https://source.unsplash.com/random/")`,
-//     backgroundSize: `cover`,
-//     width: `100%`,
-//     height: `100px`,
-//     backgroundRepeat: `no-repeat`,
-//     textAlign: `center`,
-//   },
-// };
-
 const MyPage = () => {
   const session = useRecoilValue(sessionState);
   const [profile, setProfile] = useRecoilState(profileState);
@@ -61,15 +50,6 @@ const MyPage = () => {
       getYourChallenges();
     }
   }, [session]);
-
-  const editDesc = (desc) => {
-    if (desc.length >= 40) {
-      const newDesc = desc.substr(0, 40) + "...";
-      return newDesc;
-    } else {
-      return desc;
-    }
-  };
 
   return (
     <>
@@ -186,7 +166,6 @@ const MyPage = () => {
                   </Link>
                 </Box>
                 <Box display="flex" sx={{ width: "100px", ml: 1 }}>
-                  {/* {editDesc(challenge.desc)} */}
                   <Box>
                     <Typography variant="h6">Day</Typography>
                     <Typography variant="h6">
@@ -231,9 +210,6 @@ const MyPage = () => {
                     },
                   }}
                 >
-                  {/* <Button color="info">
-                    <Link to={"/day/create/" + challenge.challenge_id}>Write</Link>
-                  </Button> */}
                   <Link to={"/challenge/" + challenge.challenge_id}>
                     <Button variant="contained" size="small" color="info">
                       Detail
@@ -241,7 +217,6 @@ const MyPage = () => {
                   </Link>
                 </Box>
                 <Box display="flex" sx={{ width: "100px", ml: "10px" }}>
-                  {/* {editDesc(challenge.desc)} */}
                   <Box>
                     <Typography variant="h6">Day</Typography>
                     <Typography variant="h6">

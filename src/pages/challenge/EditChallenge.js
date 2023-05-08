@@ -95,15 +95,6 @@ const EditChallenge = () => {
     }
   };
 
-  const logout = async () => {
-    const { error } = await supabase.auth.signOut();
-    console.log(error);
-  };
-
-  const backHome = () => {
-    navigate("/mypage");
-  };
-
   const categories = ["HTML", "CSS", "JavaScript", "TypeScript", "PHP"];
 
   return (
@@ -154,26 +145,6 @@ const EditChallenge = () => {
                     <MenuItem value={"other"}>Other</MenuItem>
                   </Select>
                 </FormControl>
-                {/* {hiddenEl ? (
-                  <></>
-                ) : (
-                  <TextField
-                    value={formValue.category}
-                    onChange={handleChange}
-                    margin="normal"
-                    required
-                    fullWidth
-                    name="category"
-                    label="category"
-                    type="text"
-                    id="category"
-                    autoComplete="category"
-                    autoFocus
-                    variant="standard"
-                    disabled={hiddenEl}
-                    sx={{ width: "50%" }}
-                  />
-                )} */}
               </Box>
               <TextField
                 value={formValue.days}
@@ -186,7 +157,6 @@ const EditChallenge = () => {
                 type="number"
                 id="days"
                 autoComplete="days"
-                autoFocus
                 variant="standard"
               />
               <TextField
@@ -215,7 +185,6 @@ const EditChallenge = () => {
                 type="date"
                 id="start_date"
                 autoComplete="start_date"
-                autoFocus
                 variant="standard"
               />
               <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>

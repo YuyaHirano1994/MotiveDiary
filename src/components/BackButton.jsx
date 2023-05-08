@@ -16,7 +16,7 @@ const BackButton = (props) => {
             <Button variant="outlined" size="small">
               <KeyboardReturnIcon />
               Back
-            </Button>{" "}
+            </Button>
           </Link>
         </>
       ) : (
