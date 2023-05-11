@@ -21,6 +21,7 @@ export default function useAuth() {
     fetchAuthUser();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log(event);
       if (event === "SIGNED_OUT") {
         setSession(null);
         setProfile(null);
@@ -50,22 +51,23 @@ export default function useAuth() {
       });
       if (error) throw error;
       setSession(data.user);
-      return true;
+      return { result: true };
     } catch (error) {
       console.log(error.error_description || error.message);
       setError(error);
-      return false;
+      return { result: false, msg: error.message };
     }
   }
 
   async function signUp(email, password) {
     console.log("signOut");
     try {
-      const { user, error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
       });
       if (error) throw error;
+      console.log(data);
       return { result: true };
     } catch (error) {
       console.log(error.error_description || error.message);

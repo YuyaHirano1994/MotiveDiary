@@ -73,7 +73,6 @@ const SignUp = () => {
           });
           setModalConfig(undefined);
         }
-
         setErrorMsg(data?.msg);
       } catch (error) {
         console.error("Error:", error);

@@ -5,14 +5,13 @@ import useAuth from "../../common/useAuth";
 import { DialogModal } from "../../common/DialogModal";
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [formValue, setFormValue] = useState({
     email: "",
     password: "",
   });
-  const [isPassError, setIsPassError] = useState(false);
   const { signIn } = useAuth();
   const [modalConfig, setModalConfig] = useState();
-  const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
 
   const regex = new RegExp(/^[0-9a-zA-Z]*$/);
@@ -37,30 +36,34 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await signIn(formValue.email, formValue.password);
-
-    if (result) {
-      navigate("/mypage");
-      const ret = await new Promise((resolve) => {
-        setModalConfig({
-          onClose: resolve,
-          title: "",
-          message: "Login Success",
-          type: false,
+    try {
+      const data = await signIn(formValue.email, formValue.password);
+      if (data.result) {
+        navigate("/mypage");
+        const ret = await new Promise((resolve) => {
+          setModalConfig({
+            onClose: resolve,
+            title: "",
+            message: "Login Success",
+            type: false,
+          });
         });
-      });
-      setModalConfig(undefined);
-    } else {
-      const ret = await new Promise((resolve) => {
-        setModalConfig({
-          onClose: resolve,
-          title: "Login Failed",
-          message: "Incorrect password. For assistance, please contact support",
-          type: false,
+        setModalConfig(undefined);
+      } else {
+        console.log(data.msg);
+        const ret = await new Promise((resolve) => {
+          setModalConfig({
+            onClose: resolve,
+            title: "Login Failed",
+            message: data.msg,
+            type: false,
+          });
+          setErrorMsg(data.msg);
+          setModalConfig(undefined);
         });
-        setErrorMsg("Incorrect password.");
-      });
-      setModalConfig(undefined);
+      }
+    } catch (error) {
+      console.error("Error:", error);
     }
   };
 
@@ -80,7 +83,6 @@ const SignIn = () => {
           Sign In
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          {modalConfig && <DialogModal {...modalConfig} />}
           {errorMsg && (
             <Typography variant="subtitle1" align="center" color="error">
               {errorMsg}
@@ -96,7 +98,7 @@ const SignIn = () => {
             label="Email Address"
             type="text"
             id="email"
-            error={isPassError}
+            // error={isPassError}
             autoComplete="email"
             autoFocus
           />
@@ -110,12 +112,13 @@ const SignIn = () => {
             label="Password"
             type="password"
             id="password"
-            error={isPassError}
+            // error={isPassError}
             autoComplete="current-password"
           />
           <Button color="secondary" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
+          {modalConfig && <DialogModal {...modalConfig} />}
           <Grid container>
             <Grid item xs>
               <Link to={"/changepassword"} variant="body2">
