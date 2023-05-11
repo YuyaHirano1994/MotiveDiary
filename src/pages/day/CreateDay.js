@@ -75,6 +75,12 @@ const CreateDay = () => {
         .eq("user_id", session.id)
         .eq("completed", "FALSE");
       if (error) throw error;
+
+      // challengeが登録されていない場合はchallenge登録ページに遷移させる
+      if (!data.length) {
+        alert("Please CREATE your challenge!");
+        navigate("/challenge/create");
+      }
       if (id === "none") {
         setFormValue({ ...formValue, challenge_id: data[0].challenge_id });
       }

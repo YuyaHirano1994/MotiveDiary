@@ -11,6 +11,24 @@ a {
   color: inherit;
 }
 
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  flex: 20%;
+}
+
+.content {
+  flex: 100%;
+}
+
+/* .footer {
+  flex: 20%;
+} */
+
 .challenge {
   border: 1px solid black;
   margin: 10px;

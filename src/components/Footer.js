@@ -6,13 +6,15 @@ export const Footer = () => {
     <Box
       sx={{
         width: "100%",
-        height: "auto",
         backgroundColor: "primary.main",
-        paddingTop: "1rem",
-        paddingBottom: "1rem",
+        pt: 2,
+        pb: 2,
+        // paddingTop: "1rem",
+        // paddingBottom: "1rem",
       }}
     >
-      <Container maxWidth="lg">
+      {/* 下にはりつければいいのではないか？ */}
+      <Container maxWidth="lg" sx={{ maxHeight: "100%" }}>
         <Grid container direction="column" alignItems="center" textAlign={"center"}>
           <Grid item xs={12}>
             <Typography color="black" variant="h5">

@@ -63,95 +63,103 @@ const App = () => {
   return (
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Product />} />
-          <Route path="home" element={<Home />} />
-          <Route
-            path="user/signup"
-            element={
-              <NotSignedRoute>
-                <SignUp />
-              </NotSignedRoute>
-            }
-          />
-          <Route
-            path="user/signin"
-            element={
-              <NotSignedRoute>
-                <SignIn />
-              </NotSignedRoute>
-            }
-          />
-          <Route
-            path="changepassword"
-            element={
-              <NotSignedRoute>
-                <ChangePassword />
-              </NotSignedRoute>
-            }
-          />
-          <Route path="changepasswordform" element={<ChangePasswordForm />} />
-          <Route
-            path="mypage"
-            element={
-              <SignedRoute>
-                <MyPage />
-              </SignedRoute>
-            }
-          />
-          <Route
-            path="mypage/setting"
-            element={
-              <SignedRoute>
-                <Setting />
-              </SignedRoute>
-            }
-          />
-          <Route path="challenge/:id" element={<Challenge />} />
-          <Route
-            path="challenge/create"
-            element={
-              <SignedRoute>
-                <CreateChallenge />
-              </SignedRoute>
-            }
-          />
-          <Route
-            path="challenge/update/:id"
-            element={
-              <SignedRoute>
-                <EditChallenge />
-              </SignedRoute>
-            }
-          />
-          <Route
-            path="day/create/:id"
-            element={
-              <SignedRoute>
-                <CreateDay />
-              </SignedRoute>
-            }
-          />
-          <Route
-            path="day/edit/:id/:day_id"
-            element={
-              <SignedRoute>
-                <EditDay />
-              </SignedRoute>
-            }
-          />
-          <Route
-            path="/*"
-            element={
-              <div>
-                404 not found!<Link to="/home">back to home</Link>
-              </div>
-            }
-          />
-        </Routes>
-        <Footer />
-        <ScrollToTop />
+        <div className="app">
+          <div className="header">
+            <Header />
+          </div>
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<Product />} />
+              <Route path="home" element={<Home />} />
+              <Route
+                path="user/signup"
+                element={
+                  <NotSignedRoute>
+                    <SignUp />
+                  </NotSignedRoute>
+                }
+              />
+              <Route
+                path="user/signin"
+                element={
+                  <NotSignedRoute>
+                    <SignIn />
+                  </NotSignedRoute>
+                }
+              />
+              <Route
+                path="changepassword"
+                element={
+                  <NotSignedRoute>
+                    <ChangePassword />
+                  </NotSignedRoute>
+                }
+              />
+              <Route path="changepasswordform" element={<ChangePasswordForm />} />
+              <Route
+                path="mypage"
+                element={
+                  <SignedRoute>
+                    <MyPage />
+                  </SignedRoute>
+                }
+              />
+              <Route
+                path="mypage/setting"
+                element={
+                  <SignedRoute>
+                    <Setting />
+                  </SignedRoute>
+                }
+              />
+              <Route path="challenge/:id" element={<Challenge />} />
+              <Route
+                path="challenge/create"
+                element={
+                  <SignedRoute>
+                    <CreateChallenge />
+                  </SignedRoute>
+                }
+              />
+              <Route
+                path="challenge/update/:id"
+                element={
+                  <SignedRoute>
+                    <EditChallenge />
+                  </SignedRoute>
+                }
+              />
+              <Route
+                path="day/create/:id"
+                element={
+                  <SignedRoute>
+                    <CreateDay />
+                  </SignedRoute>
+                }
+              />
+              <Route
+                path="day/edit/:id/:day_id"
+                element={
+                  <SignedRoute>
+                    <EditDay />
+                  </SignedRoute>
+                }
+              />
+              <Route
+                path="/*"
+                element={
+                  <div>
+                    404 not found!<Link to="/home">back to home</Link>
+                  </div>
+                }
+              />
+            </Routes>
+          </div>
+          <div className="footer">
+            <Footer />
+          </div>
+          <ScrollToTop />
+        </div>
       </ThemeProvider>
     </BrowserRouter>
   );
