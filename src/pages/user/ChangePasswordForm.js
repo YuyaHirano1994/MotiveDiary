@@ -4,17 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../common/useAuth";
 import { DialogModal } from "../../common/DialogModal";
 
-const SignIn = () => {
+const ChangePasswordForm = () => {
+  const { sendResetPass } = useAuth();
   const [formValue, setFormValue] = useState({
-    email: "",
     password: "",
+    cPassword: "",
   });
-  const [isPassError, setIsPassError] = useState(false);
-  const { signIn } = useAuth();
   const [modalConfig, setModalConfig] = useState();
-  const navigate = useNavigate();
-
-  const regex = new RegExp(/^[0-9a-zA-Z]*$/);
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -24,37 +20,26 @@ const SignIn = () => {
     });
   };
 
-  const handleChangePassword = (e) => {
-    e.preventDefault();
-    if (regex.test(e.target.value)) {
-      setFormValue({
-        ...formValue,
-        [e.target.name]: e.target.value,
-      });
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await signIn(formValue.email, formValue.password);
-    navigate("/mypage");
+    const result = await sendResetPass(formValue.password);
     if (result) {
       const ret = await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
           title: "",
-          message: "Login Success",
+          message: "Password has changed",
           type: false,
         });
       });
       setModalConfig(undefined);
-      navigate("/mypage");
+      // navigate("/home");
     } else {
       const ret = await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
-          title: "Login Failed",
-          message: "Please re-try. check your password",
+          title: "Reset Failed",
+          message: "Something error, Please contact dev team",
           type: false,
         });
       });
@@ -75,56 +60,41 @@ const SignIn = () => {
         }}
       >
         <Typography variant="h3" align="center">
-          Sign In
+          Reset Password
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
-          {modalConfig && <DialogModal {...modalConfig} />}
           <TextField
             value={formValue.email}
             onChange={handleChange}
             margin="normal"
             required
             fullWidth
-            name="email"
-            label="Email Address"
-            type="text"
-            id="email"
-            error={isPassError}
-            autoComplete="email"
+            id="password"
+            label="New Password"
+            name="password"
+            autoComplete="password"
             autoFocus
           />
           <TextField
-            value={formValue.password}
-            onChange={handleChangePassword}
+            value={formValue.email}
+            onChange={handleChange}
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Password"
-            type="password"
-            id="password"
-            error={isPassError}
-            autoComplete="current-password"
+            id="cPassword"
+            label="Confirm Password"
+            name="cPassword"
+            autoComplete="cPassword"
+            autoFocus
           />
           <Button color="secondary" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Sign In
+            Reset Password
           </Button>
-          <Grid container>
-            <Grid item xs>
-              <Link to={"/changepassword"} variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link to={"/user/signup"} variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
-          </Grid>
+          {modalConfig && <DialogModal {...modalConfig} />}
         </Box>
       </Box>
     </Container>
   );
 };
 
-export default SignIn;
+export default ChangePasswordForm;

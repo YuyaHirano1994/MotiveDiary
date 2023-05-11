@@ -27,6 +27,14 @@ export default function useAuth() {
         if (authListener) {
           authListener?.subscription.unsubscribe();
         }
+      } else if (event == "PASSWORD_RECOVERY") {
+        setSession(null);
+        setProfile(null);
+        // const newPassword = prompt("What would you like your new password to be?");
+        // const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+
+        // if (data) alert("Password updated successfully!");
+        // if (error) alert("There was an error updating your password.");
       } else {
         setSession(session?.user || null);
       }
@@ -78,5 +86,31 @@ export default function useAuth() {
     }
   }
 
-  return { error, signIn, signUp, signOut };
+  async function resetPass(email) {
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: "http://localhost:3000/changepasswordform",
+      });
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.log(error.error_description || error.message);
+      setError(error);
+      return false;
+    }
+  }
+
+  async function sendResetPass(newPassword) {
+    try {
+      const { data, error } = await supabase.auth.updateUser({ password: newPassword });
+      if (error) throw error;
+      if (data) return true;
+    } catch (error) {
+      console.log(error.error_description || error.message);
+      setError(error);
+      return false;
+    }
+  }
+
+  return { error, signIn, signUp, signOut, resetPass, sendResetPass };
 }

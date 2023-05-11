@@ -1,9 +1,6 @@
 import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import supabase from "../../common/supabase";
-import { useRecoilState } from "recoil";
-// import { sessionState } from "../../atom/sessionAtom";
 import useAuth from "../../common/useAuth";
 import { DialogModal } from "../../common/DialogModal";
 
@@ -134,13 +131,13 @@ const SignUp = () => {
           {modalConfig && <DialogModal {...modalConfig} />}
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2">
+              <Link to={"/changepassword"} variant="body2">
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
               <Link to={"/user/signin"} variant="body2">
-                {"Already have an account? Log in"}
+                Already have an account
               </Link>
             </Grid>
           </Grid>

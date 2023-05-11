@@ -13,6 +13,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import EditDay from "./pages/day/EditDay";
 import Setting from "./pages/user/Setting";
+import ChangePassword from "./pages/user/ChangePassword";
 import useAuth from "./common/useAuth";
 import { createTheme, Snackbar, ThemeProvider, responsiveFontSizes } from "@mui/material";
 import { themeOptions } from "./theme-options";
@@ -21,6 +22,7 @@ import { useRecoilState } from "recoil";
 import supabase from "./common/supabase";
 import Product from "./Product";
 import ScrollToTop from "./components/ScrollToTop";
+import ChangePasswordForm from "./pages/user/ChangePasswordForm";
 
 const App = () => {
   let theme = createTheme(themeOptions);
@@ -64,10 +66,17 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Product />} />
-          <Route path="/home" element={<Home />} />
-          <Route path="/user/signup" element={<SignUp />} />
+          <Route path="home" element={<Home />} />
           <Route
-            path="/user/signin"
+            path="user/signup"
+            element={
+              <NotSignedRoute>
+                <SignUp />
+              </NotSignedRoute>
+            }
+          />
+          <Route
+            path="user/signin"
             element={
               <NotSignedRoute>
                 <SignIn />
@@ -75,7 +84,16 @@ const App = () => {
             }
           />
           <Route
-            path="/mypage"
+            path="changepassword"
+            element={
+              <NotSignedRoute>
+                <ChangePassword />
+              </NotSignedRoute>
+            }
+          />
+          <Route path="changepasswordform" element={<ChangePasswordForm />} />
+          <Route
+            path="mypage"
             element={
               <SignedRoute>
                 <MyPage />
@@ -83,16 +101,16 @@ const App = () => {
             }
           />
           <Route
-            path="/mypage/setting"
+            path="mypage/setting"
             element={
               <SignedRoute>
                 <Setting />
               </SignedRoute>
             }
           />
-          <Route path="/challenge/:id" element={<Challenge />} />
+          <Route path="challenge/:id" element={<Challenge />} />
           <Route
-            path="/challenge/create"
+            path="challenge/create"
             element={
               <SignedRoute>
                 <CreateChallenge />
@@ -100,7 +118,7 @@ const App = () => {
             }
           />
           <Route
-            path="/challenge/update/:id"
+            path="challenge/update/:id"
             element={
               <SignedRoute>
                 <EditChallenge />
@@ -108,7 +126,7 @@ const App = () => {
             }
           />
           <Route
-            path="/day/create/:id"
+            path="day/create/:id"
             element={
               <SignedRoute>
                 <CreateDay />
@@ -116,7 +134,7 @@ const App = () => {
             }
           />
           <Route
-            path="/day/edit/:id/:day_id"
+            path="day/edit/:id/:day_id"
             element={
               <SignedRoute>
                 <EditDay />
