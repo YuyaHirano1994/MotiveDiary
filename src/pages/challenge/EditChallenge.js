@@ -7,6 +7,13 @@ import BackButton from "../../components/BackButton";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 
+const challengeMainStyles = {
+  marginTop: 4,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
 const EditChallenge = () => {
   const { id } = useParams();
   const session = useRecoilValue(sessionState);
@@ -100,14 +107,7 @@ const EditChallenge = () => {
   return (
     <>
       <Container>
-        <Box
-          sx={{
-            marginTop: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <Box sx={challengeMainStyles}>
           <Typography variant="h3" align="center">
             Edit your Challenge
           </Typography>

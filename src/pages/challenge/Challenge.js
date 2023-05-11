@@ -13,6 +13,25 @@ import { useTheme } from "@mui/material/styles";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
+const challengeMainStyles = {
+  marginTop: 4,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
+const menuStyles = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "flex-end",
+};
+
+const mainStyles = { mt: 2, mb: 2, border: "1px solid grey", borderRadius: 3 };
+
+const challengeStyles = { display: "flex", justifyContent: "space-between" };
+
+const cardStyles = { minHeight: 100, border: "1px solid black", m: 2 };
+
 const Challenge = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -112,10 +131,10 @@ const Challenge = () => {
   const checkUser = () => {
     if (session?.id === challenge.user_id) {
       return (
-        <Box component="div">
+        <Box>
           {isMobile ? (
             <>
-              <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-end" }}>
+              <Box sx={menuStyles}>
                 <Link to={"/challenge/update/" + challenge.challenge_id}>
                   <Button variant="outlined" size="small" sx={{ ml: 2, mb: 1 }}>
                     <ModeEditOutlineIcon />
@@ -135,7 +154,7 @@ const Challenge = () => {
             <>
               <Box sx={{ ml: "auto" }}>
                 <Link to={"/challenge/update/" + challenge.challenge_id}>
-                  <Button variant="outlined" size="small" sx={{ marginLeft: 2 }}>
+                  <Button variant="outlined" size="small" sx={{ ml: 2 }}>
                     <ModeEditOutlineIcon />
                     Edit
                   </Button>
@@ -154,7 +173,7 @@ const Challenge = () => {
       );
     } else {
       return (
-        <Box component="div">
+        <Box>
           <BackButton />
         </Box>
       );
@@ -179,17 +198,10 @@ const Challenge = () => {
 
   return (
     <>
-      <Container component="main" maxWidth="md" sx={{ mt: 2, mb: 2, border: "1px solid grey", borderRadius: 3 }}>
-        <Box
-          sx={{
-            marginTop: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Box component="div" display="flex" justifyContent="space-between" sx={{ width: "100%", marginBottom: 4 }}>
-            <Box component="div" display={"flex"}>
+      <Container component="main" maxWidth="md" sx={mainStyles}>
+        <Box sx={challengeMainStyles}>
+          <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
+            <Box display="flex">
               <UserIcon userID={challenge.user_id} width={50} height={50} />
               <Box sx={{ ml: 2 }}>
                 <Typography variant="subtitle1" align="left">
@@ -202,11 +214,11 @@ const Challenge = () => {
             </Box>
             {checkUser()}
           </Box>
-          <Box align="center" sx={{ width: "100%", mb: 4 }}>
+          <Box sx={{ width: "100%", mb: 4 }}>
             <Typography variant="h3" align="left" sx={{ mt: 2 }}>
               {challenge.title}
             </Typography>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+            <Box sx={challengeStyles}>
               <Typography variant="h5" align="left">
                 {challenge.start_date}~{challenge.end_date}
               </Typography>
@@ -227,7 +239,7 @@ const Challenge = () => {
               {changeFormat(challenge?.desc)}
             </Typography>
           </Box>
-          <Box display="flex" justifyContent={"space-between"} sx={{ width: "100%", marginBottom: 4 }}>
+          <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
             <Box>
               <Button color="info" variant="contained">
                 #{challenge.category}
@@ -241,12 +253,10 @@ const Challenge = () => {
             </Box>
           </Box>
         </Box>
-        <Box align="right" sx={{ width: "100%", marginBottom: 4 }}>
+        <Box align="right" sx={{ width: "100%", mb: 4 }}>
           {session?.id === challenge.user_id ? (
             <Button variant="contained">
-              <Link style={{}} to={"/day/create/" + challenge.challenge_id}>
-                Register Day
-              </Link>
+              <Link to={"/day/create/" + challenge.challenge_id}>Register Day</Link>
             </Button>
           ) : (
             <></>
@@ -254,19 +264,19 @@ const Challenge = () => {
         </Box>
         <Container>
           {days.map((day, i) => (
-            <Card key={day.day_id} sx={{ minHeight: 100, border: "1px solid black", m: 2 }}>
+            <Card key={day.day_id} sx={cardStyles}>
               <CardContent>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="h5">{day.date}</Typography>
                   <Typography variant="h5">DAY {days.length - i}</Typography>
                 </Box>
                 <hr />
-                <Box sx={{ margin: "0 30px" }}>
+                <Box sx={{ m: "0 30px" }}>
                   <Typography variant="body1" gutterBottom>
                     {changeFormat(day.content)}
                   </Typography>
                 </Box>
-                <CardActions sx={{ justifyContent: "space-between" }}>
+                <CardActions>
                   {session?.id === challenge.user_id ? (
                     <>
                       <TwitterShareButton

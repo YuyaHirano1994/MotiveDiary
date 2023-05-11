@@ -11,40 +11,85 @@ import { profileState } from "../atom/profileAtom";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
+const mainStyles = {
+  mt: 4,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
+const profileStyles = {
+  display: "flex",
+  justifyContent: "space-between",
+  mt: 2,
+  ml: 2,
+  width: "100%",
+};
+
+const menuStyles = {
+  display: "flex",
+  flexWrap: "wrap",
+  maxWidth: "180px",
+};
+
+const challengeStyles = {
+  width: "100%",
+  mt: 1,
+  mb: 4,
+  borderRadius: 3,
+  border: "1px solid black",
+};
+
+const contentBorderStyles = {
+  p: 2,
+  borderBottom: "1px solid grey",
+};
+
+const challengeMenuStyles = {
+  display: "block",
+  align: "left",
+  "@media screen and (min-width:600px)": {
+    display: "flex",
+    justifyContent: "space-between",
+    align: "left",
+    ml: "10px",
+    mt: "20px",
+  },
+};
+
 const MyPage = () => {
   const session = useRecoilValue(sessionState);
   const [profile, setProfile] = useRecoilState(profileState);
   const [notCompletedChallenges, setNotCompletedChallenges] = useState([]);
   const [completedChallenges, setCompletedChallenges] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const getYourChallenges = async () => {
-    try {
-      const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", session.id);
-      if (error) {
-        throw error;
-      }
-      setNotCompletedChallenges(data.filter((challenge) => challenge.completed === false));
-      setCompletedChallenges(data.filter((challenge) => challenge.completed === true));
-    } catch (error) {
-      console.log(error.error_description || error.message);
-    }
-  };
-
-  const getProfile = async () => {
-    try {
-      const { data, error } = await supabase.from("profile").select("*").eq("user_id", session.id);
-
-      if (error) {
-        throw error;
-      }
-      setProfile({ ...profile, ...data[0] });
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
+    const getYourChallenges = async () => {
+      try {
+        const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", session.id);
+        if (error) {
+          throw error;
+        }
+        setNotCompletedChallenges(data.filter((challenge) => challenge.completed === false));
+        setCompletedChallenges(data.filter((challenge) => challenge.completed === true));
+      } catch (error) {
+        console.log(error.error_description || error.message);
+      }
+    };
+
+    const getProfile = async () => {
+      try {
+        const { data, error } = await supabase.from("profile").select("*").eq("user_id", session.id);
+
+        if (error) {
+          throw error;
+        }
+        setProfile({ ...profile, ...data[0] });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
     if (session) {
       getProfile();
       getYourChallenges();
@@ -54,27 +99,12 @@ const MyPage = () => {
   return (
     <>
       <Container component="main" maxWidth="md">
-        <Box
-          sx={{
-            mt: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Box display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
+        <Box sx={mainStyles}>
+          <Box display="flex" justifyContent="space-between" sx={{ width: "100%" }}>
             <Box display={{ xs: "none", sm: "block" }}>
               <UserIcon />
             </Box>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                mt: 2,
-                ml: 2,
-                width: "100%",
-              }}
-            >
+            <Box sx={profileStyles}>
               <Box>
                 <Typography variant="h4">{profile?.nickname}</Typography>
                 <Typography variant="subtitle1" sx={{ ml: 1 }}>
@@ -84,15 +114,7 @@ const MyPage = () => {
                   <Button size="small">Edit Profile</Button>
                 </Link>
               </Box>
-              <Box
-                align="center"
-                width="auto"
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  maxWidth: "180px",
-                }}
-              >
+              <Box align="center" width="auto" sx={menuStyles}>
                 <Link to={"/challenge/create"} className="link">
                   <Button variant="contained" sx={{ mb: 1 }}>
                     <Typography variant="button">New Challenge</Typography>
@@ -112,48 +134,23 @@ const MyPage = () => {
             </Box>
           </Box>
         </Box>
-        <Box
-          sx={{
-            mt: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <Box display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
+        <Box sx={mainStyles}>
+          <Box display="flex" justifyContent="space-between" sx={{ width: "100%" }}>
             <Typography variant="h5">
               <BorderColorIcon />
               Challenging
             </Typography>
           </Box>
-          <Box sx={{ width: "100%", mt: 1, mb: 4, borderRadius: 3, border: "1px solid black" }}>
+          <Box sx={challengeStyles}>
             {notCompletedChallenges.map((challenge) => (
-              <Box
-                key={challenge.challenge_id}
-                display={"flex"}
-                justifyContent="space-between"
-                sx={{ p: 2, borderBottom: "1px solid grey" }}
-              >
-                <Box width={"100%"} sx={{}}>
+              <Box key={challenge.challenge_id} display="flex" justifyContent="space-between" sx={contentBorderStyles}>
+                <Box sx={{ width: "100%" }}>
                   <Typography variant="h5">{challenge.title}</Typography>
                   <Typography variant="subtitle1">
                     {challenge.start_date} ~ {challenge.end_date}
                   </Typography>
                 </Box>
-                <Box
-                  width={200}
-                  sx={{
-                    display: "block",
-                    align: "left",
-                    "@media screen and (min-width:600px)": {
-                      display: "flex",
-                      justifyContent: "space-between",
-                      align: "left",
-                      ml: "10px",
-                      mt: "20px",
-                    },
-                  }}
-                >
+                <Box width={200} sx={challengeMenuStyles}>
                   <Link to={"/day/create/" + challenge.challenge_id}>
                     <Button variant="contained" size="small" color="info" sx={{ mb: "10px" }}>
                       Write
@@ -176,40 +173,22 @@ const MyPage = () => {
               </Box>
             ))}
           </Box>
-          <Box display={"flex"} justifyContent={"space-between"} sx={{ width: "100%" }}>
+          <Box display="flex" justifyContent="space-between" sx={{ width: "100%" }}>
             <Typography variant="h5">
               <EmojiEventsIcon color="error" />
               Achieved
             </Typography>
           </Box>
-          <Box sx={{ width: "100%", mt: 1, mb: 4, borderRadius: 3, border: "1px solid black" }}>
+          <Box sx={challengeStyles}>
             {completedChallenges.map((challenge) => (
-              <Box
-                key={challenge.challenge_id}
-                display={"flex"}
-                justifyContent="space-between"
-                sx={{ p: 2, borderBottom: "1px solid grey" }}
-              >
-                <Box width={"100%"} sx={{}}>
+              <Box key={challenge.challenge_id} display="flex" justifyContent="space-between" sx={contentBorderStyles}>
+                <Box sx={{ width: "100%" }}>
                   <Typography variant="h5">{challenge.title}</Typography>
                   <Typography variant="subtitle1">
                     {challenge.start_date} ~ {challenge.end_date}
                   </Typography>
                 </Box>
-                <Box
-                  width={200}
-                  sx={{
-                    display: "block",
-                    align: "left",
-                    marginTop: "20px",
-                    "@media screen and (min-width:600px)": {
-                      display: "flex",
-                      justifyContent: "space-between",
-                      align: "left",
-                      ml: "10px",
-                    },
-                  }}
-                >
+                <Box width={200} sx={challengeMenuStyles}>
                   <Link to={"/challenge/" + challenge.challenge_id}>
                     <Button variant="contained" size="small" color="info">
                       Detail

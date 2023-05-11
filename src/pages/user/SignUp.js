@@ -4,6 +4,15 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../common/useAuth";
 import { DialogModal } from "../../common/DialogModal";
 
+const mainStyles = {
+  height: "500px",
+  marginTop: 8,
+  marginBottom: 8,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
 const SignUp = () => {
   const navigate = useNavigate();
   const [formValue, setFormValue] = useState({
@@ -82,16 +91,7 @@ const SignUp = () => {
 
   return (
     <Container component="main" maxWidth="xs">
-      <Box
-        sx={{
-          height: "500px",
-          marginTop: 8,
-          marginBottom: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
+      <Box sx={mainStyles}>
         <Typography variant="h3" align="center">
           Sign Up
         </Typography>

@@ -31,11 +31,6 @@ export default function useAuth() {
       } else if (event == "PASSWORD_RECOVERY") {
         setSession(null);
         setProfile(null);
-        // const newPassword = prompt("What would you like your new password to be?");
-        // const { data, error } = await supabase.auth.updateUser({ password: newPassword });
-
-        // if (data) alert("Password updated successfully!");
-        // if (error) alert("There was an error updating your password.");
       } else {
         setSession(session?.user || null);
       }
@@ -60,14 +55,12 @@ export default function useAuth() {
   }
 
   async function signUp(email, password) {
-    console.log("signOut");
     try {
       const { data, error } = await supabase.auth.signUp({
         email: email,
         password: password,
       });
       if (error) throw error;
-      console.log(data);
       return { result: true };
     } catch (error) {
       console.log(error.error_description || error.message);
@@ -91,7 +84,7 @@ export default function useAuth() {
   async function resetPass(email) {
     try {
       const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: "http://localhost:3000/changepasswordform",
+        redirectTo: "https://motive-diary.vercel.app/changepasswordform",
       });
       if (error) throw error;
       return true;

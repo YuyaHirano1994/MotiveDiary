@@ -32,6 +32,8 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { BsFillJournalBookmarkFill } from "react-icons/bs";
 import { Container } from "@mui/system";
 
+const headerStyles = { display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 };
+
 const Header = () => {
   const titleTheme = createTheme({
     typography: {
@@ -81,7 +83,7 @@ const Header = () => {
               <Box>
                 {session ? (
                   <>
-                    <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
+                    <Box sx={headerStyles}>
                       <Box display={{ xs: "none", sm: "block" }}>
                         <Button color="secondary" variant="contained" size="small">
                           <Link to={"/day/create/none"}>Register Day</Link>
@@ -164,7 +166,7 @@ const Header = () => {
                   </>
                 ) : (
                   <>
-                    <Box sx={{ display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 }}>
+                    <Box sx={{ headerStyles }}>
                       <Link to={"user/signin"}>
                         <Button variant="contained" color="secondary">
                           Sign in

@@ -17,6 +17,8 @@ const styles = {
   },
 };
 
+const challengeStyles = { pr: 1, pl: 1, mb: 2, backgroundColor: "white", border: "1px solid white", borderRadius: 2 };
+
 const Home = () => {
   const [challenges, setChallenges] = useState([]);
   const getAllChallenges = async () => {
@@ -37,49 +39,45 @@ const Home = () => {
 
   return (
     <>
-      <Container component="main" maxWidth="lg" sx={{}}>
+      <Container component="main" maxWidth="lg">
         <Paper style={styles.paperContainer}>
-          <Typography variant="h3" align="center" style={{ paddingTop: `100px`, color: `white` }}>
+          <Typography variant="h3" align="center" style={{ pt: `100px`, color: `white` }}>
             Let's get start your new Challenge!
           </Typography>
         </Paper>
-        <Grid container sx={{}} justifyContent="center">
-          <Grid item md={3} xs={1} sx={{}}>
-            <Box component="div" textAlign={"center"} sx={{ mt: 5 }}></Box>
+        <Grid container justifyContent="center">
+          <Grid item md={3} xs={1}>
+            <Box textAlign="center" sx={{ mt: 5 }}></Box>
           </Grid>
-          <Grid item md={6} xs={10} sx={{}}>
-            <Box component="div" sx={{}}>
-              <Box component="div">
-                <Box component="div" sx={{ mt: 2 }}></Box>
-                <Box component="div" sx={{ m: 1 }}>
+          <Grid item md={6} xs={10}>
+            <Box>
+              <Box>
+                <Box sx={{ mt: 2 }}></Box>
+                <Box sx={{ m: 1 }}>
                   {challenges.map((challenge) => (
-                    <Box
-                      component="div"
-                      key={challenge.challenge_id}
-                      sx={{ pr: 1, pl: 1, mb: 2, backgroundColor: "white", border: "1px solid white", borderRadius: 2 }}
-                    >
-                      <Box component="div" display={"flex"} sx={{ mt: 2 }}>
+                    <Box key={challenge.challenge_id} sx={challengeStyles}>
+                      <Box display="flex" sx={{ mt: 2 }}>
                         <UserIcon userID={challenge.user_id} width="32" height="32" />
                         <Typography variant="subtitle2" sx={{ ml: 1, pt: 1 }}>
                           {challenge.nickname}
                         </Typography>
                       </Box>
-                      <Box component="div" sx={{ pl: 5, mb: 2 }}>
-                        <Box component="div" display={"flex"} justifyContent={"space-between"}>
+                      <Box sx={{ pl: 5, mb: 2 }}>
+                        <Box display="flex" justifyContent="space-between">
                           <Box>
                             <Typography variant="h5">{challenge.title}</Typography>
                             <Typography variant="body2" color="text.secondary">
                               {challenge.start_date} ~ {challenge.end_date}
                             </Typography>
                           </Box>
-                          <Box component="div" sx={{ mr: 2 }}>
+                          <Box sx={{ mr: 2 }}>
                             <Typography variant="subtitle2">day</Typography>
                             <Typography variant="subtitle1">
                               {challenge.day ? challenge.day : 0} / {challenge.days}{" "}
                             </Typography>
                           </Box>
                         </Box>
-                        <Box display={"flex"}>
+                        <Box display="flex">
                           <Button>
                             <Link to={"/challenge/" + challenge.challenge_id}>More detail...</Link>
                           </Button>
@@ -90,9 +88,9 @@ const Home = () => {
                 </Box>
               </Box>
             </Box>
-          </Grid>{" "}
-          <Grid item md={3} xs={1} sx={{}}>
-            <Box component="div" textAlign={"center"} sx={{ mt: 5 }}></Box>
+          </Grid>
+          <Grid item md={3} xs={1}>
+            <Box textAlign="center" sx={{ mt: 5 }}></Box>
           </Grid>
         </Grid>
       </Container>

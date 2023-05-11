@@ -7,6 +7,13 @@ import useAuth from "../../common/useAuth";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 
+const challengeMainStyles = {
+  marginTop: 4,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
 const CreateChallenge = () => {
   const dt = new Date();
   var y = dt.getFullYear();
@@ -81,14 +88,7 @@ const CreateChallenge = () => {
   return (
     <>
       <Container>
-        <Box
-          sx={{
-            marginTop: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <Box sx={challengeMainStyles}>
           <Typography variant="h3" align="center">
             Let's Start your New Challenge!
           </Typography>
@@ -109,7 +109,7 @@ const CreateChallenge = () => {
                 variant="standard"
               />
               <Box display="flex">
-                <FormControl sx={{ m: 1, width: "50%" }}>
+                <FormControl sx={{ m: 1, maxWidth: "50%" }}>
                   <InputLabel id="category">category</InputLabel>
                   <Select
                     labelId="category"

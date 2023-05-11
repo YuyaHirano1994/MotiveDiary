@@ -22,6 +22,10 @@ import { sessionState } from "../../atom/sessionAtom";
 import { profileState } from "../../atom/profileAtom";
 import { TwitterIcon, TwitterShareButton } from "react-share";
 
+const dayMainStyles = { mt: 2, mb: 2, border: "1px solid grey", borderRadius: 3 };
+
+const cardStyles = { minHeight: 100, border: "1px solid black", m: 2 };
+
 const CreateDay = () => {
   function formatDate(date) {
     const y = date.getFullYear();
@@ -211,7 +215,7 @@ const CreateDay = () => {
 
   return (
     <>
-      <Container component="main" maxWidth="md" sx={{ mt: 2, mb: 2, border: "1px solid grey", borderRadius: 3 }}>
+      <Container component="main" maxWidth="md" sx={dayMainStyles}>
         <Box
           sx={{
             marginTop: 4,
@@ -220,13 +224,8 @@ const CreateDay = () => {
             alignItems: "center",
           }}
         >
-          <Box
-            component="div"
-            display={"flex"}
-            justifyContent={"space-between"}
-            sx={{ width: "100%", marginBottom: 4 }}
-          >
-            <Box component="div" display={"flex"}>
+          <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
+            <Box display="flex">
               <UserIcon width={50} height={50} />
               <Typography variant="subtitle1" align="center" sx={{ ml: 2, pt: 1 }}>
                 {profile?.nickname}
@@ -234,7 +233,7 @@ const CreateDay = () => {
             </Box>
             <BackButton to="/mypage" />
           </Box>
-          <Box align="center" sx={{ width: "100%", marginBottom: 4 }}>
+          <Box align="center" sx={{ width: "100%", mb: 4 }}>
             <Typography variant="h3" align="left" sx={{ mt: 2 }}>
               {challenge.title}
             </Typography>
@@ -251,11 +250,11 @@ const CreateDay = () => {
               </TwitterShareButton>
             </Box>
             <hr />
-            <Typography variant="h6" align="left" sx={{ marginLeft: 2 }}>
+            <Typography variant="h6" align="left" sx={{ ml: 2 }}>
               {changeFormat(challenge?.desc)}
             </Typography>
           </Box>
-          <Box display="flex" justifyContent={"space-between"} sx={{ width: "100%", marginBottom: 4 }}>
+          <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
             <Box>
               <Button variant="contained">#{challenge.category}</Button>
             </Box>
@@ -316,7 +315,7 @@ const CreateDay = () => {
         </Box>
         <Container>
           {days.map((day, i) => (
-            <Card key={day.day_id} sx={{ minHeight: 100, border: "1px solid black", m: 2 }}>
+            <Card key={day.day_id} sx={cardStyles}>
               <CardContent>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="h5">{day.date}</Typography>

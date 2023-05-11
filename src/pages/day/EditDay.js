@@ -6,6 +6,13 @@ import BackButton from "../../components/BackButton";
 import { sessionState } from "../../atom/sessionAtom";
 import { useRecoilValue } from "recoil";
 
+const dayMainStyles = {
+  marginTop: 4,
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
 const EditDay = () => {
   const { id, day_id } = useParams();
   const navigate = useNavigate();
@@ -85,14 +92,7 @@ const EditDay = () => {
   return (
     <>
       <Container component="main" maxWidth="md">
-        <Box
-          sx={{
-            marginTop: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <Box sx={dayMainStyles}>
           <Typography variant="h3" align="center">
             Edit Day
           </Typography>

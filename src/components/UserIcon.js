@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import supabase from "../common/supabase";
 import { Avatar } from "@mui/material";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../atom/sessionAtom";
 import { profileState } from "../atom/profileAtom";
+import supabase from "../common/supabase";
 
 /**
  *
@@ -19,25 +19,29 @@ const UserIcon = (props) => {
   const userID = props?.userID || session?.id || undefined;
   const [src, setSrc] = useState("");
 
-  const getProfile = async () => {
-    try {
-      const { data, error } = await supabase.from("profile").select("*").eq("user_id", userID);
-      if (error) throw error;
-      getAvatar(data[0]);
-    } catch (error) {
-      console.log(error.error_description || error.message);
-    }
-  };
-
-  const getAvatar = async (profile) => {
-    if (profile) {
-      const { data } = await supabase.storage.from("avatars").getPublicUrl(profile.avatar_url);
-      const imageUrl = data.publicUrl;
-      setSrc(imageUrl);
-    }
-  };
-
   useEffect(() => {
+    const getProfile = async () => {
+      try {
+        const { data, error } = await supabase.from("profile").select("*").eq("user_id", userID);
+        if (error) throw error;
+        getAvatar(data[0]);
+      } catch (error) {
+        console.log(error.error_description || error.message);
+      }
+    };
+
+    const getAvatar = async (profile) => {
+      if (profile) {
+        try {
+          const { data } = await supabase.storage.from("avatars").getPublicUrl(profile.avatar_url);
+          const imageUrl = data.publicUrl;
+          setSrc(imageUrl);
+        } catch (error) {
+          console.log(error.error_description || error.message);
+        }
+      }
+    };
+
     getProfile();
   }, [userID, profile]);
 

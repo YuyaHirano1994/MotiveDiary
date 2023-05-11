@@ -7,6 +7,14 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { profileState } from "../../atom/profileAtom";
 import { sessionState } from "../../atom/sessionAtom";
 
+const mainStyles = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+};
+
+const avatarStyles = { width: 250, height: 250, margin: "20px" };
+
 const Setting = () => {
   const navigate = useNavigate();
   const session = useRecoilValue(sessionState);
@@ -130,13 +138,7 @@ const Setting = () => {
   return (
     <>
       <Container component="main" maxWidth="md">
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
+        <Box sx={mainStyles}>
           <Typography variant="h3" align="center">
             Setting
           </Typography>
@@ -153,12 +155,9 @@ const Setting = () => {
                   alignItems: "center",
                 }}
               >
-                <Avatar
-                  src={avatar.filepath ? avatar.filepath : imageSrc}
-                  sx={{ width: 250, height: 250, margin: "20px" }}
-                ></Avatar>
+                <Avatar src={avatar.filepath ? avatar.filepath : imageSrc} sx={avatarStyles}></Avatar>
                 <label>
-                  <Button variant="contained" component="span" sx={{ marginBottom: "20px" }}>
+                  <Button variant="contained" component="span" sx={{ mb: "20px" }}>
                     Choose Avatar
                   </Button>
                   <input
