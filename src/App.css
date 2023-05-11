@@ -22,27 +22,7 @@ a {
 }
 
 .content {
-  flex: 100%;
-}
-
-/* .footer {
-  flex: 20%;
-} */
-
-.challenge {
-  border: 1px solid black;
-  margin: 10px;
-  list-style: none;
-  color: black;
-}
-
-.detail {
-  padding-left: 150px;
-}
-
-.button {
-  cursor: pointer;
-  list-style: none;
+  flex: 80%;
 }
 
 .link {

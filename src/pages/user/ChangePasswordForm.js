@@ -5,12 +5,14 @@ import useAuth from "../../common/useAuth";
 import { DialogModal } from "../../common/DialogModal";
 
 const ChangePasswordForm = () => {
-  const { sendResetPass } = useAuth();
+  const navigate = useNavigate();
+  const { sendResetPass, error } = useAuth();
   const [formValue, setFormValue] = useState({
     password: "",
     cPassword: "",
   });
   const [modalConfig, setModalConfig] = useState();
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e) => {
     e.preventDefault();
@@ -22,8 +24,9 @@ const ChangePasswordForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await sendResetPass(formValue.password);
-    if (result) {
+    if (formValue.password !== formValue.cPassword) return setErrorMsg("Password confirmation does not match");
+    const data = await sendResetPass(formValue.password);
+    if (data.result) {
       const ret = await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
@@ -33,15 +36,16 @@ const ChangePasswordForm = () => {
         });
       });
       setModalConfig(undefined);
-      // navigate("/home");
+      navigate("/mypage");
     } else {
       const ret = await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
           title: "Reset Failed",
-          message: "Something error, Please contact dev team",
+          message: data.msg,
           type: false,
         });
+        setErrorMsg(data.msg);
       });
       setModalConfig(undefined);
     }
@@ -60,9 +64,14 @@ const ChangePasswordForm = () => {
         }}
       >
         <Typography variant="h3" align="center">
-          Reset Password
+          Change Password
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {errorMsg && (
+            <Typography variant="subtitle1" align="center" color="error">
+              {errorMsg}
+            </Typography>
+          )}
           <TextField
             value={formValue.email}
             onChange={handleChange}
@@ -88,7 +97,7 @@ const ChangePasswordForm = () => {
             autoFocus
           />
           <Button color="secondary" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            Reset Password
+            Change Password
           </Button>
           {modalConfig && <DialogModal {...modalConfig} />}
         </Box>

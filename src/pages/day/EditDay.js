@@ -93,10 +93,10 @@ const EditDay = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h3" align="center" sx={{ marginBottom: 2 }}>
+          <Typography variant="h3" align="center">
             Edit Day
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               value={formValue.date}
               onChange={handleChange}

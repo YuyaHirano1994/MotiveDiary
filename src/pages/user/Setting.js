@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
 import { Box, Container } from "@mui/system";
 import { Avatar, Button, TextField, Typography } from "@mui/material";
@@ -202,6 +202,12 @@ const Setting = () => {
                 />
                 <Button type="submit" variant="contained" disabled={isUpdating} sx={{ mt: 3, mb: 2 }}>
                   Update Profile
+                </Button>
+
+                <Button variant="contained" color="error" disabled={isUpdating} sx={{ mb: 2 }}>
+                  <Link to={"/changepasswordform"} variant="body2">
+                    Change Password
+                  </Link>
                 </Button>
               </Box>
             </Box>

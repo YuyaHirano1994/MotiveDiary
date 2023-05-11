@@ -63,6 +63,7 @@ const Header = () => {
 
   return (
     <>
+      {/* header kotei */}
       <AppBar position="static">
         <Container maxWidth="lg">
           <Toolbar disableGutters>

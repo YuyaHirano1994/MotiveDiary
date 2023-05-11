@@ -316,7 +316,7 @@ const CreateDay = () => {
         </Box>
         <Container>
           {days.map((day, i) => (
-            <Card className="challenge" key={day.day_id} sx={{ minHeight: 100 }}>
+            <Card key={day.day_id} sx={{ minHeight: 100, border: "1px solid black", m: 2 }}>
               <CardContent>
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
                   <Typography variant="h5">{day.date}</Typography>
@@ -339,9 +339,7 @@ const CreateDay = () => {
                         <TwitterIcon size={32} round />
                       </TwitterShareButton>
                       <Button variant="outlined">
-                        <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id} className="button">
-                          Edit Day
-                        </Link>
+                        <Link to={"/day/edit/" + challenge.challenge_id + "/" + day.day_id}>Edit Day</Link>
                       </Button>
                     </>
                   ) : (

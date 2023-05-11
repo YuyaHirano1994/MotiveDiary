@@ -13,6 +13,7 @@ const SignUp = () => {
   });
   const { signUp } = useAuth();
   const [modalConfig, setModalConfig] = useState();
+  const [errorMsg, setErrorMsg] = useState("");
 
   const regex = new RegExp(/^[0-9a-zA-Z]*$/);
 
@@ -41,34 +42,41 @@ const SignUp = () => {
         setModalConfig({
           onClose: resolve,
           title: "",
-          message: "Your passwords do no match",
+          message: "Password confirmation does not match",
           type: false,
         });
+        setErrorMsg("Password confirmation does not match");
       });
       setModalConfig(undefined);
     } else {
-      const result = await signUp(formValue.email, formValue.password1);
-      if (result) {
-        const ret = await new Promise((resolve) => {
-          setModalConfig({
-            onClose: resolve,
-            title: "",
-            message: "SignUp Success",
-            type: false,
+      try {
+        const data = await signUp(formValue.email, formValue.password1);
+        if (data.result) {
+          await new Promise((resolve) => {
+            setModalConfig({
+              onClose: resolve,
+              title: "",
+              message: "SignUp Success",
+              type: false,
+            });
           });
-        });
-        setModalConfig(undefined);
-        navigate("/mypage/setting");
-      } else {
-        const ret = await new Promise((resolve) => {
-          setModalConfig({
-            onClose: resolve,
-            title: "SignUp Failed",
-            message: "Please re-try after few minutes",
-            type: false,
+          setModalConfig(undefined);
+          navigate("/mypage");
+        } else {
+          await new Promise((resolve) => {
+            setModalConfig({
+              onClose: resolve,
+              title: "SignUp Failed",
+              message: data.msg,
+              type: false,
+            });
           });
-        });
-        setModalConfig(undefined);
+          setModalConfig(undefined);
+        }
+
+        setErrorMsg(data?.msg);
+      } catch (error) {
+        console.error("Error:", error);
       }
     }
   };
@@ -88,7 +96,12 @@ const SignUp = () => {
         <Typography variant="h3" align="center">
           Sign Up
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          {errorMsg && (
+            <Typography variant="subtitle1" align="center" color="error">
+              {errorMsg}
+            </Typography>
+          )}
           <TextField
             value={formValue.email}
             onChange={handleChange}
@@ -133,11 +146,15 @@ const SignUp = () => {
             <Grid item xs>
               <Link to={"/changepassword"} variant="body2">
                 Forgot password?
+                <br />
+                Click here.
               </Link>
             </Grid>
             <Grid item>
               <Link to={"/user/signin"} variant="body2">
-                Already have an account
+                Already have an account?
+                <br />
+                Click here.
               </Link>
             </Grid>
           </Grid>

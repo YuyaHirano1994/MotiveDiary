@@ -13,6 +13,7 @@ const SignIn = () => {
   const { signIn } = useAuth();
   const [modalConfig, setModalConfig] = useState();
   const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState("");
 
   const regex = new RegExp(/^[0-9a-zA-Z]*$/);
 
@@ -37,8 +38,9 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await signIn(formValue.email, formValue.password);
-    navigate("/mypage");
+
     if (result) {
+      navigate("/mypage");
       const ret = await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
@@ -48,15 +50,15 @@ const SignIn = () => {
         });
       });
       setModalConfig(undefined);
-      navigate("/mypage");
     } else {
       const ret = await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
           title: "Login Failed",
-          message: "Please re-try. check your password",
+          message: "Incorrect password. For assistance, please contact support",
           type: false,
         });
+        setErrorMsg("Incorrect password.");
       });
       setModalConfig(undefined);
     }
@@ -77,8 +79,13 @@ const SignIn = () => {
         <Typography variant="h3" align="center">
           Sign In
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 8 }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           {modalConfig && <DialogModal {...modalConfig} />}
+          {errorMsg && (
+            <Typography variant="subtitle1" align="center" color="error">
+              {errorMsg}
+            </Typography>
+          )}
           <TextField
             value={formValue.email}
             onChange={handleChange}
@@ -113,11 +120,15 @@ const SignIn = () => {
             <Grid item xs>
               <Link to={"/changepassword"} variant="body2">
                 Forgot password?
+                <br />
+                Click here.
               </Link>
             </Grid>
             <Grid item>
               <Link to={"/user/signup"} variant="body2">
-                {"Don't have an account? Sign Up"}
+                Don't have an account?
+                <br />
+                Click here.
               </Link>
             </Grid>
           </Grid>

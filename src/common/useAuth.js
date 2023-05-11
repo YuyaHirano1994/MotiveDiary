@@ -66,11 +66,11 @@ export default function useAuth() {
         password: password,
       });
       if (error) throw error;
-      return true;
+      return { result: true };
     } catch (error) {
       console.log(error.error_description || error.message);
       setError(error);
-      return false;
+      return { result: false, msg: error.message };
     }
   }
 
@@ -104,11 +104,11 @@ export default function useAuth() {
     try {
       const { data, error } = await supabase.auth.updateUser({ password: newPassword });
       if (error) throw error;
-      if (data) return true;
+      if (data) return { result: true };
     } catch (error) {
       console.log(error.error_description || error.message);
       setError(error);
-      return false;
+      return { result: false, msg: error.message };
     }
   }
 
