@@ -6,6 +6,8 @@ import { Avatar, Button, TextField, Typography } from "@mui/material";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { profileState } from "../../atom/profileAtom";
 import { sessionState } from "../../atom/sessionAtom";
+import { DialogModal } from "../../common/DialogModal";
+import BackButton from "../../components/BackButton";
 
 const mainStyles = {
   display: "flex",
@@ -21,6 +23,7 @@ const Setting = () => {
   const [profile, setProfile] = useRecoilState(profileState);
   const [isLoading, setIsLoading] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [modalConfig, setModalConfig] = useState();
   const [formValue, setFormValue] = useState({});
   const [imageSrc, setImageSrc] = useState();
   const [avatar, setAvatar] = useState({
@@ -69,13 +72,29 @@ const Setting = () => {
     });
   };
 
-  const handleImageChange = (e) => {
+  const MAX_FILE_SIZE = 1048576; // 1MB
+
+  const handleImageChange = async (e) => {
     e.preventDefault();
     try {
+      console.log(e.target.files[0].size);
       if (e.target.files.length === 0) {
         console.log("cancel event");
         return;
+      } else if (e.target.files[0].size > MAX_FILE_SIZE) {
+        console.log("over 1MG");
+        const ret = await new Promise((resolve) => {
+          setModalConfig({
+            onClose: resolve,
+            title: "File Size Exceeded Limit",
+            message: "Cannot select images larger than 1MB. Please choose an image that is 1MB or smaller.",
+            type: false,
+          });
+        });
+        setModalConfig(undefined);
+        return;
       }
+
       const file = e.target.files[0];
       const file_name = file.name + session.id;
       const file_url = URL.createObjectURL(file);
@@ -157,9 +176,13 @@ const Setting = () => {
               >
                 <Avatar src={avatar.filepath ? avatar.filepath : imageSrc} sx={avatarStyles}></Avatar>
                 <label>
-                  <Button variant="contained" component="span" sx={{ mb: "20px" }}>
+                  <Button variant="contained" component="span">
                     Choose Avatar
                   </Button>
+                  <Typography variant="subtitle2" textAlign="center" sx={{ mb: "20px" }}>
+                    (Max 1MB)
+                  </Typography>
+                  {modalConfig && <DialogModal {...modalConfig} />}
                   <input
                     name="avatar_url"
                     onChange={handleImageChange}
@@ -207,6 +230,7 @@ const Setting = () => {
                     Change Password
                   </Link>
                 </Button>
+                <BackButton />
               </Box>
             </Box>
           )}

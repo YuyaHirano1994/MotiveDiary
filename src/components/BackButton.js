@@ -7,7 +7,7 @@ const BackButton = (props) => {
   return (
     <>
       <Link to={props?.to ? props.to : -1}>
-        <Button variant="outlined" size="small">
+        <Button variant="outlined" size="small" sx={{ mb: 2 }}>
           <KeyboardReturnIcon />
           Back
         </Button>
