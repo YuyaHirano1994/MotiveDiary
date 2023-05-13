@@ -41,6 +41,9 @@ const CreateChallenge = () => {
     if (e.target.name === "title" && e.target.value.length > 25) {
       return; // 文字数制限を超えた場合は処理を終了する
     }
+    if (e.target.name === "days" && (e.target.value > 100 || e.target.value < 0)) {
+      return; // 文字数制限を超えた場合は処理を終了する
+    }
     setFormValue({
       ...formValue,
       [e.target.name]: e.target.value,
@@ -131,9 +134,8 @@ const CreateChallenge = () => {
                 onChange={handleChange}
                 margin="normal"
                 required
-                fullWidth
                 name="days"
-                label="How long would you need? "
+                label="How long would you need?"
                 type="number"
                 id="days"
                 autoComplete="days"
@@ -150,7 +152,7 @@ const CreateChallenge = () => {
                 name="desc"
                 label="Description"
                 margin="normal"
-                inputProps={{ maxLength: 1000 }}
+                inputProps={{ maxLength: 500 }}
               />
               <TextField
                 value={formValue.start_date}

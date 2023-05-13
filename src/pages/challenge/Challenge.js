@@ -82,9 +82,7 @@ const Challenge = () => {
   const getProfile = async () => {
     try {
       const { data, error } = await supabase.from("profile").select("*").eq("user_id", challenge.user_id);
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       setProfile({ ...profile, ...data[0] });
     } catch (error) {
       console.log(error);
@@ -111,10 +109,7 @@ const Challenge = () => {
         type: true,
       });
     });
-
     setModalConfig(undefined);
-    console.log(ret);
-
     if (ret === "ok") {
       try {
         const deleteDayResult = await supabase.from("day").delete().eq("challenge_id", challenge.challenge_id);

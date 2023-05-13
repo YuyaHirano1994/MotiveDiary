@@ -60,6 +60,9 @@ const EditChallenge = () => {
     if (e.target.name === "title" && e.target.value.length > 25) {
       return; // 文字数制限を超えた場合は処理を終了する
     }
+    if (e.target.name === "days" && (e.target.value > 100 || e.target.value < 0)) {
+      return; // 文字数制限を超えた場合は処理を終了する
+    }
     setFormValue({
       ...formValue,
       [e.target.name]: e.target.value,
@@ -165,7 +168,7 @@ const EditChallenge = () => {
                 required
                 fullWidth
                 name="days"
-                label="How long would you need? "
+                label="How long would you need?(Max: 100days)"
                 type="number"
                 id="days"
                 autoComplete="days"
@@ -183,7 +186,7 @@ const EditChallenge = () => {
                 label="Description"
                 color="primary"
                 margin="normal"
-                inputProps={{ maxLength: 1000, style: { fontSize: 14 } }}
+                inputProps={{ maxLength: 500, style: { fontSize: 14 } }}
                 InputLabelProps={{ style: { fontSize: 14 } }}
               />
               <TextField

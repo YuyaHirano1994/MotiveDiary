@@ -66,10 +66,12 @@ const MyPage = () => {
   useEffect(() => {
     const getYourChallenges = async () => {
       try {
-        const { data, error } = await supabase.from("home_challenge").select("*").eq("user_id", session.id);
-        if (error) {
-          throw error;
-        }
+        const { data, error } = await supabase
+          .from("home_challenge")
+          .select("*")
+          .eq("user_id", session.id)
+          .order("start_date", { ascending: false });
+        if (error) throw error;
         setNotCompletedChallenges(data.filter((challenge) => challenge.completed === false));
         setCompletedChallenges(data.filter((challenge) => challenge.completed === true));
       } catch (error) {
@@ -80,10 +82,7 @@ const MyPage = () => {
     const getProfile = async () => {
       try {
         const { data, error } = await supabase.from("profile").select("*").eq("user_id", session.id);
-
-        if (error) {
-          throw error;
-        }
+        if (error) throw error;
         setProfile({ ...profile, ...data[0] });
       } catch (error) {
         console.log(error);

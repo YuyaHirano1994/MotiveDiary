@@ -149,32 +149,41 @@ const CreateDay = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    if (!checkInputData()) return; // 登録データのチェックを実施
-    const now = new Date();
     try {
-      const { error } = await supabase
-        .from("day")
-        .insert([
-          {
-            challenge_id: formValue.challenge_id,
-            user_id: session.id,
-            date: formValue.date,
-            day: maxDay + 1,
-            content: formValue.content,
-          },
-        ])
-        .eq("challenge_id", formValue.challenge_id);
-      if (error) {
-        throw error;
+      e.preventDefault();
+      setIsLoading(true);
+
+      if (!checkInputData()) {
+        return;
       }
-      // alert("Create your challenge Success");
+
+      const dayData = {
+        challenge_id: formValue.challenge_id,
+        user_id: session.id,
+        date: formValue.date,
+        day: maxDay + 1,
+        content: formValue.content,
+      };
+
+      const { error: dayInsertError } = await supabase
+        .from("day")
+        .insert([dayData])
+        .eq("challenge_id", formValue.challenge_id);
+
+      if (dayInsertError) throw dayInsertError;
+
+      const { error: challengeUpdateError } = await supabase
+        .from("challenge")
+        .update([{ updated_at: new Date() }])
+        .eq("challenge_id", formValue.challenge_id);
+
+      if (challengeUpdateError) throw challengeUpdateError;
+
       setOpen(true);
       setIsLoading(false);
       setFormValue({ ...formValue, date: "", content: "" });
       getDays();
-      /* 登録したデータが目標最終日だった場合、Challengeデータを更新する。 */
+
       if (challenge.days === maxDay + 1) {
         completedChallenge();
       }
@@ -198,14 +207,12 @@ const CreateDay = () => {
           },
         ])
         .eq("challenge_id", formValue.challenge_id);
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       const ret = await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
           title: "COMPLETED",
-          message: "Completed your Challenge! Nice work!",
+          message: `🎉Completed your Challenge! Nice work!🎉`,
           type: true,
         });
       });
@@ -294,7 +301,9 @@ const CreateDay = () => {
           </Box>
           <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
             <Box>
-              <Button variant="contained">#{challenge.category}</Button>
+              <Button color="info" variant="contained">
+                #{challenge.category}
+              </Button>
             </Box>
             <Box>
               <Typography variant="h4">Day</Typography>
@@ -344,8 +353,10 @@ const CreateDay = () => {
               value={formValue.content}
               onChange={handleChange}
               placeholder="What did you do today?"
-              id="content"
               name="content"
+              label="Content"
+              type="text"
+              id="content"
               required
             ></TextareaAutosize>
             <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
