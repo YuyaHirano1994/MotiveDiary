@@ -25,7 +25,7 @@ import { profileState } from "../../atom/profileAtom";
 import { TwitterIcon, TwitterShareButton } from "react-share";
 import { DialogModal } from "../../common/DialogModal";
 
-const dayMainStyles = { mt: 2, mb: 2, mr: 0, ml: 0, border: "1px solid grey", borderRadius: 3 };
+const dayMainStyles = { mt: 2, mb: 2, border: "1px solid grey", borderRadius: 3 };
 
 const cardStyles = { minHeight: 100, border: "1px solid black", m: 2 };
 
