@@ -150,8 +150,7 @@ const CreateChallenge = () => {
                 name="desc"
                 label="Description"
                 margin="normal"
-                inputProps={{ maxLength: 1000, style: { fontSize: 14 } }}
-                InputLabelProps={{ style: { fontSize: 14 } }}
+                inputProps={{ maxLength: 1000 }}
               />
               <TextField
                 value={formValue.start_date}
