@@ -164,6 +164,9 @@ const MyPage = () => {
                         Detail
                       </Button>
                     </Link>
+                    <Box>
+                      <LikeButton challenge_id={challenge.challenge_id} />
+                    </Box>
                   </Box>
                   <Box
                     sx={{
@@ -178,9 +181,6 @@ const MyPage = () => {
                           {challenge.day ? challenge.day : 0}/{challenge.days}
                         </Typography>
                       </Box>
-                    </Box>
-                    <Box sx={{ ml: 5, mt: 2 }}>
-                      <LikeButton challenge_id={challenge.challenge_id} />
                     </Box>
                   </Box>
                 </Box>
@@ -216,6 +216,9 @@ const MyPage = () => {
                         Detail
                       </Button>
                     </Link>
+                    <Box>
+                      <LikeButton challenge_id={challenge.challenge_id} />
+                    </Box>
                   </Box>
                   <Box
                     sx={{
@@ -230,9 +233,6 @@ const MyPage = () => {
                           {challenge.day ? challenge.day : 0}/{challenge.days}
                         </Typography>
                       </Box>
-                    </Box>
-                    <Box sx={{ ml: 5, mt: 2 }}>
-                      <LikeButton challenge_id={challenge.challenge_id} />
                     </Box>
                   </Box>
                 </Box>
