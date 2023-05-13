@@ -49,9 +49,9 @@ const contentBorderStyles = {
 const challengeMenuStyles = {
   display: "block",
   width: "45px",
-  mt: 2,
   "@media screen and (min-width:700px)": {
     display: "flex",
+    mt: 2,
     gap: "10px",
     width: "auto",
   },
@@ -160,7 +160,7 @@ const MyPage = () => {
                       </Button>
                     </Link>
                     <Link to={"/challenge/" + challenge.challenge_id}>
-                      <Button variant="contained" size="small" color="info">
+                      <Button variant="contained" size="small" color="info" sx={{ mb: "10px" }}>
                         Detail
                       </Button>
                     </Link>
@@ -206,13 +206,8 @@ const MyPage = () => {
                 </Box>
                 <Box sx={{ width: "50%", display: "flex", justifyContent: "flex-end" }}>
                   <Box sx={challengeMenuStyles}>
-                    {/* <Link to={"/day/create/" + challenge.challenge_id}>
-                     <Button variant="contained" size="small" color="info" sx={{ mb: "10px" }}>
-                       Write
-                     </Button>
-                   </Link> */}
                     <Link to={"/challenge/" + challenge.challenge_id}>
-                      <Button variant="contained" size="small" color="info">
+                      <Button variant="contained" size="small" color="info" sx={{ mb: "10px" }}>
                         Detail
                       </Button>
                     </Link>
