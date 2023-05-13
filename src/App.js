@@ -54,7 +54,7 @@ const App = () => {
   /* サインインしているとき指定のページにアクセスさせない制御 */
   const NotSignedRoute = ({ children }) => {
     if (session) {
-      return <Navigate to="/home" />;
+      return <Navigate to="/mypage" />;
     } else {
       return children;
     }
@@ -69,7 +69,14 @@ const App = () => {
           </div>
           <div className="content">
             <Routes>
-              <Route path="/" element={<Product />} />
+              <Route
+                path="/"
+                element={
+                  <NotSignedRoute>
+                    <Product />
+                  </NotSignedRoute>
+                }
+              />
               <Route path="home" element={<Home />} />
               <Route
                 path="user/signup"

@@ -7,7 +7,7 @@ import { sessionState } from "../../atom/sessionAtom";
 import { useRecoilValue } from "recoil";
 
 const dayMainStyles = {
-  marginTop: 4,
+  mt: 4,
   display: "flex",
   flexDirection: "column",
   alignItems: "center",

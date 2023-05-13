@@ -260,9 +260,14 @@ const CreateDay = () => {
           <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
             <Box display="flex">
               <UserIcon width={50} height={50} />
-              <Typography variant="subtitle1" align="center" sx={{ ml: 2, pt: 1 }}>
-                {profile?.nickname}
-              </Typography>
+              <Box sx={{ ml: 2 }}>
+                <Typography variant="subtitle1" align="left">
+                  {profile?.nickname}
+                </Typography>
+                <Typography variant="subtitle2" align="left">
+                  {profile?.comment}
+                </Typography>
+              </Box>
             </Box>
             <BackButton to="/mypage" />
           </Box>
@@ -299,53 +304,55 @@ const CreateDay = () => {
             </Box>
           </Box>
         </Box>
-        <Box component="form" onSubmit={handleSubmit}>
-          <Typography variant="h5" sx={{ margin: 2 }}>
-            Day {maxDay + 1}...
-          </Typography>
-          <FormControl>
-            <InputLabel id="category">Challenge</InputLabel>
-            <Select
-              labelId="Challenge"
-              id="challenge_id"
-              name="challenge_id"
-              value={formValue.challenge_id}
+        <Container>
+          <Box component="form" onSubmit={handleSubmit}>
+            <Typography variant="h5" sx={{ margin: 2 }}>
+              Day {maxDay + 1}...
+            </Typography>
+            <FormControl>
+              <InputLabel id="category">Challenge</InputLabel>
+              <Select
+                labelId="Challenge"
+                id="challenge_id"
+                name="challenge_id"
+                value={formValue.challenge_id}
+                onChange={handleChange}
+              >
+                {challenges.map((challenge) => (
+                  <MenuItem value={challenge.challenge_id} key={challenge.challenge_id}>
+                    {challenge.title}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <br />
+            <TextField
+              value={formValue.date || formatDate(new Date())}
               onChange={handleChange}
-            >
-              {challenges.map((challenge) => (
-                <MenuItem value={challenge.challenge_id} key={challenge.challenge_id}>
-                  {challenge.title}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <br />
-          <TextField
-            value={formValue.date || formatDate(new Date())}
-            onChange={handleChange}
-            margin="normal"
-            required
-            // fullWidth
-            name="date"
-            label="Date"
-            type="date"
-            id="date"
-            variant="standard"
-          />
-          <TextareaAutosize
-            style={{ width: "90%" }}
-            minRows={10}
-            value={formValue.content}
-            onChange={handleChange}
-            placeholder="What did you do today?"
-            id="content"
-            name="content"
-            required
-          ></TextareaAutosize>
-          <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
-            Register!
-          </Button>
-        </Box>
+              margin="normal"
+              required
+              // fullWidth
+              name="date"
+              label="Date"
+              type="date"
+              id="date"
+              variant="standard"
+            />
+            <TextareaAutosize
+              style={{ width: "90%" }}
+              minRows={10}
+              value={formValue.content}
+              onChange={handleChange}
+              placeholder="What did you do today?"
+              id="content"
+              name="content"
+              required
+            ></TextareaAutosize>
+            <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
+              Register!
+            </Button>
+          </Box>
+        </Container>
         <Container>
           {days.map((day, i) => (
             <Card key={day.day_id} sx={cardStyles}>
