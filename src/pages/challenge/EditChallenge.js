@@ -57,6 +57,9 @@ const EditChallenge = () => {
 
   const handleChange = (e) => {
     e.preventDefault();
+    if (e.target.name === "title" && e.target.value.length > 25) {
+      return; // 文字数制限を超えた場合は処理を終了する
+    }
     setFormValue({
       ...formValue,
       [e.target.name]: e.target.value,

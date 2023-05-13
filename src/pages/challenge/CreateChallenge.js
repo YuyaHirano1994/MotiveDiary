@@ -33,10 +33,14 @@ const CreateChallenge = () => {
   });
   const navigate = useNavigate();
   const session = useRecoilValue(sessionState);
-  const [showCategory, setShowCategory] = useState("");
+  const [showCategory, setShowCategory] = useState("HTML");
   const [isLoading, setIsLoading] = useState(false);
+
   const handleChange = (e) => {
     e.preventDefault();
+    if (e.target.name === "title" && e.target.value.length > 25) {
+      return; // 文字数制限を超えた場合は処理を終了する
+    }
     setFormValue({
       ...formValue,
       [e.target.name]: e.target.value,
@@ -54,7 +58,6 @@ const CreateChallenge = () => {
   };
 
   const handleSubmit = async (e) => {
-    //validationの追加(文字数など)
     e.preventDefault();
     setIsLoading(true);
     try {
