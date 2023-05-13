@@ -333,7 +333,7 @@ const CreateDay = () => {
             variant="standard"
           />
           <TextareaAutosize
-            style={{ width: "100%" }}
+            style={{ width: "90%" }}
             minRows={10}
             value={formValue.content}
             onChange={handleChange}
