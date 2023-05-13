@@ -91,39 +91,39 @@ const EditDay = () => {
 
   return (
     <>
-      <Container component="main" maxWidth="md">
-        <Box sx={dayMainStyles}>
-          <Typography variant="h3" align="center">
-            Edit Day
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-              value={formValue.date}
-              onChange={handleChange}
-              margin="normal"
-              required
-              disabled
-              name="date"
-              label="Date"
-              type="date"
-              id="date"
-              variant="standard"
-            />
-            <TextareaAutosize
-              style={{ width: "90%" }}
-              minRows={10}
-              value={formValue.content}
-              onChange={handleChange}
-              placeholder="What did you do today?"
-              id="content"
-              name="content"
-              required
-            ></TextareaAutosize>
-            <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
+      <Container component="main" maxWidth="md" sx={dayMainStyles}>
+        <Typography variant="h3" align="center">
+          Edit Day
+        </Typography>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <TextField
+            value={formValue.date}
+            onChange={handleChange}
+            margin="normal"
+            required
+            disabled
+            name="date"
+            label="Date"
+            type="date"
+            id="date"
+            variant="standard"
+          />
+          <TextareaAutosize
+            style={{ width: "100%" }}
+            minRows={10}
+            value={formValue.content}
+            onChange={handleChange}
+            placeholder="What did you do today?"
+            id="content"
+            name="content"
+            required
+          ></TextareaAutosize>
+          <Box width="100%" display="flex" justifyContent="center">
+            <Button type="submit" variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
               Update
             </Button>
-            <BackButton />
           </Box>
+          <BackButton />
         </Box>
       </Container>
     </>
