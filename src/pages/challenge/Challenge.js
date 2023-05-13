@@ -12,6 +12,7 @@ import { TwitterIcon, TwitterShareButton } from "react-share";
 import { useTheme } from "@mui/material/styles";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import LikeButton from "../../components/LikeButton";
 
 const challengeMainStyles = {
   marginTop: 4,
@@ -110,19 +111,28 @@ const Challenge = () => {
         type: true,
       });
     });
+
     setModalConfig(undefined);
     console.log(ret);
+
     if (ret === "ok") {
       try {
-        const { data, error } = await supabase.from("challenge").delete().eq("challenge_id", challenge.challenge_id);
-        if (error) throw error;
-        const { data2, error2 } = await supabase.from("day").delete().eq("challenge_id", challenge.challenge_id);
-        if (error2) throw error;
+        const deleteDayResult = await supabase.from("day").delete().eq("challenge_id", challenge.challenge_id);
+        const deleteChallengeResult = await supabase
+          .from("challenge")
+          .delete()
+          .eq("challenge_id", challenge.challenge_id);
+
+        if (deleteDayResult.error || deleteChallengeResult.error) {
+          throw new Error("An error occurred while deleting data.");
+        }
+
         navigate("/mypage");
       } catch (error) {
         console.log(error);
       }
     }
+
     if (ret === "cancel") {
       return;
     }
@@ -142,12 +152,12 @@ const Challenge = () => {
                   </Button>
                 </Link>
                 <Link onClick={handleDeleteClick}>
-                  <Button variant="outlined" size="small" color="error" sx={{ ml: 2 }}>
-                    {modalConfig && <DialogModal {...modalConfig} />}
+                  <Button variant="outlined" size="small" color="error" sx={{ ml: 2, mb: 1 }}>
                     <DeleteOutlineIcon />
                     Delete
                   </Button>
                 </Link>
+                <BackButton />
               </Box>
             </>
           ) : (
@@ -166,6 +176,7 @@ const Challenge = () => {
                     Delete
                   </Button>
                 </Link>
+                <BackButton />
               </Box>
             </>
           )}
@@ -198,6 +209,7 @@ const Challenge = () => {
 
   return (
     <>
+      {modalConfig && <DialogModal {...modalConfig} />}
       <Container component="main" maxWidth="md" sx={mainStyles}>
         <Box sx={challengeMainStyles}>
           <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
@@ -214,7 +226,7 @@ const Challenge = () => {
             </Box>
             {checkUser()}
           </Box>
-          <Box sx={{ width: "100%", mb: 4 }}>
+          <Box sx={{ width: "100%", height: "auto", mb: 4 }}>
             <Typography variant="h3" align="left" sx={{ mt: 2 }}>
               {challenge.title}
             </Typography>
@@ -222,22 +234,31 @@ const Challenge = () => {
               <Typography variant="h5" align="left">
                 {challenge.start_date}~{challenge.end_date}
               </Typography>
-              {session?.id === challenge.user_id ? (
-                <TwitterShareButton
-                  url={"https://motive-diary.vercel.app/"}
-                  title={`Taking on the challenge of ${challenge.title}! Join me in recording your own challenges on MotiveDiary. Let's keep track of our progress together!\n`}
-                  hashtags={["MotiveDairy"]}
-                >
-                  <TwitterIcon size={32} round />
-                </TwitterShareButton>
-              ) : (
-                <></>
-              )}
+              <Box display="flex">
+                {session?.id === challenge.user_id ? (
+                  <TwitterShareButton
+                    url={"https://motive-diary.vercel.app/"}
+                    title={`Taking on the challenge of ${challenge.title}! Join me in recording your own challenges on MotiveDiary. Let's keep track of our progress together!\n`}
+                    hashtags={["MotiveDairy"]}
+                  >
+                    <TwitterIcon size={32} round />
+                  </TwitterShareButton>
+                ) : (
+                  <></>
+                )}
+              </Box>
             </Box>
             <hr />
-            <Typography variant="h6" align="left" sx={{ ml: 2 }}>
-              {changeFormat(challenge?.desc)}
-            </Typography>
+            <Box display="flex" justifyContent="space-between">
+              <Box width="80%" sx={{ wordWrap: "break-word" }}>
+                <Typography variant="h6" align="left" sx={{ ml: 2 }}>
+                  {changeFormat(challenge?.desc)}
+                </Typography>
+              </Box>
+              <Box>
+                <LikeButton challenge_id={id} />
+              </Box>
+            </Box>
           </Box>
           <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
             <Box>

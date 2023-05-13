@@ -8,7 +8,7 @@ export const themeOptions = {
     error: red,
     warning: orange,
     info: cyan,
-    success: green,
+    // success: green,
   },
   typography: {
     fontFamily: ["Noto Sans", "Yu Gothic", "Roboto", "sans-serif"].join(","),

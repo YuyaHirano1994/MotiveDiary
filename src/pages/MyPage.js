@@ -10,6 +10,7 @@ import { sessionState } from "../atom/sessionAtom";
 import { profileState } from "../atom/profileAtom";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import LikeButton from "../components/LikeButton";
 
 const mainStyles = {
   mt: 4,
@@ -47,13 +48,12 @@ const contentBorderStyles = {
 
 const challengeMenuStyles = {
   display: "block",
-  align: "left",
-  "@media screen and (min-width:600px)": {
+  width: "45px",
+  mt: 2,
+  "@media screen and (min-width:700px)": {
     display: "flex",
-    justifyContent: "space-between",
-    align: "left",
-    ml: "10px",
-    mt: "20px",
+    gap: "10px",
+    width: "auto",
   },
 };
 
@@ -144,30 +144,44 @@ const MyPage = () => {
           <Box sx={challengeStyles}>
             {notCompletedChallenges.map((challenge) => (
               <Box key={challenge.challenge_id} display="flex" justifyContent="space-between" sx={contentBorderStyles}>
-                <Box sx={{ width: "100%" }}>
-                  <Typography variant="h5">{challenge.title}</Typography>
+                <Box sx={{ width: "30%", "@media screen and (min-width:700px)": { width: "40%" } }}>
+                  <Box sx={{ wordWrap: "break-word" }}>
+                    <Typography variant="h5">{challenge.title}</Typography>
+                  </Box>
                   <Typography variant="subtitle1">
                     {challenge.start_date} ~ {challenge.end_date}
                   </Typography>
                 </Box>
-                <Box width={200} sx={challengeMenuStyles}>
-                  <Link to={"/day/create/" + challenge.challenge_id}>
-                    <Button variant="contained" size="small" color="info" sx={{ mb: "10px" }}>
-                      Write
-                    </Button>
-                  </Link>
-                  <Link to={"/challenge/" + challenge.challenge_id}>
-                    <Button variant="contained" size="small" color="info">
-                      Detail
-                    </Button>
-                  </Link>
-                </Box>
-                <Box display="flex" sx={{ width: "100px", ml: 1 }}>
-                  <Box>
-                    <Typography variant="h6">Day</Typography>
-                    <Typography variant="h6">
-                      {challenge.day ? challenge.day : 0}/{challenge.days}
-                    </Typography>
+                <Box sx={{ width: "50%", display: "flex", justifyContent: "flex-end" }}>
+                  <Box sx={challengeMenuStyles}>
+                    <Link to={"/day/create/" + challenge.challenge_id}>
+                      <Button variant="contained" size="small" color="info" sx={{ mb: "10px" }}>
+                        Write
+                      </Button>
+                    </Link>
+                    <Link to={"/challenge/" + challenge.challenge_id}>
+                      <Button variant="contained" size="small" color="info">
+                        Detail
+                      </Button>
+                    </Link>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "block",
+                      "@media screen and (min-width:700px)": { display: "flex", textAlign: "center" },
+                    }}
+                  >
+                    <Box sx={{ width: 80, ml: 5 }}>
+                      <Box>
+                        <Typography variant="h6">Day</Typography>
+                        <Typography variant="h6">
+                          {challenge.day ? challenge.day : 0}/{challenge.days}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ ml: 5, mt: 2 }}>
+                      <LikeButton challenge_id={challenge.challenge_id} />
+                    </Box>
                   </Box>
                 </Box>
               </Box>
@@ -182,25 +196,44 @@ const MyPage = () => {
           <Box sx={challengeStyles}>
             {completedChallenges.map((challenge) => (
               <Box key={challenge.challenge_id} display="flex" justifyContent="space-between" sx={contentBorderStyles}>
-                <Box sx={{ width: "100%" }}>
-                  <Typography variant="h5">{challenge.title}</Typography>
+                <Box sx={{ width: "30%", "@media screen and (min-width:700px)": { width: "40%" } }}>
+                  <Box sx={{ wordWrap: "break-word" }}>
+                    <Typography variant="h5">{challenge.title}</Typography>
+                  </Box>
                   <Typography variant="subtitle1">
                     {challenge.start_date} ~ {challenge.end_date}
                   </Typography>
                 </Box>
-                <Box width={200} sx={challengeMenuStyles}>
-                  <Link to={"/challenge/" + challenge.challenge_id}>
-                    <Button variant="contained" size="small" color="info">
-                      Detail
-                    </Button>
-                  </Link>
-                </Box>
-                <Box display="flex" sx={{ width: "100px", ml: "10px" }}>
-                  <Box>
-                    <Typography variant="h6">Day</Typography>
-                    <Typography variant="h6">
-                      {challenge.day ? challenge.day : 0}/{challenge.days}
-                    </Typography>
+                <Box sx={{ width: "50%", display: "flex", justifyContent: "flex-end" }}>
+                  <Box sx={challengeMenuStyles}>
+                    {/* <Link to={"/day/create/" + challenge.challenge_id}>
+                     <Button variant="contained" size="small" color="info" sx={{ mb: "10px" }}>
+                       Write
+                     </Button>
+                   </Link> */}
+                    <Link to={"/challenge/" + challenge.challenge_id}>
+                      <Button variant="contained" size="small" color="info">
+                        Detail
+                      </Button>
+                    </Link>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "block",
+                      "@media screen and (min-width:700px)": { display: "flex", textAlign: "center" },
+                    }}
+                  >
+                    <Box sx={{ width: 80, ml: 5 }}>
+                      <Box>
+                        <Typography variant="h6">Day</Typography>
+                        <Typography variant="h6">
+                          {challenge.day ? challenge.day : 0}/{challenge.days}
+                        </Typography>
+                      </Box>
+                    </Box>
+                    <Box sx={{ ml: 5, mt: 2 }}>
+                      <LikeButton challenge_id={challenge.challenge_id} />
+                    </Box>
                   </Box>
                 </Box>
               </Box>

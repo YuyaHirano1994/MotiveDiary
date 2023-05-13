@@ -15,12 +15,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import BackButton from "../../components/BackButton";
 import UserIcon from "../../components/UserIcon";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 import { profileState } from "../../atom/profileAtom";
 import { TwitterIcon, TwitterShareButton } from "react-share";
+import { DialogModal } from "../../common/DialogModal";
 
 const dayMainStyles = { mt: 2, mb: 2, border: "1px solid grey", borderRadius: 3 };
 
@@ -52,6 +55,8 @@ const CreateDay = () => {
   const [challenge, setChallenge] = useState([]);
   const [days, setDays] = useState([]);
   const [maxDay, setMaxDay] = useState("");
+  const [open, setOpen] = React.useState(false);
+  const [modalConfig, setModalConfig] = useState();
 
   // dayデータ取得
   const getDays = async () => {
@@ -136,6 +141,13 @@ const CreateDay = () => {
     return true;
   };
 
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -157,7 +169,8 @@ const CreateDay = () => {
       if (error) {
         throw error;
       }
-      alert("Create your challenge Success");
+      // alert("Create your challenge Success");
+      setOpen(true);
       setIsLoading(false);
       setFormValue({ ...formValue, date: "", content: "" });
       getDays();
@@ -188,7 +201,16 @@ const CreateDay = () => {
       if (error) {
         throw error;
       }
-      alert("Completed your Challenge! Nice work!");
+      const ret = await new Promise((resolve) => {
+        setModalConfig({
+          onClose: resolve,
+          title: "COMPLETED",
+          message: "Completed your Challenge! Nice work!",
+          type: true,
+        });
+      });
+      setModalConfig(undefined);
+      // alert("Completed your Challenge! Nice work!");
       navigate("/mypage");
     } catch (error) {
       alert("Failed");
@@ -215,6 +237,17 @@ const CreateDay = () => {
 
   return (
     <>
+      {modalConfig && <DialogModal {...modalConfig} />}
+      <Snackbar
+        open={open}
+        autoHideDuration={6000}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <MuiAlert onClose={handleClose} severity="success" sx={{ width: "100%" }}>
+          Registered successfully!
+        </MuiAlert>
+      </Snackbar>
       <Container component="main" maxWidth="md" sx={dayMainStyles}>
         <Box
           sx={{
@@ -266,7 +299,7 @@ const CreateDay = () => {
             </Box>
           </Box>
         </Box>
-        <Box component="form" onSubmit={handleSubmit} noValidate>
+        <Box component="form" onSubmit={handleSubmit}>
           <Typography variant="h5" sx={{ margin: 2 }}>
             Day {maxDay + 1}...
           </Typography>

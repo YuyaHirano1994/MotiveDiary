@@ -21,7 +21,6 @@ export default function useAuth() {
     fetchAuthUser();
 
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log(event);
       if (event === "SIGNED_OUT") {
         setSession(null);
         setProfile(null);

@@ -4,6 +4,7 @@ import { Box, Button, Container, Grid, Paper, Typography } from "@mui/material";
 import UserIcon from "../components/UserIcon";
 import supabase from "../common/supabase";
 import topImage from "../assets/images/library.jpg";
+import LikeButton from "../components/LikeButton";
 
 const styles = {
   paperContainer: {
@@ -78,10 +79,11 @@ const Home = () => {
                       </Typography>
                     </Box>
                   </Box>
-                  <Box display="flex">
+                  <Box display="flex" justifyContent="space-between" sx={{ mb: 1 }}>
                     <Button component={Link} to={"/challenge/" + challenge.challenge_id}>
                       More detail...
                     </Button>
+                    <LikeButton challenge_id={challenge.challenge_id} />
                   </Box>
                 </Box>
               </Box>

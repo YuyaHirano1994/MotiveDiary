@@ -6,6 +6,7 @@ import { Box, Container } from "@mui/system";
 import BackButton from "../../components/BackButton";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
+import { DialogModal } from "../../common/DialogModal";
 
 const challengeMainStyles = {
   marginTop: 4,
@@ -19,7 +20,7 @@ const EditChallenge = () => {
   const session = useRecoilValue(sessionState);
   const [showCategory, setShowCategory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
+  const [modalConfig, setModalConfig] = useState();
   const [formValue, setFormValue] = useState({
     challenge_id: "",
     title: "",
@@ -92,8 +93,16 @@ const EditChallenge = () => {
       if (error) {
         throw error;
       }
+      const ret = await new Promise((resolve) => {
+        setModalConfig({
+          onClose: resolve,
+          title: "Success",
+          message: "Your Diary info has changed",
+          type: false,
+        });
+      });
+      setModalConfig(undefined);
       setIsLoading(false);
-      alert("Update your challenge Success");
       navigate("/mypage");
     } catch (error) {
       setIsLoading(false);
@@ -102,17 +111,18 @@ const EditChallenge = () => {
     }
   };
 
-  const categories = ["HTML", "CSS", "JavaScript", "TypeScript", "PHP"];
+  const categories = ["HTML", "CSS", "JavaScript", "TypeScript", "React", "NodeJS", "PHP", "Java", "Other"];
 
   return (
     <>
       <Container>
+        {modalConfig && <DialogModal {...modalConfig} />}
         <Box sx={challengeMainStyles}>
           <Typography variant="h3" align="center">
             Edit your Challenge
           </Typography>
           <Box sx={{ margin: "0 auto" }}>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 value={formValue.title}
                 onChange={handleChange}
@@ -142,7 +152,6 @@ const EditChallenge = () => {
                         {category}
                       </MenuItem>
                     ))}
-                    <MenuItem value={"other"}>Other</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
@@ -169,7 +178,7 @@ const EditChallenge = () => {
                 id="desc"
                 name="desc"
                 label="Description"
-                color="secondary"
+                color="primary"
                 margin="normal"
                 inputProps={{ maxLength: 1000, style: { fontSize: 14 } }}
                 InputLabelProps={{ style: { fontSize: 14 } }}

@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../common/supabase";
-import { Button, FormControl, InputLabel, MenuItem, OutlinedInput, Select, TextField, Typography } from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography } from "@mui/material";
 import { Box, Container } from "@mui/system";
-import useAuth from "../../common/useAuth";
 import { useRecoilValue } from "recoil";
 import { sessionState } from "../../atom/sessionAtom";
 
@@ -36,7 +35,6 @@ const CreateChallenge = () => {
   const session = useRecoilValue(sessionState);
   const [showCategory, setShowCategory] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   const handleChange = (e) => {
     e.preventDefault();
     setFormValue({
@@ -59,7 +57,6 @@ const CreateChallenge = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      console.log(formValue);
       const { error } = await supabase.from("challenge").insert([
         {
           user_id: session.id,
@@ -74,7 +71,6 @@ const CreateChallenge = () => {
         throw error;
       }
       setIsLoading(false);
-      alert("new challenge Success");
       navigate("/mypage");
     } catch (error) {
       setIsLoading(false);
@@ -83,7 +79,7 @@ const CreateChallenge = () => {
     }
   };
 
-  const categories = ["HTML", "CSS", "JavaScript", "TypeScript", "PHP"];
+  const categories = ["HTML", "CSS", "JavaScript", "TypeScript", "React", "NodeJS", "PHP", "Java", "Other"];
 
   return (
     <>
@@ -93,7 +89,7 @@ const CreateChallenge = () => {
             Let's Start your New Challenge!
           </Typography>
           <Box sx={{ margin: "0 auto" }}>
-            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
                 value={formValue.title}
                 onChange={handleChange}
@@ -123,7 +119,6 @@ const CreateChallenge = () => {
                         {category}
                       </MenuItem>
                     ))}
-                    <MenuItem value={"other"}>Other</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
