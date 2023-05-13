@@ -11,6 +11,14 @@ a {
   color: inherit;
 }
 
+textarea {
+  font-size: 16px;
+}
+
+input {
+  font-size: 16px;
+}
+
 .app {
   min-height: 100vh;
   display: flex;
