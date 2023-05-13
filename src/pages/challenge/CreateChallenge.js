@@ -54,6 +54,7 @@ const CreateChallenge = () => {
   };
 
   const handleSubmit = async (e) => {
+    //validationの追加(文字数など)
     e.preventDefault();
     setIsLoading(true);
     try {

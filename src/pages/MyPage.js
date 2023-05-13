@@ -174,7 +174,7 @@ const MyPage = () => {
                       "@media screen and (min-width:700px)": { display: "flex", textAlign: "center" },
                     }}
                   >
-                    <Box sx={{ width: 80, ml: 5 }}>
+                    <Box sx={{ width: 50, ml: 5, "@media screen and (min-width:700px)": { width: 80, ml: 5 } }}>
                       <Box>
                         <Typography variant="h6">Day</Typography>
                         <Typography variant="h6">
@@ -221,7 +221,7 @@ const MyPage = () => {
                       "@media screen and (min-width:700px)": { display: "flex", textAlign: "center" },
                     }}
                   >
-                    <Box sx={{ width: 80, ml: 5 }}>
+                    <Box sx={{ width: 50, ml: 5, "@media screen and (min-width:700px)": { width: 80, ml: 5 } }}>
                       <Box>
                         <Typography variant="h6">Day</Typography>
                         <Typography variant="h6">
