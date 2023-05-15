@@ -98,7 +98,7 @@ const EditChallenge = () => {
       if (error) {
         throw error;
       }
-      const ret = await new Promise((resolve) => {
+      await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
           title: "Success",

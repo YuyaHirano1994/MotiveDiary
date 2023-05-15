@@ -32,7 +32,7 @@ const ChangePassword = () => {
     e.preventDefault();
     const result = await resetPass(formValue.email);
     if (result) {
-      const ret = await new Promise((resolve) => {
+      await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
           title: "",
@@ -43,7 +43,7 @@ const ChangePassword = () => {
       setModalConfig(undefined);
       // navigate("/home");
     } else {
-      const ret = await new Promise((resolve) => {
+      await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
           title: "Reset Failed",

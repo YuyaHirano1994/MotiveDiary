@@ -209,7 +209,7 @@ const CreateDay = () => {
         ])
         .eq("challenge_id", formValue.challenge_id);
       if (error) throw error;
-      const ret = await new Promise((resolve) => {
+      await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
           title: "COMPLETED",

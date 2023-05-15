@@ -77,12 +77,9 @@ const Setting = () => {
   const handleImageChange = async (e) => {
     e.preventDefault();
     try {
-      console.log(e.target.files[0].size);
       if (e.target.files.length === 0) {
-        console.log("cancel event");
         return;
       } else if (e.target.files[0].size > MAX_FILE_SIZE) {
-        console.log("over 1MG");
         const ret = await new Promise((resolve) => {
           setModalConfig({
             onClose: resolve,

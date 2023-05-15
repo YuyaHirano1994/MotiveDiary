@@ -49,7 +49,7 @@ const SignIn = () => {
       const data = await signIn(formValue.email, formValue.password);
       if (data.result) {
         navigate("/mypage");
-        const ret = await new Promise((resolve) => {
+        await new Promise((resolve) => {
           setModalConfig({
             onClose: resolve,
             title: "",
@@ -59,8 +59,7 @@ const SignIn = () => {
         });
         setModalConfig(undefined);
       } else {
-        console.log(data.msg);
-        const ret = await new Promise((resolve) => {
+        await new Promise((resolve) => {
           setModalConfig({
             onClose: resolve,
             title: "Login Failed",

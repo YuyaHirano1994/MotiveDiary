@@ -36,7 +36,7 @@ const ChangePasswordForm = () => {
     if (formValue.password !== formValue.cPassword) return setErrorMsg("Password confirmation does not match");
     const data = await sendResetPass(formValue.password);
     if (data.result) {
-      const ret = await new Promise((resolve) => {
+      await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
           title: "",
@@ -47,7 +47,7 @@ const ChangePasswordForm = () => {
       setModalConfig(undefined);
       navigate("/mypage");
     } else {
-      const ret = await new Promise((resolve) => {
+      await new Promise((resolve) => {
         setModalConfig({
           onClose: resolve,
           title: "Reset Failed",

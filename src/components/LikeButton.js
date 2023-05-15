@@ -68,7 +68,7 @@ function LikeButton({ challenge_id }) {
         setLiked(!liked); // ボタンの状態を反転させる
         await fetchLikeCount(); // イイネ数を更新
       } else {
-        const ret = await new Promise((resolve) => {
+        await new Promise((resolve) => {
           setModalConfig({
             onClose: resolve,
             title: "Please Sign in",

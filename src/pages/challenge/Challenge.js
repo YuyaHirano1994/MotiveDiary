@@ -117,8 +117,9 @@ const Challenge = () => {
           .from("challenge")
           .delete()
           .eq("challenge_id", challenge.challenge_id);
+        const deleteLikeResult = await supabase.from("likes").delete().eq("challenge_id", challenge.challenge_id);
 
-        if (deleteDayResult.error || deleteChallengeResult.error) {
+        if (deleteDayResult.error || deleteChallengeResult.error || deleteLikeResult.error) {
           throw new Error("An error occurred while deleting data.");
         }
 
