@@ -203,6 +203,7 @@ const CreateDay = () => {
         .update([
           {
             completed: true,
+            end_date: new Date(),
             updated_at: new Date(),
           },
         ])

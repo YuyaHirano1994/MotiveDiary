@@ -173,6 +173,7 @@ const EditChallenge = () => {
                 id="days"
                 autoComplete="days"
                 variant="standard"
+                disabled={formValue.end_date}
               />
               <TextField
                 value={formValue.desc}
@@ -201,6 +202,7 @@ const EditChallenge = () => {
                 id="start_date"
                 autoComplete="start_date"
                 variant="standard"
+                disabled={formValue.end_date}
               />
               <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
                 Edit Challenge

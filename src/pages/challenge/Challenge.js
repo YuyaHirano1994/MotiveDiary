@@ -271,7 +271,7 @@ const Challenge = () => {
         </Box>
         <Box align="right" sx={{ width: "100%", mb: 4 }}>
           {session?.id === challenge.user_id ? (
-            <Button variant="contained">
+            <Button variant="contained" disabled={challenge.end_date}>
               <Link to={"/day/create/" + challenge.challenge_id}>Register Day</Link>
             </Button>
           ) : (

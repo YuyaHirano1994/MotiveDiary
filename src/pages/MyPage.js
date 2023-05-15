@@ -143,7 +143,12 @@ const MyPage = () => {
           <Box sx={challengeStyles}>
             {notCompletedChallenges.map((challenge) => (
               <Box key={challenge.challenge_id} display="flex" justifyContent="space-between" sx={contentBorderStyles}>
-                <Box sx={{ width: "30%", "@media screen and (min-width:700px)": { width: "40%" } }}>
+                <Box
+                  sx={{
+                    width: "40%",
+                    "@media screen and (min-width:700px)": { width: "50%" },
+                  }}
+                >
                   <Box sx={{ wordWrap: "break-word" }}>
                     <Typography variant="h5">{challenge.title}</Typography>
                   </Box>
@@ -195,7 +200,7 @@ const MyPage = () => {
           <Box sx={challengeStyles}>
             {completedChallenges.map((challenge) => (
               <Box key={challenge.challenge_id} display="flex" justifyContent="space-between" sx={contentBorderStyles}>
-                <Box sx={{ width: "30%", "@media screen and (min-width:700px)": { width: "40%" } }}>
+                <Box sx={{ width: "40%", "@media screen and (min-width:700px)": { width: "50%" } }}>
                   <Box sx={{ wordWrap: "break-word" }}>
                     <Typography variant="h5">{challenge.title}</Typography>
                   </Box>
