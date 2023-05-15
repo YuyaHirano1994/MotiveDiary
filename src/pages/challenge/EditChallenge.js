@@ -71,7 +71,6 @@ const EditChallenge = () => {
 
   const handleCategoryChange = (e) => {
     setShowCategory(e.target.value);
-    console.log(e.target.value);
     if (e.target.value !== "other") {
       setFormValue({ ...formValue, category: e.target.value });
     } else {
