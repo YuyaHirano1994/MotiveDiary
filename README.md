@@ -1,5 +1,11 @@
 # Motive Diary
 
+# Challenges
+
+Created CRUD web application using React and Supabase. Material UI was used for the appearance to create a unified look and feel. I also used Recoil for state management and touched on the latest skills.
+
+# Description
+
 Motive Diary is a diary application that will help you meet your challenges.  
 Set goals and record your daily progress.  
 You can easily review your progress.  
