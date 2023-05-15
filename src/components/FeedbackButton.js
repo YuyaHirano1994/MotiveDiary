@@ -42,6 +42,7 @@ const FeedbackButton = () => {
     try {
       const { error } = await supabase.from("feedback").insert([
         {
+          user_id: session?.id,
           title: formValue.title,
           email: formValue.email,
           feedback: formValue.feedback,
