@@ -157,7 +157,7 @@ const Challenge = () => {
                 <Link to={"/home"} className="link">
                   <Button variant="outlined" size="small">
                     <HomeOutlinedIcon />
-                    HOME
+                    MYPAGE
                   </Button>
                 </Link>
               </Box>
