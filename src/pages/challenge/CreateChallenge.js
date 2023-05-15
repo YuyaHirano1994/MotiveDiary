@@ -23,7 +23,7 @@ const CreateChallenge = () => {
   const [formValue, setFormValue] = useState({
     challenge_id: "",
     title: "",
-    category: "",
+    category: "HTML",
     days: 1,
     desc: "",
     start_date: today,

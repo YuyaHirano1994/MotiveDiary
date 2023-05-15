@@ -214,7 +214,7 @@ const CreateDay = () => {
           onClose: resolve,
           title: "COMPLETED",
           message: `🎉Completed your Challenge! Nice work!🎉`,
-          type: true,
+          type: false,
         });
       });
       setModalConfig(undefined);

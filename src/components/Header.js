@@ -120,9 +120,6 @@ const Header = () => {
                 </Link>
                 <ThemeProvider theme={titleTheme}>
                   <Typography variant="h6">Motive Diary</Typography>
-                  <Typography variant="subtitle1" sx={{ ml: 1 }}>
-                    β ver.
-                  </Typography>
                 </ThemeProvider>
               </Box>
               <Box>
