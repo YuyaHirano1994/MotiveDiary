@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Checkbox, Container, Grid, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../common/useAuth";
@@ -11,6 +11,11 @@ const mainStyles = {
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
+};
+
+const linkStyles = {
+  textDecoration: "underline",
+  color: "blue",
 };
 
 const SignUp = () => {
@@ -137,6 +142,15 @@ const SignUp = () => {
             id="password"
             autoComplete="current-password"
           />
+          By creating an account, you agree to our{" "}
+          <Link to={"/term"} target="_blank" style={linkStyles}>
+            Terms
+          </Link>{" "}
+          and have read and acknowledge{" "}
+          <Link to={"/policy"} target="_blank" style={linkStyles}>
+            the Privacy Policy
+          </Link>
+          .
           <Button color="secondary" type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign Up
           </Button>
@@ -146,14 +160,14 @@ const SignUp = () => {
               <Link to={"/changepassword"} variant="body2">
                 Forgot password?
                 <br />
-                Click here.
+                here.
               </Link>
             </Grid>
             <Grid item>
               <Link to={"/user/signin"} variant="body2">
                 Already have an account?
                 <br />
-                Click here.
+                here.
               </Link>
             </Grid>
           </Grid>

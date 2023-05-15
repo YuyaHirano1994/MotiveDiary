@@ -23,6 +23,8 @@ import supabase from "./common/supabase";
 import Product from "./Product";
 import ScrollToTop from "./components/ScrollToTop";
 import ChangePasswordForm from "./pages/user/ChangePasswordForm";
+import Policy from "./pages/Policy";
+import Term from "./pages/Term";
 
 const App = () => {
   let theme = createTheme(themeOptions);
@@ -152,6 +154,8 @@ const App = () => {
                   </SignedRoute>
                 }
               />
+              <Route path="policy" element={<Policy />} />
+              <Route path="term" element={<Term />} />
               <Route
                 path="/*"
                 element={

@@ -124,14 +124,14 @@ const SignIn = () => {
               <Link to={"/changepassword"} variant="body2">
                 Forgot password?
                 <br />
-                Click here.
+                here.
               </Link>
             </Grid>
             <Grid item>
               <Link to={"/user/signup"} variant="body2">
                 Don't have an account?
                 <br />
-                Click here.
+                here.
               </Link>
             </Grid>
           </Grid>
