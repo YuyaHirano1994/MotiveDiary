@@ -1,7 +1,10 @@
-import { Box, Button, Container, Typography } from "@mui/material";
+import { useTheme } from "@emotion/react";
+import { Box, Button, Container, Typography, useMediaQuery } from "@mui/material";
 import React, { useState } from "react";
 
 const Policy = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [language, setLanguage] = useState(true);
 
   const handleChange = () => {
@@ -11,11 +14,11 @@ const Policy = () => {
   return (
     <>
       <Container component="main" maxWidth="md">
-        <Box width="100%" sx={{ border: "1px solid black", borderRadius: 2, p: 2, mt: 2, mb: 2 }}>
+        <Box width={isMobile ? "300px" : "100%"} sx={{ border: "1px solid black", borderRadius: 2, p: 2, mb: 2 }}>
           <Box textAlign="center">
             <Typography variant="h4">Privacy Policy</Typography>
           </Box>
-          <Box textAlign="right">
+          <Box textAlign="right" sx={{ m: 1 }}>
             <Button variant={language ? "contained" : "outlined"} color="info" onClick={handleChange}>
               {language ? <div>Japanese</div> : <div>English</div>}
             </Button>

@@ -1,8 +1,11 @@
 import React from "react";
-import { Box, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography, useMediaQuery } from "@mui/material";
 import Button from "@mui/material/Button";
+import { useTheme } from "@emotion/react";
 
-const FeedbackModal = ({ formValue, handleChange, handleSubmit, closeModal, from }) => {
+const FeedbackModal = ({ formValue, handleChange, handleSubmit, closeModal }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   return (
     <Box
       sx={{
@@ -10,9 +13,9 @@ const FeedbackModal = ({ formValue, handleChange, handleSubmit, closeModal, from
         top: "50%",
         left: "50%",
         transform: "translate(-50%, -50%)",
-        width: 400,
+        width: isMobile ? "300px" : "400px",
         bgcolor: "background.paper",
-        border: "2px solid #000",
+        border: "1px solid #000",
         boxShadow: 24,
         p: 4,
       }}
