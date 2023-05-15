@@ -24,6 +24,13 @@ And cheer on your fellow people as they take on their own challenges.
 - Supporting your friends
   - Support your friends' challenges with the Like button!
 
+# Tech Stack
+
+- React
+- Material UI
+- Supabase
+- Recoil
+
 # Author
 
 - Yuya Hirano
