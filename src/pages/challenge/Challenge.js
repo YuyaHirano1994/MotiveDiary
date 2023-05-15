@@ -13,6 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import LikeButton from "../../components/LikeButton";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 
 const challengeMainStyles = {
   marginTop: 4,
@@ -153,7 +154,12 @@ const Challenge = () => {
                     Delete
                   </Button>
                 </Link>
-                <BackButton />
+                <Link to={"/home"} className="link">
+                  <Button variant="outlined" size="small">
+                    <HomeOutlinedIcon />
+                    HOME
+                  </Button>
+                </Link>
               </Box>
             </>
           ) : (
@@ -172,7 +178,12 @@ const Challenge = () => {
                     Delete
                   </Button>
                 </Link>
-                <BackButton />
+                <Link to={"/mypage"} className="link">
+                  <Button variant="outlined" size="small">
+                    <HomeOutlinedIcon />
+                    MYPAGE
+                  </Button>
+                </Link>
               </Box>
             </>
           )}

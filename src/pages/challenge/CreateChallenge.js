@@ -73,9 +73,7 @@ const CreateChallenge = () => {
           start_date: formValue.start_date,
         },
       ]);
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
       setIsLoading(false);
       navigate("/mypage");
     } catch (error) {

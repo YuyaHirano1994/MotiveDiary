@@ -15,6 +15,7 @@ import { profileState } from "../atom/profileAtom";
 import { Logout, Settings } from "@mui/icons-material";
 import PersonIcon from "@mui/icons-material/Person";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
+import ChatIcon from "@mui/icons-material/Chat";
 import {
   AppBar,
   Box,
@@ -24,6 +25,7 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
+  Modal,
   Toolbar,
   Tooltip,
   Typography,
@@ -31,6 +33,7 @@ import {
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { BsFillJournalBookmarkFill } from "react-icons/bs";
 import { Container } from "@mui/system";
+import FeedbackModal from "./FeedBackModal";
 
 const headerStyles = { display: "flex", alignItems: "center", textAlign: "center", flexGrow: 1 };
 
@@ -45,6 +48,13 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const session = useRecoilValue(sessionState);
   const profile = useRecoilValue(profileState);
+  const [modalOpen, setModalOpen] = useState(false);
+  const isMobile = false;
+  const [formValue, setFormValue] = useState({
+    title: "",
+    email: "",
+    feedback: "",
+  });
 
   useEffect(() => {}, [session, profile]);
 
@@ -56,6 +66,41 @@ const Header = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    setFormValue({
+      ...formValue,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { error } = await supabase.from("feedback").insert([
+        {
+          title: formValue.title,
+          email: formValue.email,
+          feedback: formValue.feedback,
+        },
+      ]);
+      if (error) throw error;
+      setFormValue({ title: "", email: "", feedback: "" });
+      closeModal();
+    } catch (error) {
+      alert("Failed, please email us (yuyahirano.dev@gmail.com)");
+      console.log(error);
+    }
   };
 
   const hadleClickSignOut = async () => {
@@ -162,7 +207,23 @@ const Header = () => {
                         </ListItemIcon>
                         <Box onClick={hadleClickSignOut}>Sign out</Box>
                       </MenuItem>
+                      <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                          <ChatIcon fontSize="small" />
+                        </ListItemIcon>
+                        <Box onClick={openModal}>FeedBack</Box>
+                      </MenuItem>
                     </Menu>
+                    <Modal open={modalOpen} onClose={closeModal}>
+                      <FeedbackModal
+                        modalOpen={modalOpen}
+                        closeModal={closeModal}
+                        formValue={formValue}
+                        handleChange={handleChange}
+                        handleSubmit={handleSubmit}
+                        from={true}
+                      />
+                    </Modal>
                   </>
                 ) : (
                   <>

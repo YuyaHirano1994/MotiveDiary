@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Container, Grid, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const footerStyles = {
   width: "100%",
@@ -11,6 +12,11 @@ const footerStyles = {
 const textStyles = {
   color: "textSecondary",
   variant: "subtitle1",
+};
+
+const linkStyles = {
+  textDecoration: "underline",
+  color: "lime",
 };
 
 const Footer = () => {
@@ -29,9 +35,17 @@ const Footer = () => {
             <Typography sx={textStyles}>
               {`Copyright © ${currentYear} Yuya Hirano`}
               <br />
-              ReactJS | Material UI | Recoil | Supabase
+              <a href="https://react.dev/">ReactJS</a> | <a href="https://mui.com/Material">Material UI</a> |{" "}
+              <a href="https://recoiljs.org/">Recoil</a> | <a href="https://supabase.com/">Supabase</a>
               <br />
-              <a href="https://storyset.com/people">People illustrations by Storyset</a>
+              <Link to={"/term"} style={linkStyles}>
+                Terms of Service
+              </Link>{" "}
+              |{" "}
+              <Link to={"/policy"} style={linkStyles}>
+                Privacy Policy
+              </Link>
+              {/* <a href="https://storyset.com/people">People illustrations by Storyset</a> */}
             </Typography>
           </Grid>
         </Grid>

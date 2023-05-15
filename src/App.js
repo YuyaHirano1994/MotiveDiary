@@ -15,7 +15,7 @@ import EditDay from "./pages/day/EditDay";
 import Setting from "./pages/user/Setting";
 import ChangePassword from "./pages/user/ChangePassword";
 import useAuth from "./common/useAuth";
-import { createTheme, Snackbar, ThemeProvider, responsiveFontSizes } from "@mui/material";
+import { createTheme, Snackbar, ThemeProvider, responsiveFontSizes, Button } from "@mui/material";
 import { themeOptions } from "./theme-options";
 import { sessionState } from "./atom/sessionAtom";
 import { useRecoilState } from "recoil";
@@ -25,6 +25,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import ChangePasswordForm from "./pages/user/ChangePasswordForm";
 import Policy from "./pages/Policy";
 import Term from "./pages/Term";
+import FeedbackButton from "./components/FeedbackButton";
 
 const App = () => {
   let theme = createTheme(themeOptions);
@@ -166,9 +167,11 @@ const App = () => {
               />
             </Routes>
           </div>
+
           <div className="footer">
             <Footer />
           </div>
+          <FeedbackButton />
           <ScrollToTop />
         </div>
       </ThemeProvider>
