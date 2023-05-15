@@ -30,6 +30,7 @@ const FeedbackModal = ({ formValue, handleChange, handleSubmit, closeModal }) =>
           name="title"
           onChange={handleChange}
           fullWidth
+          required
           margin="normal"
         />
         <TextField
@@ -50,6 +51,7 @@ const FeedbackModal = ({ formValue, handleChange, handleSubmit, closeModal }) =>
           multiline
           rows={4}
           margin="normal"
+          required
         />
         <Button type="submit" variant="contained">
           Submit
