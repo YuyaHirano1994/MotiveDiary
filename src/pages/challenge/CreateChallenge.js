@@ -90,7 +90,7 @@ const CreateChallenge = () => {
       <Container>
         <Box sx={challengeMainStyles}>
           <Typography variant="h3" align="center">
-            Let's Start your New Challenge!
+            Let's Start Your New Challenge!
           </Typography>
           <Box sx={{ margin: "0 auto" }}>
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
@@ -132,9 +132,10 @@ const CreateChallenge = () => {
                 margin="normal"
                 required
                 name="days"
-                label="How long would you need?"
+                label="How long will it take to achieve the goal?"
                 type="number"
                 id="days"
+                fullWidth
                 autoComplete="days"
                 variant="standard"
               />

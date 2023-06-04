@@ -279,7 +279,7 @@ const CreateDay = () => {
             </Box>
             <BackButton to="/mypage" />
           </Box>
-          <Box align="center" sx={{ width: "100%", mb: 4 }}>
+          {/* <Box align="center" sx={{ width: "100%", mb: 4 }}>
             <Typography variant="h3" align="left" sx={{ mt: 2 }}>
               {challenge.title}
             </Typography>
@@ -299,8 +299,8 @@ const CreateDay = () => {
             <Typography variant="h6" align="left" sx={{ ml: 2 }}>
               {changeFormat(challenge?.desc)}
             </Typography>
-          </Box>
-          <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
+          </Box> */}
+          {/* <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
             <Box>
               <Button color="info" variant="contained">
                 #{challenge.category}
@@ -312,29 +312,35 @@ const CreateDay = () => {
                 {days.length} / {challenge.days}
               </Typography>
             </Box>
-          </Box>
+          </Box> */}
         </Box>
+        <hr />
         <Container>
           <Box component="form" onSubmit={handleSubmit}>
-            <Typography variant="h5" sx={{ margin: 2 }}>
-              Day {maxDay + 1}...
-            </Typography>
-            <FormControl>
-              <InputLabel id="category">Challenge</InputLabel>
-              <Select
-                labelId="Challenge"
-                id="challenge_id"
-                name="challenge_id"
-                value={formValue.challenge_id}
-                onChange={handleChange}
-              >
-                {challenges.map((challenge) => (
-                  <MenuItem value={challenge.challenge_id} key={challenge.challenge_id}>
-                    {challenge.title}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mt: 2, mb: 1 }}>
+              <FormControl sx={{ mt: 3 }}>
+                <InputLabel id="category">Challenge</InputLabel>
+                <Select
+                  labelId="Challenge"
+                  id="challenge_id"
+                  name="challenge_id"
+                  value={formValue.challenge_id}
+                  onChange={handleChange}
+                >
+                  {challenges.map((challenge) => (
+                    <MenuItem value={challenge.challenge_id} key={challenge.challenge_id}>
+                      {challenge.title}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Box>
+                <Typography variant="h4">Day</Typography>
+                <Typography variant="h4">
+                  {days.length} / {challenge.days}
+                </Typography>
+              </Box>
+            </Box>
             <br />
             <TextField
               value={formValue.date || formatDate(new Date())}
