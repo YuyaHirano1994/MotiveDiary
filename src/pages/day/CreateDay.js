@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import BackButton from "../../components/BackButton";
 import UserIcon from "../../components/UserIcon";
 import { useRecoilValue } from "recoil";
@@ -218,7 +219,6 @@ const CreateDay = () => {
         });
       });
       setModalConfig(undefined);
-      // alert("Completed your Challenge! Nice work!");
       navigate("/mypage");
     } catch (error) {
       alert("Failed");
@@ -267,26 +267,6 @@ const CreateDay = () => {
         >
           <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
             <Box display="flex">
-              <UserIcon width={50} height={50} />
-              <Box sx={{ ml: 2 }}>
-                <Typography variant="subtitle1" align="left">
-                  {profile?.nickname}
-                </Typography>
-                <Typography variant="subtitle2" align="left">
-                  {profile?.comment}
-                </Typography>
-              </Box>
-            </Box>
-            <BackButton to="/mypage" />
-          </Box>
-          {/* <Box align="center" sx={{ width: "100%", mb: 4 }}>
-            <Typography variant="h3" align="left" sx={{ mt: 2 }}>
-              {challenge.title}
-            </Typography>
-            <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-              <Typography variant="h5" align="left">
-                {challenge.start_date}~{challenge.end_date}
-              </Typography>
               <TwitterShareButton
                 url={"https://motive-diary.vercel.app/"}
                 title={`Taking on the challenge of ${challenge.title}! Join me in recording your own challenges on MotiveDiary. Let's keep track of our progress together!\n`}
@@ -294,25 +274,23 @@ const CreateDay = () => {
               >
                 <TwitterIcon size={32} round />
               </TwitterShareButton>
+              <Box sx={{ ml: 2 }}>
+                <Typography variant="body1" align="left" style={{ display: "flex", alignItems: "center" }}>
+                  <CalendarMonthIcon />
+                  <span>
+                    {challenge.start_date}~{challenge.end_date}
+                  </span>
+                </Typography>
+                <Typography variant="body1" align="left">
+                  {challenge.title}
+                </Typography>
+                <Typography variant="subtitle2" align="left">
+                  {changeFormat(challenge?.desc)}
+                </Typography>
+              </Box>
             </Box>
-            <hr />
-            <Typography variant="h6" align="left" sx={{ ml: 2 }}>
-              {changeFormat(challenge?.desc)}
-            </Typography>
-          </Box> */}
-          {/* <Box display="flex" justifyContent="space-between" sx={{ width: "100%", mb: 4 }}>
-            <Box>
-              <Button color="info" variant="contained">
-                #{challenge.category}
-              </Button>
-            </Box>
-            <Box>
-              <Typography variant="h4">Day</Typography>
-              <Typography variant="h4">
-                {days.length} / {challenge.days}
-              </Typography>
-            </Box>
-          </Box> */}
+            <BackButton to="/mypage" />
+          </Box>
         </Box>
         <hr />
         <Container>
