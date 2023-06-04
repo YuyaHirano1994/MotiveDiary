@@ -80,7 +80,7 @@ const FeedbackButton = () => {
         position: "fixed",
         bottom: "50%",
         right: "20px",
-        transform: "translate(50%, 50%) rotate(-90deg)",
+        transform: "translate(50%, 50%) rotate(0deg)",
         transformOrigin: "center",
         writingMode: "vertical-rl",
         textOrientation: "mixed",

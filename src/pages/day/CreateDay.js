@@ -359,6 +359,7 @@ const CreateDay = () => {
               type="text"
               id="content"
               required
+              autoFocus
             ></TextareaAutosize>
             <Button type="submit" fullWidth variant="contained" disabled={isLoading} sx={{ mt: 3, mb: 2 }}>
               Register!
