@@ -37,9 +37,9 @@ I also used Recoil for state management and touched on the latest skills.
 
 # Features
 
-- Set Goals
+- Set your goals
   - Set the goals you want to achieve and the number of days to achieve them.
-- Record daily
+- Record progress daily
   - Remember to record daily progress.
 - Review the record.
 
